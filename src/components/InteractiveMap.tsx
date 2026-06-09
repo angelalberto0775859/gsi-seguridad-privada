@@ -22,8 +22,8 @@ const branches: Branch[] = [
     phone: '800 8305 990',
     email: 'contacto.norte@gsiseguridad.com.mx',
     address: 'Av. Paseo de los Héroes 95, Zona Río, Tijuana, B.C.',
-    x: 12.0,
-    y: 16.5,
+    x: 8.7,
+    y: 15.8,
     coverage: ['Baja California', 'Ensenada', 'Mexicali', 'Tecate']
   },
   {
@@ -33,7 +33,7 @@ const branches: Branch[] = [
     phone: '800 8305 990',
     email: 'contacto.norte@gsiseguridad.com.mx',
     address: 'Blvd. Kino 310, Col. Pitic, Hermosillo, Sonora.',
-    x: 21.0,
+    x: 24.5,
     y: 25.5,
     coverage: ['Sonora', 'Nogales', 'Guaymas', 'Navojoa']
   },
@@ -44,8 +44,8 @@ const branches: Branch[] = [
     phone: '800 8305 990',
     email: 'contacto.occidente@gsiseguridad.com.mx',
     address: 'Calle Álvaro Obregón 450, Col. Centro, La Paz, B.C.S.',
-    x: 21.0,
-    y: 47.0,
+    x: 23.0,
+    y: 45.0,
     coverage: ['Baja California Sur', 'Los Cabos', 'Loreto']
   },
   {
@@ -55,8 +55,8 @@ const branches: Branch[] = [
     phone: '800 8305 990',
     email: 'contacto.norte@gsiseguridad.com.mx',
     address: 'Calle Sinaloa 200, Centro, Ciudad Obregón, Sonora.',
-    x: 24.0,
-    y: 30.5,
+    x: 27.5,
+    y: 30.0,
     coverage: ['Sonora Sur', 'Guaymas', 'Navojoa']
   },
   {
@@ -66,8 +66,8 @@ const branches: Branch[] = [
     phone: '800 8305 990',
     email: 'contacto.norte@gsiseguridad.com.mx',
     address: 'Blvd. Pedro Anaya 45, Col. Centro, Culiacán, Sinaloa.',
-    x: 29.5,
-    y: 43.5,
+    x: 34.0,
+    y: 42.5,
     coverage: ['Sinaloa', 'Mazatlán', 'Los Mochis']
   },
   {
@@ -77,8 +77,8 @@ const branches: Branch[] = [
     phone: '800 8305 990',
     email: 'contacto.norte@gsiseguridad.com.mx',
     address: 'Av. Tecnológico 2400, Col. Partido Romero, Ciudad Juárez, Chihuahua.',
-    x: 38.5,
-    y: 16.5,
+    x: 37.0,
+    y: 18.0,
     coverage: ['Chihuahua Norte', 'El Paso Area']
   },
   {
@@ -99,8 +99,8 @@ const branches: Branch[] = [
     phone: '800 8305 990',
     email: 'contacto.occidente@gsiseguridad.com.mx',
     address: 'Av. Francisco Medina Ascencio 1800, Zona Hotelera, Puerto Vallarta, Jalisco.',
-    x: 38.0,
-    y: 63.0,
+    x: 41.0,
+    y: 62.0,
     coverage: ['Jalisco Costa', 'Nayarit Sur', 'Bahía de Banderas']
   },
   {
@@ -110,8 +110,8 @@ const branches: Branch[] = [
     phone: '800 8305 990',
     email: 'contacto.occidente@gsiseguridad.com.mx',
     address: 'Blvd. Miguel de la Madrid 1200, Zona Costera, Manzanillo, Colima.',
-    x: 41.5,
-    y: 68.0,
+    x: 44.2,
+    y: 65.8,
     coverage: ['Colima Costa', 'Manzanillo Puerto']
   },
   {
@@ -121,8 +121,8 @@ const branches: Branch[] = [
     phone: '800 8305 990',
     email: 'contacto.occidente@gsiseguridad.com.mx',
     address: 'Av. Lázaro Cárdenas 110, Col. Centro, Lázaro Cárdenas, Michoacán.',
-    x: 47.5,
-    y: 72.5,
+    x: 51.4,
+    y: 71.0,
     coverage: ['Michoacán Costa', 'Guerrero Norte-Occidente']
   },
   {
@@ -132,8 +132,8 @@ const branches: Branch[] = [
     phone: '800 8305 990',
     email: 'contacto.occidente@gsiseguridad.com.mx',
     address: 'Av. Insurgentes Este 350, Col. Centro, Tepic, Nayarit.',
-    x: 41.0,
-    y: 58.0,
+    x: 39.6,
+    y: 56.3,
     coverage: ['Nayarit', 'Acaponeta', 'Santiago Ixcuintla']
   },
   {
@@ -143,8 +143,8 @@ const branches: Branch[] = [
     phone: '800 8305 990',
     email: 'contacto.occidente@gsiseguridad.com.mx',
     address: 'Paseo de Zihuatanejo s/n, Col. Centro, Zihuatanejo, Guerrero.',
-    x: 49.5,
-    y: 75.0,
+    x: 53.0,
+    y: 72.5,
     coverage: ['Guerrero Costa Grande', 'Ixtapa']
   },
   {
@@ -154,8 +154,8 @@ const branches: Branch[] = [
     phone: '33 3812 0000',
     email: 'contacto.occidente@gsiseguridad.com.mx',
     address: 'Av. Vallarta 2300, Col. Americana, Guadalajara, Jalisco.',
-    x: 44.5,
-    y: 61.5,
+    x: 45.0,
+    y: 59.1,
     coverage: ['Jalisco', 'Nayarit', 'Colima', 'Michoacán']
   },
   {
@@ -165,8 +165,8 @@ const branches: Branch[] = [
     phone: '800 8305 990',
     email: 'contacto.occidente@gsiseguridad.com.mx',
     address: 'Av. Madero Poniente 1400, Col. Centro, Morelia, Michoacán.',
-    x: 50.0,
-    y: 66.5,
+    x: 51.7,
+    y: 63.7,
     coverage: ['Michoacán', 'Uruapan', 'Zamora', 'Zitácuaro']
   },
   {
@@ -176,8 +176,8 @@ const branches: Branch[] = [
     phone: '800 8305 990',
     email: 'contacto.bajio@gsiseguridad.com.mx',
     address: 'Blvd. Adolfo López Mateos 1800, Col. Jardines del Jerez, León, Guanajuato.',
-    x: 49.5,
-    y: 60.0,
+    x: 49.9,
+    y: 56.7,
     coverage: ['Guanajuato', 'Irapuato', 'Celaya', 'Salamanca']
   },
   {
@@ -187,8 +187,8 @@ const branches: Branch[] = [
     phone: '800 8305 990',
     email: 'contacto.occidente@gsiseguridad.com.mx',
     address: 'Av. Felipe Sevilla del Río 450, Col. Lomas de Circunvalación, Colima, Colima.',
-    x: 43.5,
-    y: 67.5,
+    x: 44.8,
+    y: 63.9,
     coverage: ['Colima', 'Villa de Álvarez', 'Tecomán']
   },
   {
@@ -198,8 +198,8 @@ const branches: Branch[] = [
     phone: '800 8305 990',
     email: 'contacto.bajio@gsiseguridad.com.mx',
     address: 'Av. Convención de 1914 Norte 102, Col. Gremial, Aguascalientes, Ags.',
-    x: 47.5,
-    y: 56.5,
+    x: 47.4,
+    y: 53.3,
     coverage: ['Aguascalientes', 'Zacatecas Sur', 'Jalisco Norte']
   },
   {
@@ -209,8 +209,8 @@ const branches: Branch[] = [
     phone: '800 8305 990',
     email: 'contacto.centro@gsiseguridad.com.mx',
     address: 'Av. Lázaro Cárdenas 40, Col. Centro, Chilpancingo, Guerrero.',
-    x: 55.0,
-    y: 76.0,
+    x: 56.0,
+    y: 70.6,
     coverage: ['Guerrero Centro', 'Iguala', 'Taxco']
   },
   {
@@ -220,8 +220,8 @@ const branches: Branch[] = [
     phone: '800 8305 990',
     email: 'contacto.centro@gsiseguridad.com.mx',
     address: 'Costera Miguel Alemán 220, Fracc. Magallanes, Acapulco, Guerrero.',
-    x: 54.5,
-    y: 79.0,
+    x: 57.0,
+    y: 74.0,
     coverage: ['Guerrero Costa Chica', 'Acapulco Zona Diamante']
   },
   {
@@ -231,8 +231,8 @@ const branches: Branch[] = [
     phone: '442 215 0000',
     email: 'contacto.bajio@gsiseguridad.com.mx',
     address: 'Av. 5 de Febrero 100, Col. Centro, Querétaro, Qro.',
-    x: 53.0,
-    y: 63.5,
+    x: 53.1,
+    y: 60.7,
     coverage: ['Querétaro', 'Guanajuato', 'San Luis Potosí']
   },
   {
@@ -242,8 +242,8 @@ const branches: Branch[] = [
     phone: '800 8305 990',
     email: 'contacto.centro@gsiseguridad.com.mx',
     address: 'Av. Paseo Tollocan 850, Col. Santa Ana Tlapaltitlán, Toluca, Estado de México.',
-    x: 54.5,
-    y: 68.5,
+    x: 54.9,
+    y: 64.6,
     coverage: ['Estado de México Poniente', 'Lerma', 'Metepec']
   },
   {
@@ -253,8 +253,8 @@ const branches: Branch[] = [
     phone: '81 8300 0000',
     email: 'contacto.norte@gsiseguridad.com.mx',
     address: 'Av. Constitución 450, Col. Obispado, Monterrey, Nuevo León.',
-    x: 53.2,
-    y: 40.5,
+    x: 55.7,
+    y: 39.0,
     coverage: ['Nuevo León', 'Coahuila', 'Tamaulipas', 'San Luis Potosí']
   },
   {
@@ -264,8 +264,8 @@ const branches: Branch[] = [
     phone: '800 8305 990',
     email: 'contacto.centro@gsiseguridad.com.mx',
     address: 'Av. Insurgentes Sur 1200, Col. Del Valle, Ciudad de México.',
-    x: 56.0,
-    y: 67.5,
+    x: 56.6,
+    y: 65.7,
     coverage: ['Ciudad de México', 'Estado de México', 'Puebla', 'Morelos', 'Hidalgo']
   },
   {
@@ -275,8 +275,8 @@ const branches: Branch[] = [
     phone: '800 8305 990',
     email: 'contacto.bajio@gsiseguridad.com.mx',
     address: 'Av. Venustiano Carranza 1400, Col. Tequisquiapan, San Luis Potosí, S.L.P.',
-    x: 50.5,
-    y: 55.0,
+    x: 50.3,
+    y: 52.1,
     coverage: ['San Luis Potosí', 'Matehuala', 'Rioverde', 'Ciudad Valles']
   },
   {
@@ -286,8 +286,8 @@ const branches: Branch[] = [
     phone: '800 8305 990',
     email: 'contacto.centro@gsiseguridad.com.mx',
     address: 'Av. Plan de Ayala 400, Col. Teopanzolco, Cuernavaca, Morelos.',
-    x: 56.0,
-    y: 69.5,
+    x: 56.3,
+    y: 68.0,
     coverage: ['Morelos', 'Cuautla', 'Jiutepec']
   },
   {
@@ -297,8 +297,8 @@ const branches: Branch[] = [
     phone: '800 8305 990',
     email: 'contacto.norte@gsiseguridad.com.mx',
     address: 'Blvd. Venustiano Carranza 2800, Col. República, Saltillo, Coahuila.',
-    x: 51.2,
-    y: 41.0,
+    x: 52.7,
+    y: 40.0,
     coverage: ['Coahuila', 'Ramos Arizpe', 'Monclova', 'Piedras Negras']
   },
   {
@@ -308,8 +308,8 @@ const branches: Branch[] = [
     phone: '800 8305 990',
     email: 'contacto.centro@gsiseguridad.com.mx',
     address: 'Blvd. Everardo Márquez 150, Col. Centro, Pachuca, Hidalgo.',
-    x: 56.0,
-    y: 64.5,
+    x: 56.6,
+    y: 62.4,
     coverage: ['Hidalgo', 'Tulancingo', 'Tula', 'Actopan']
   },
   {
@@ -319,8 +319,8 @@ const branches: Branch[] = [
     phone: '800 8305 990',
     email: 'contacto.centro@gsiseguridad.com.mx',
     address: 'Av. Juárez 2900, Col. La Paz, Puebla, Puebla.',
-    x: 58.0,
-    y: 68.5,
+    x: 59.1,
+    y: 66.6,
     coverage: ['Puebla', 'Tlaxcala', 'Tehuacán', 'San Martín Texmelucan']
   },
   {
@@ -330,8 +330,8 @@ const branches: Branch[] = [
     phone: '800 8305 990',
     email: 'contacto.norte@gsiseguridad.com.mx',
     address: 'Av. Hidalgo 3500, Col. Guadalupe, Tampico, Tamaulipas.',
-    x: 59.0,
-    y: 53.0,
+    x: 60.9,
+    y: 52.1,
     coverage: ['Tamaulipas Sur', 'Altamira', 'Madero', 'Veracruz Norte']
   },
   {
@@ -341,8 +341,8 @@ const branches: Branch[] = [
     phone: '800 8305 990',
     email: 'contacto.golfo@gsiseguridad.com.mx',
     address: 'Calzada Madero 200, Col. Centro, Oaxaca, Oaxaca.',
-    x: 63.5,
-    y: 78.5,
+    x: 64.5,
+    y: 71.8,
     coverage: ['Oaxaca', 'Salina Cruz', 'Huatulco', 'Puerto Escondido']
   },
   {
@@ -352,8 +352,8 @@ const branches: Branch[] = [
     phone: '229 931 0000',
     email: 'contacto.golfo@gsiseguridad.com.mx',
     address: 'Av. Díaz Mirón 120, Col. Centro, Veracruz, Ver.',
-    x: 64.5,
-    y: 69.0,
+    x: 64.9,
+    y: 66.2,
     coverage: ['Veracruz', 'Xalapa', 'Córdoba', 'Orizaba']
   },
   {
@@ -363,8 +363,8 @@ const branches: Branch[] = [
     phone: '800 8305 990',
     email: 'contacto.golfo@gsiseguridad.com.mx',
     address: 'Av. Universidad 1100, Col. Centro, Coatzacoalcos, Veracruz.',
-    x: 69.2,
-    y: 74.5,
+    x: 69.1,
+    y: 69.8,
     coverage: ['Veracruz Sur', 'Minatitlán', 'Acayucan']
   },
   {
@@ -374,8 +374,8 @@ const branches: Branch[] = [
     phone: '800 8305 990',
     email: 'contacto.golfo@gsiseguridad.com.mx',
     address: 'Av. Paseo Tabasco 1200, Col. Tabasco 2000, Villahermosa, Tabasco.',
-    x: 74.5,
-    y: 75.0,
+    x: 75.5,
+    y: 71.0,
     coverage: ['Tabasco', 'Cárdenas', 'Comalcalco', 'Campeche Poniente']
   },
   {
@@ -385,8 +385,8 @@ const branches: Branch[] = [
     phone: '800 8305 990',
     email: 'contacto.golfo@gsiseguridad.com.mx',
     address: 'Blvd. Belisario Domínguez 2200, Col. Centro, Tuxtla Gutiérrez, Chiapas.',
-    x: 73.8,
-    y: 80.0,
+    x: 75.0,
+    y: 72.8,
     coverage: ['Chiapas', 'Tapachula', 'San Cristóbal de las Casas']
   },
   {
@@ -396,8 +396,8 @@ const branches: Branch[] = [
     phone: '800 8305 990',
     email: 'contacto.golfo@gsiseguridad.com.mx',
     address: 'Av. Tulum 15, Supermanzana 4, Cancún, Quintana Roo.',
-    x: 93.0,
-    y: 61.5,
+    x: 91.3,
+    y: 60.0,
     coverage: ['Quintana Roo', 'Playa del Carmen', 'Cozumel', 'Chetumal', 'Yucatán']
   }
 ]
@@ -614,7 +614,7 @@ export default function InteractiveMap() {
                       left: `${b.x}%`, 
                       top: `${b.y}%`, 
                       zIndex: isSelected ? 30 : 10,
-                      transform: isSelected ? 'scale(1.2)' : 'scale(1.0)'
+                      transform: `translate(-50%, -50%) scale(${isSelected ? 1.2 : 1})`
                     }}
                     onClick={() => handleSelectBranch(b)}
                   >
