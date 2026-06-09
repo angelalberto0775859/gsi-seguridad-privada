@@ -77,8 +77,8 @@ const branches: Branch[] = [
     phone: '800 8305 990',
     email: 'contacto.norte@gsiseguridad.com.mx',
     address: 'Av. Tecnológico 2400, Col. Partido Romero, Ciudad Juárez, Chihuahua.',
-    x: 37.0,
-    y: 18.0,
+    x: 36.2,
+    y: 19.5,
     coverage: ['Chihuahua Norte', 'El Paso Area']
   },
   {
@@ -110,8 +110,8 @@ const branches: Branch[] = [
     phone: '800 8305 990',
     email: 'contacto.occidente@gsiseguridad.com.mx',
     address: 'Blvd. Miguel de la Madrid 1200, Zona Costera, Manzanillo, Colima.',
-    x: 44.2,
-    y: 65.8,
+    x: 44.8,
+    y: 64.5,
     coverage: ['Colima Costa', 'Manzanillo Puerto']
   },
   {
@@ -122,7 +122,7 @@ const branches: Branch[] = [
     email: 'contacto.occidente@gsiseguridad.com.mx',
     address: 'Av. Lázaro Cárdenas 110, Col. Centro, Lázaro Cárdenas, Michoacán.',
     x: 51.4,
-    y: 71.0,
+    y: 68.0,
     coverage: ['Michoacán Costa', 'Guerrero Norte-Occidente']
   },
   {
@@ -144,7 +144,7 @@ const branches: Branch[] = [
     email: 'contacto.occidente@gsiseguridad.com.mx',
     address: 'Paseo de Zihuatanejo s/n, Col. Centro, Zihuatanejo, Guerrero.',
     x: 53.0,
-    y: 72.5,
+    y: 69.0,
     coverage: ['Guerrero Costa Grande', 'Ixtapa']
   },
   {
@@ -221,7 +221,7 @@ const branches: Branch[] = [
     email: 'contacto.centro@gsiseguridad.com.mx',
     address: 'Costera Miguel Alemán 220, Fracc. Magallanes, Acapulco, Guerrero.',
     x: 57.0,
-    y: 74.0,
+    y: 70.5,
     coverage: ['Guerrero Costa Chica', 'Acapulco Zona Diamante']
   },
   {
