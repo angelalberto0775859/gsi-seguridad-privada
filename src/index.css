@@ -1,0 +1,170 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,300;0,400;0,500;0,700;0,900;1,400&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: 'Roboto', system-ui, sans-serif;
+  --font-display: 'Roboto', sans-serif;
+  --color-gsi-red: #EF3B43;
+  --color-gsi-dark: #101820;
+}
+
+html {
+  scroll-behavior: smooth;
+  background-color: #fafafa;
+}
+
+body {
+  font-family: var(--font-sans);
+  color: #111827;
+  overflow-x: hidden;
+  min-height: 100dvh;
+}
+
+/* Custom scrollbar for premium feel */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+::-webkit-scrollbar-thumb {
+  background: #d1d5db;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #9ca3af;
+}
+
+/* Organic Floating Background Blobs Animation */
+@keyframes float-blob-1 {
+  0% {
+    transform: translate(0px, 0px) scale(1);
+  }
+  33% {
+    transform: translate(40px, -60px) scale(1.15);
+  }
+  66% {
+    transform: translate(-30px, 30px) scale(0.9);
+  }
+  100% {
+    transform: translate(0px, 0px) scale(1);
+  }
+}
+
+@keyframes float-blob-2 {
+  0% {
+    transform: translate(0px, 0px) scale(1);
+  }
+  33% {
+    transform: translate(-50px, 40px) scale(0.9);
+  }
+  66% {
+    transform: translate(40px, -30px) scale(1.2);
+  }
+  100% {
+    transform: translate(0px, 0px) scale(1);
+  }
+}
+
+.animate-blob-1 {
+  animation: float-blob-1 20s infinite ease-in-out;
+}
+
+.animate-blob-2 {
+  animation: float-blob-2 25s infinite ease-in-out;
+}
+
+/* Force Roboto globally on all text elements */
+* {
+  font-family: 'Roboto', system-ui, sans-serif !important;
+}
+
+/* Sliding Tech Grid Animation */
+@keyframes move-grid {
+  0% {
+    background-position: 0 0;
+  }
+  100% {
+    background-position: 40px 40px;
+  }
+}
+
+.animate-tech-grid {
+  background-image: linear-gradient(to right, rgba(239, 59, 67, 0.04) 1px, transparent 1px),
+                    linear-gradient(to bottom, rgba(239, 59, 67, 0.04) 1px, transparent 1px);
+  background-size: 40px 40px;
+  animation: move-grid 25s linear infinite;
+}
+
+/* Scanline/Laser Sweep Animation */
+@keyframes scanline {
+  0% {
+    top: -10%;
+    opacity: 0;
+  }
+  5% {
+    opacity: 0.3;
+  }
+  95% {
+    opacity: 0.3;
+  }
+  100% {
+    top: 110%;
+    opacity: 0;
+  }
+}
+
+.animate-scanline {
+  animation: scanline 6s ease-in-out infinite;
+}
+
+/* Custom Hide Scrollbar Utility */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 4px;
+}
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(16, 24, 32, 0.15);
+  border-radius: 2px;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: rgba(239, 59, 67, 0.5);
+}
+
+/* GPU Accelerated double ping animations for the interactive map dots */
+@keyframes ping-double-1 {
+  0% {
+    transform: scale(0.8);
+    opacity: 0.5;
+  }
+  100% {
+    transform: scale(2.2);
+    opacity: 0;
+  }
+}
+
+@keyframes ping-double-2 {
+  0% {
+    transform: scale(0.9);
+    opacity: 0.7;
+  }
+  100% {
+    transform: scale(1.6);
+    opacity: 0;
+  }
+}
+
+.animate-ping-custom-1 {
+  animation: ping-double-1 1.8s cubic-bezier(0.16, 1, 0.3, 1) infinite;
+  will-change: transform, opacity;
+}
+
+.animate-ping-custom-2 {
+  animation: ping-double-2 1.2s cubic-bezier(0.16, 1, 0.3, 1) infinite;
+  will-change: transform, opacity;
+}
+
+
+
