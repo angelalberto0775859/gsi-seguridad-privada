@@ -44,8 +44,8 @@ const branches: Branch[] = [
     phone: '800 8305 990',
     email: 'contacto.occidente@gsiseguridad.com.mx',
     address: 'Calle Álvaro Obregón 450, Col. Centro, La Paz, B.C.S.',
-    x: 23.0,
-    y: 45.0,
+    x: 21.75,
+    y: 42.75,
     coverage: ['Baja California Sur', 'Los Cabos', 'Loreto']
   },
   {
@@ -99,8 +99,8 @@ const branches: Branch[] = [
     phone: '800 8305 990',
     email: 'contacto.occidente@gsiseguridad.com.mx',
     address: 'Av. Francisco Medina Ascencio 1800, Zona Hotelera, Puerto Vallarta, Jalisco.',
-    x: 41.0,
-    y: 62.0,
+    x: 42.5,
+    y: 60.0,
     coverage: ['Jalisco Costa', 'Nayarit Sur', 'Bahía de Banderas']
   },
   {
@@ -110,8 +110,8 @@ const branches: Branch[] = [
     phone: '800 8305 990',
     email: 'contacto.occidente@gsiseguridad.com.mx',
     address: 'Blvd. Miguel de la Madrid 1200, Zona Costera, Manzanillo, Colima.',
-    x: 44.8,
-    y: 64.5,
+    x: 45.8,
+    y: 62.5,
     coverage: ['Colima Costa', 'Manzanillo Puerto']
   },
   {
@@ -121,8 +121,8 @@ const branches: Branch[] = [
     phone: '800 8305 990',
     email: 'contacto.occidente@gsiseguridad.com.mx',
     address: 'Av. Lázaro Cárdenas 110, Col. Centro, Lázaro Cárdenas, Michoacán.',
-    x: 51.4,
-    y: 68.0,
+    x: 52.2,
+    y: 66.0,
     coverage: ['Michoacán Costa', 'Guerrero Norte-Occidente']
   },
   {
@@ -132,8 +132,8 @@ const branches: Branch[] = [
     phone: '800 8305 990',
     email: 'contacto.occidente@gsiseguridad.com.mx',
     address: 'Av. Insurgentes Este 350, Col. Centro, Tepic, Nayarit.',
-    x: 39.6,
-    y: 56.3,
+    x: 40.8,
+    y: 54.8,
     coverage: ['Nayarit', 'Acaponeta', 'Santiago Ixcuintla']
   },
   {
@@ -143,8 +143,8 @@ const branches: Branch[] = [
     phone: '800 8305 990',
     email: 'contacto.occidente@gsiseguridad.com.mx',
     address: 'Paseo de Zihuatanejo s/n, Col. Centro, Zihuatanejo, Guerrero.',
-    x: 53.0,
-    y: 69.0,
+    x: 54.2,
+    y: 67.5,
     coverage: ['Guerrero Costa Grande', 'Ixtapa']
   },
   {
@@ -209,8 +209,8 @@ const branches: Branch[] = [
     phone: '800 8305 990',
     email: 'contacto.centro@gsiseguridad.com.mx',
     address: 'Av. Lázaro Cárdenas 40, Col. Centro, Chilpancingo, Guerrero.',
-    x: 56.0,
-    y: 70.6,
+    x: 56.5,
+    y: 68.5,
     coverage: ['Guerrero Centro', 'Iguala', 'Taxco']
   },
   {
@@ -220,8 +220,8 @@ const branches: Branch[] = [
     phone: '800 8305 990',
     email: 'contacto.centro@gsiseguridad.com.mx',
     address: 'Costera Miguel Alemán 220, Fracc. Magallanes, Acapulco, Guerrero.',
-    x: 57.0,
-    y: 70.5,
+    x: 58.0,
+    y: 68.8,
     coverage: ['Guerrero Costa Chica', 'Acapulco Zona Diamante']
   },
   {
@@ -385,8 +385,8 @@ const branches: Branch[] = [
     phone: '800 8305 990',
     email: 'contacto.golfo@gsiseguridad.com.mx',
     address: 'Blvd. Belisario Domínguez 2200, Col. Centro, Tuxtla Gutiérrez, Chiapas.',
-    x: 75.0,
-    y: 72.8,
+    x: 75.7,
+    y: 71.5,
     coverage: ['Chiapas', 'Tapachula', 'San Cristóbal de las Casas']
   },
   {
