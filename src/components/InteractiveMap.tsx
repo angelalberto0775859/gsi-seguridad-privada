@@ -602,14 +602,18 @@ export default function InteractiveMap() {
                 <p className="uppercase mt-0.5 font-bold text-gray-700">ESTACIÓN: {selectedBranch.name.replace('Sucursal ', '').replace('Corporativo ', '')}</p>
               </div>
 
-              {/* Branch Node Markers (Blink from red to green upon selection) */}
+              {/* Branch Node Markers */}
               {branches.map((b) => {
                 const isSelected = selectedBranch.id === b.id
 
                 return (
-                  <div
+                  <button
                     key={b.id}
-                    className="absolute -translate-x-1/2 -translate-y-1/2 cursor-pointer transition-all duration-300"
+                    type="button"
+                    aria-label={`Ver información de ${b.name}`}
+                    aria-pressed={isSelected}
+                    title={b.name}
+                    className="absolute flex h-5 w-5 items-center justify-center rounded-full transition-transform duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#EF3B43] focus-visible:ring-offset-2 focus-visible:ring-offset-white"
                     style={{ 
                       left: `${b.x}%`, 
                       top: `${b.y}%`, 
@@ -618,29 +622,21 @@ export default function InteractiveMap() {
                     }}
                     onClick={() => handleSelectBranch(b)}
                   >
-                    <div className="relative flex items-center justify-center group/node">
-                      
-                      {/* Pulsing Green Outer Rings (Active only when selected, GPU-Accelerated) */}
-                      {isSelected && (
-                        <>
-                          <span className="absolute inline-flex h-9 w-9 rounded-full bg-green-500/40 animate-ping-custom-1 pointer-events-none"></span>
-                          <span className="absolute inline-flex h-5 w-5 rounded-full bg-green-500/30 animate-ping-custom-2 pointer-events-none"></span>
-                        </>
-                      )}
-
-                      {/* Main Node Dot: Red when unselected, turns Green when selected/hovered (GPU Compositor) */}
-                      <span
-                        className={`relative inline-flex rounded-full shadow-md border border-white z-10 transition-all duration-300 ${
-                          isSelected 
-                            ? 'h-2 w-2 sm:h-3 sm:w-3 md:h-3.5 md:w-3.5 bg-green-500 ring-2 sm:ring-4 ring-green-500/20' 
-                            : 'h-1.5 w-1.5 sm:h-2 sm:w-2 md:h-2.5 md:w-2.5 bg-[#EF3B43] group-hover/node:bg-green-500'
-                        }`}
-                      />
-
-
-
-                    </div>
-                  </div>
+                    {isSelected && (
+                      <span className="absolute h-5 w-5 sm:h-6 sm:w-6 rounded-full border border-green-500/35 bg-green-500/10 pointer-events-none" />
+                    )}
+                    <span className={`relative flex items-center justify-center rounded-full border border-white shadow-[0_2px_7px_rgba(16,24,32,0.3)] transition-[background-color,box-shadow] duration-200 ${
+                      isSelected
+                        ? 'h-3.5 w-3.5 sm:h-4 sm:w-4 bg-[#101820] shadow-[0_0_0_3px_rgba(255,255,255,0.9),0_8px_18px_rgba(16,24,32,0.28)]'
+                        : 'h-2.5 w-2.5 sm:h-3 sm:w-3 bg-white/90 hover:bg-[#101820]'
+                    }`}>
+                      <span className={`rounded-full transition-colors duration-200 ${
+                        isSelected
+                          ? 'h-1.5 w-1.5 sm:h-2 sm:w-2 bg-green-400 shadow-[0_0_8px_rgba(34,197,94,0.75)]'
+                          : 'h-1.5 w-1.5 bg-[#EF3B43]'
+                      }`} />
+                    </span>
+                  </button>
                 )
               })}
 
