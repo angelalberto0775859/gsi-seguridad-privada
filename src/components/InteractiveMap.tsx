@@ -566,23 +566,63 @@ export default function InteractiveMap() {
           </div>
 
           {/* Right Map Canvas (Massive, borderless, floating directly on the page, showing ocean) */}
-          <div className="lg:col-span-8 order-1 lg:order-2 flex items-center justify-center p-0 relative min-h-[450px]">
+          <div className="lg:col-span-8 order-1 lg:order-2 flex items-center justify-center p-0 relative min-h-0 sm:min-h-[420px] lg:min-h-[450px]">
             
-            {/* The Map Frame (Completely borderless, flat, blends with page) */}
-            <div className="relative w-full max-w-[720px] aspect-square rounded-[36px] overflow-hidden bg-white select-none">
+            {/* The Map Frame (wider crop so Mexico fills the available space) */}
+            <div className="relative w-full max-w-[900px] aspect-[4/3] rounded-[32px] overflow-hidden bg-white select-none">
               
-              {/* Realistic Green Satellite Map with blue Ocean */}
-              <img
-                src="/recursos/mexico_map_background.png"
-                alt="Mapa satelital de México verde realista con mar"
-                className="absolute inset-0 w-full h-full object-cover select-none pointer-events-none"
-              />
+              <div className="absolute left-0 top-1/2 w-full aspect-square -translate-y-1/2">
+                {/* Realistic Green Satellite Map with blue Ocean */}
+                <img
+                  src="/recursos/mexico_map_background.png"
+                  alt="Mapa satelital de México verde realista con mar"
+                  className="absolute inset-0 w-full h-full object-cover select-none pointer-events-none"
+                />
 
-              {/* Grid overlay for B2B aesthetics */}
-              <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(16,24,32,0.012)_1px,transparent_1px),linear-gradient(to_bottom,rgba(16,24,32,0.012)_1px,transparent_1px)] bg-[size:28px_28px] pointer-events-none"></div>
+                {/* Grid overlay for B2B aesthetics */}
+                <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(16,24,32,0.012)_1px,transparent_1px),linear-gradient(to_bottom,rgba(16,24,32,0.012)_1px,transparent_1px)] bg-[size:28px_28px] pointer-events-none"></div>
+
+                {/* Branch Node Markers */}
+                {branches.map((b) => {
+                  const isSelected = selectedBranch.id === b.id
+
+                  return (
+                    <button
+                      key={b.id}
+                      type="button"
+                      aria-label={`Ver información de ${b.name}`}
+                      aria-pressed={isSelected}
+                      title={b.name}
+                      className="absolute flex h-5 w-5 items-center justify-center rounded-full transition-transform duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#EF3B43] focus-visible:ring-offset-2 focus-visible:ring-offset-white"
+                      style={{ 
+                        left: `${b.x}%`, 
+                        top: `${b.y}%`, 
+                        zIndex: isSelected ? 30 : 10,
+                        transform: `translate(-50%, -50%) scale(${isSelected ? 1.2 : 1})`
+                      }}
+                      onClick={() => handleSelectBranch(b)}
+                    >
+                      {isSelected && (
+                        <span className="absolute h-5 w-5 sm:h-6 sm:w-6 rounded-full border border-green-500/35 bg-green-500/10 pointer-events-none" />
+                      )}
+                      <span className={`relative flex items-center justify-center rounded-full border border-white shadow-[0_2px_7px_rgba(16,24,32,0.3)] transition-[background-color,box-shadow] duration-200 ${
+                        isSelected
+                          ? 'h-3.5 w-3.5 sm:h-4 sm:w-4 bg-[#101820] shadow-[0_0_0_3px_rgba(255,255,255,0.9),0_8px_18px_rgba(16,24,32,0.28)]'
+                          : 'h-2.5 w-2.5 sm:h-3 sm:w-3 bg-white/90 hover:bg-[#101820]'
+                      }`}>
+                        <span className={`rounded-full transition-colors duration-200 ${
+                          isSelected
+                            ? 'h-1.5 w-1.5 sm:h-2 sm:w-2 bg-green-400 shadow-[0_0_8px_rgba(34,197,94,0.75)]'
+                            : 'h-1.5 w-1.5 bg-[#EF3B43]'
+                        }`} />
+                      </span>
+                    </button>
+                  )
+                })}
+              </div>
 
               {/* Active Status Indicator (Blinking green dot) */}
-              <div className="absolute top-6 right-6 z-10 flex items-center space-x-2.5 bg-white/90 backdrop-blur-md px-3.5 py-1.5 border border-gray-100 shadow-md rounded-full">
+              <div className="absolute top-6 right-6 z-10 hidden sm:flex items-center space-x-2.5 bg-white/90 backdrop-blur-md px-3.5 py-1.5 border border-gray-100 shadow-md rounded-full">
                 <span className="flex h-2.5 w-2.5 relative">
                   <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-90"></span>
                   <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-green-500 shadow-sm shadow-green-500/50"></span>
@@ -594,51 +634,13 @@ export default function InteractiveMap() {
               </div>
 
               {/* Map Legend */}
-              <div className="absolute bottom-6 right-6 z-10 text-[8px] font-mono text-gray-550 select-none bg-white/90 backdrop-blur-md px-3.5 py-2 border border-gray-150 rounded-lg shadow-sm">
+              <div className="absolute bottom-6 right-6 z-10 hidden sm:block text-[8px] font-mono text-gray-550 select-none bg-white/90 backdrop-blur-md px-3.5 py-2 border border-gray-150 rounded-lg shadow-sm">
                 <p className="font-bold text-green-600 flex items-center gap-1 uppercase">
                   <Shield size={10} weight="fill" />
                   Presencia GSI Nacional
                 </p>
                 <p className="uppercase mt-0.5 font-bold text-gray-700">ESTACIÓN: {selectedBranch.name.replace('Sucursal ', '').replace('Corporativo ', '')}</p>
               </div>
-
-              {/* Branch Node Markers */}
-              {branches.map((b) => {
-                const isSelected = selectedBranch.id === b.id
-
-                return (
-                  <button
-                    key={b.id}
-                    type="button"
-                    aria-label={`Ver información de ${b.name}`}
-                    aria-pressed={isSelected}
-                    title={b.name}
-                    className="absolute flex h-5 w-5 items-center justify-center rounded-full transition-transform duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#EF3B43] focus-visible:ring-offset-2 focus-visible:ring-offset-white"
-                    style={{ 
-                      left: `${b.x}%`, 
-                      top: `${b.y}%`, 
-                      zIndex: isSelected ? 30 : 10,
-                      transform: `translate(-50%, -50%) scale(${isSelected ? 1.2 : 1})`
-                    }}
-                    onClick={() => handleSelectBranch(b)}
-                  >
-                    {isSelected && (
-                      <span className="absolute h-5 w-5 sm:h-6 sm:w-6 rounded-full border border-green-500/35 bg-green-500/10 pointer-events-none" />
-                    )}
-                    <span className={`relative flex items-center justify-center rounded-full border border-white shadow-[0_2px_7px_rgba(16,24,32,0.3)] transition-[background-color,box-shadow] duration-200 ${
-                      isSelected
-                        ? 'h-3.5 w-3.5 sm:h-4 sm:w-4 bg-[#101820] shadow-[0_0_0_3px_rgba(255,255,255,0.9),0_8px_18px_rgba(16,24,32,0.28)]'
-                        : 'h-2.5 w-2.5 sm:h-3 sm:w-3 bg-white/90 hover:bg-[#101820]'
-                    }`}>
-                      <span className={`rounded-full transition-colors duration-200 ${
-                        isSelected
-                          ? 'h-1.5 w-1.5 sm:h-2 sm:w-2 bg-green-400 shadow-[0_0_8px_rgba(34,197,94,0.75)]'
-                          : 'h-1.5 w-1.5 bg-[#EF3B43]'
-                      }`} />
-                    </span>
-                  </button>
-                )
-              })}
 
             </div>
           </div>
