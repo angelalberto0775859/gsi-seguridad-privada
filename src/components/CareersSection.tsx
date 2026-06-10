@@ -29,6 +29,21 @@ const jobOpeningsData: Record<Language, JobOpening[]> = {
       ]
     },
     {
+      id: 'guardia-armado',
+      title: 'Guardia de Seguridad Armado',
+      location: 'CDMX, Edomex y Zonas Industriales',
+      type: 'Tiempo Completo (Turnos 12x12 / 24x24)',
+      description: 'Oficiales de seguridad armados responsables de la protección de instalaciones críticas, control de accesos de alta seguridad y respuesta ante incidentes.',
+      requirements: [
+        'Secundaria concluida (Certificado original)',
+        'Cartilla de Servicio Militar Liberada (Indispensable)',
+        'Edad de 25 a 45 años',
+        'Experiencia mínima de 1 año en portación de armas o seguridad armada',
+        'Aprobación de evaluaciones de control y confianza'
+      ]
+    }
+    /* HIDE FOR LATER USE:
+    {
       id: 'custodio-foraneo',
       title: 'Custodio de Transportes de Carga (Foráneo)',
       location: 'Cobertura Nacional (Base Central)',
@@ -47,7 +62,7 @@ const jobOpeningsData: Record<Language, JobOpening[]> = {
       title: 'Operador de Monitoristas CCTV',
       location: 'Corporativo Central GSI',
       type: 'Turnos Rotativos (8 horas / 12 horas)',
-      description: 'Responsable de la vigilancia remota de instalaciones críticas, detección de anomalías y activación de protocolos de respuesta en coordinación directa con campo.',
+      description: 'Responsable de la vigilancia remota de instalaciones críticas, detección de anomalías y activación de protocolos de respuesta en coordination directa con campo.',
       requirements: [
         'Preparatoria terminada comprobable',
         'Conocimiento en sistemas de CCTV, alarmas e informática básica',
@@ -56,6 +71,7 @@ const jobOpeningsData: Record<Language, JobOpening[]> = {
         'Disponibilidad para rolar turnos'
       ]
     }
+    */
   ],
   en: [
     {
@@ -72,6 +88,21 @@ const jobOpeningsData: Record<Language, JobOpening[]> = {
         'No criminal record (federal or state letter)'
       ]
     },
+    {
+      id: 'guardia-armado',
+      title: 'Armed Security Guard',
+      location: 'CDMX, Edomex & Industrial Zones',
+      type: 'Full Time (12x12 / 24x24 Shifts)',
+      description: 'Armed security officers responsible for protecting critical facilities, high-security access control, and incident response.',
+      requirements: [
+        'High school diploma or equivalent (original certificate)',
+        'Released Military Service Card (mandatory)',
+        'Age between 25 and 45 years',
+        'Minimum of 1 year of experience in armed security or weapon carrying',
+        'Passing of security background check and trust evaluations'
+      ]
+    }
+    /* HIDE FOR LATER USE:
     {
       id: 'custodio-foraneo',
       title: 'Cargo Transport Escort (Out-of-town)',
@@ -100,6 +131,7 @@ const jobOpeningsData: Record<Language, JobOpening[]> = {
         'Availability to rotate shifts'
       ]
     }
+    */
   ],
   zh: [
     {
@@ -110,12 +142,27 @@ const jobOpeningsData: Record<Language, JobOpening[]> = {
       description: '负责一级企业总部、工业厂区和物流中心的安全监视、进出控制以及财产保卫。',
       requirements: [
         '初中毕业（原件毕业证）',
-        '兵役卡（已服兵役或预备兵役卡）',
+        '兵役卡（已服兵役 or 预备兵役卡）',
         '年龄 22 至 48 岁',
         '基本证件齐全（RFC, CURP, NSS）',
         '无犯罪记录证明（联邦或州级）'
       ]
     },
+    {
+      id: 'guardia-armado',
+      title: '武装安全警卫',
+      location: '墨西哥城、墨西哥州及工业区',
+      type: '全职（12x12 / 24x24 班次）',
+      description: '武装安全人员，负责保护关键设施、高安全级别准入控制以及应急安全响应。',
+      requirements: [
+        '初中或同等学历毕业（原件毕业证）',
+        '已服完兵役证明卡（Liberada，必备）',
+        '年龄在 25 至 45 岁之间',
+        '至少 1 年武装安保或持枪工作经验',
+        '通过安全背景审查与信任评估'
+      ]
+    }
+    /* HIDE FOR LATER USE:
     {
       id: 'custodio-foraneo',
       title: '跨区货运武装护卫',
@@ -144,6 +191,7 @@ const jobOpeningsData: Record<Language, JobOpening[]> = {
         '接受轮班安排'
       ]
     }
+    */
   ]
 }
 
