@@ -1,11 +1,16 @@
 import { motion } from 'framer-motion'
 import { ShieldCheck, ArrowDown } from '@phosphor-icons/react'
+import { useSitePreferences } from '../lib/sitePreferences'
 
 export default function Hero() {
+  const { isRedBlack, t } = useSitePreferences()
+
   return (
     <section
       id="hero"
-      className="relative min-h-[100dvh] flex items-center bg-[#fafafa] pt-20 overflow-hidden"
+      className={`relative min-h-[100dvh] flex items-center pt-20 overflow-hidden transition-colors duration-500 ${
+        isRedBlack ? 'bg-[#050608]' : 'bg-[#fafafa]'
+      }`}
     >
       {/* Dynamic Background Accents */}
       <div className="absolute inset-0 z-0 opacity-[0.03] pointer-events-none">
@@ -24,11 +29,13 @@ export default function Hero() {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ type: 'spring', stiffness: 100, damping: 20 }}
-            className="inline-flex items-center space-x-2 bg-white px-3 py-1.5 border border-gray-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.8)]"
+            className={`inline-flex items-center space-x-2 px-3 py-1.5 border shadow-[inset_0_1px_0_rgba(255,255,255,0.08)] ${
+              isRedBlack ? 'bg-white/5 border-[#EF3B43]/30' : 'bg-white border-gray-200'
+            }`}
           >
             <ShieldCheck size={18} className="text-[#EF3B43]" weight="fill" />
-            <span className="text-[10px] font-bold tracking-widest uppercase text-gray-500">
-              Estándar de Seguridad Certificado
+            <span className={`text-[10px] font-bold tracking-widest uppercase ${isRedBlack ? 'text-white/70' : 'text-gray-500'}`}>
+              {t('hero.badge')}
             </span>
           </motion.div>
 
@@ -36,18 +43,18 @@ export default function Hero() {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ type: 'spring', stiffness: 100, damping: 20, delay: 0.1 }}
-            className="font-display text-5xl md:text-7xl font-extrabold text-[#101820] tracking-tighter leading-[0.95]"
+            className={`font-display text-5xl md:text-7xl font-extrabold tracking-tighter leading-[0.95] ${isRedBlack ? 'text-white' : 'text-[#101820]'}`}
           >
-            Control, criterio <br />y <span className="text-[#EF3B43]">prevención</span>.
+            {t('hero.title.before')} <br /><span className="text-[#EF3B43]">{t('hero.title.accent')}</span>.
           </motion.h1>
 
           <motion.p
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ type: 'spring', stiffness: 100, damping: 20, delay: 0.2 }}
-            className="text-base md:text-lg text-gray-600 font-normal leading-relaxed max-w-[50ch]"
+            className={`text-base md:text-lg font-normal leading-relaxed max-w-[50ch] ${isRedBlack ? 'text-white/70' : 'text-gray-600'}`}
           >
-            Seguridad privada corporativa e industrial alineada con la continuidad operativa de tu empresa en todo México. Más de 22 años de respuesta impecable.
+            {t('hero.description')}
           </motion.p>
 
           <motion.div
@@ -58,15 +65,19 @@ export default function Hero() {
           >
             <a
               href="#contact"
-              className="px-8 py-4 text-xs font-bold uppercase tracking-wider text-white bg-[#101820] hover:bg-[#EF3B43] transition-colors duration-300 shadow-lg shadow-black/10 rounded-full"
+              className={`px-8 py-4 text-xs font-bold uppercase tracking-wider text-white transition-colors duration-300 shadow-lg shadow-black/10 rounded-full ${
+                isRedBlack ? 'bg-[#EF3B43] hover:bg-white hover:text-[#101820]' : 'bg-[#101820] hover:bg-[#EF3B43]'
+              }`}
             >
-              Iniciar Estrategia B2B
+              {t('hero.primary')}
             </a>
             <a
               href="#services"
-              className="px-8 py-4 text-xs font-bold uppercase tracking-wider text-gray-800 bg-white border border-gray-200 hover:border-gray-400 transition-colors duration-300 rounded-full"
+              className={`px-8 py-4 text-xs font-bold uppercase tracking-wider border transition-colors duration-300 rounded-full ${
+                isRedBlack ? 'text-white bg-white/5 border-white/15 hover:border-[#EF3B43]' : 'text-gray-800 bg-white border-gray-200 hover:border-gray-400'
+              }`}
             >
-              Explorar Servicios
+              {t('hero.secondary')}
             </a>
           </motion.div>
         </div>
@@ -80,7 +91,9 @@ export default function Hero() {
               scale: { type: 'spring', stiffness: 80, damping: 15, delay: 0.2 },
               y: { repeat: Infinity, duration: 6, ease: 'easeInOut' }
             }}
-            className="relative w-full max-w-[540px] mx-auto aspect-[4/5] bg-gray-100 overflow-hidden shadow-2xl border border-white rounded-[32px]"
+            className={`relative w-full max-w-[540px] mx-auto aspect-[4/5] overflow-hidden shadow-2xl border rounded-[32px] ${
+              isRedBlack ? 'bg-[#101820] border-[#EF3B43]/30 shadow-[#EF3B43]/10' : 'bg-gray-100 border-white'
+            }`}
           >
             {/* The primary guard/team image */}
             <img
@@ -100,7 +113,9 @@ export default function Hero() {
               x: { type: 'spring', stiffness: 120, damping: 18, delay: 0.4 },
               y: { repeat: Infinity, duration: 5, ease: 'easeInOut', delay: 0.5 }
             }}
-            className="absolute -bottom-6 -left-6 bg-white/95 backdrop-blur-md border border-gray-200/80 p-5 shadow-xl max-w-[240px] hidden sm:block rounded-[24px]"
+            className={`absolute -bottom-6 -left-6 backdrop-blur-md border p-5 shadow-xl max-w-[240px] hidden sm:block rounded-[24px] ${
+              isRedBlack ? 'bg-[#07080b]/95 border-[#EF3B43]/30' : 'bg-white/95 border-gray-200/80'
+            }`}
           >
             <div className="space-y-3">
               {/* Metric 1: ISO Quality */}
@@ -108,12 +123,12 @@ export default function Hero() {
                 onClick={() => window.dispatchEvent(new CustomEvent('open-info-modal', { detail: { type: 'cert-iso' } }))}
                 className="w-full text-left p-3 hover:bg-red-50/50 border border-transparent hover:border-red-150 rounded-xl transition-all duration-300 cursor-pointer block focus:outline-none"
               >
-                <p className="font-display text-3xl font-extrabold text-[#101820] leading-none">
+                <p className={`font-display text-3xl font-extrabold leading-none ${isRedBlack ? 'text-white' : 'text-[#101820]'}`}>
                   99.8%
                 </p>
-                <p className="text-[9px] text-gray-500 font-bold uppercase tracking-wider mt-1.5 flex items-center gap-1">
+                <p className={`text-[9px] font-bold uppercase tracking-wider mt-1.5 flex items-center gap-1 ${isRedBlack ? 'text-white/60' : 'text-gray-500'}`}>
                   <span className="w-1.5 h-1.5 rounded-full bg-green-500 inline-block animate-pulse"></span>
-                  Continuidad Operativa →
+                  {t('hero.metric.continuity')}
                 </p>
               </button>
 
@@ -128,11 +143,11 @@ export default function Hero() {
                 }}
                 className="w-full text-left p-3 hover:bg-red-50/50 border border-transparent hover:border-red-150 rounded-xl transition-all duration-300 cursor-pointer block focus:outline-none"
               >
-                <p className="font-display text-3xl font-extrabold text-[#101820] leading-none">
+                <p className={`font-display text-3xl font-extrabold leading-none ${isRedBlack ? 'text-white' : 'text-[#101820]'}`}>
                   +35
                 </p>
-                <p className="text-[9px] text-gray-500 font-bold uppercase tracking-wider mt-1.5">
-                  Sucursales en México →
+                <p className={`text-[9px] font-bold uppercase tracking-wider mt-1.5 ${isRedBlack ? 'text-white/60' : 'text-gray-500'}`}>
+                  {t('hero.metric.branches')}
                 </p>
               </a>
             </div>
@@ -146,7 +161,9 @@ export default function Hero() {
           animate={{ y: [0, 8, 0] }}
           transition={{ repeat: Infinity, duration: 2, ease: 'easeInOut' }}
           href="#story"
-          className="p-3 bg-white border border-gray-200 rounded-full shadow-md hover:shadow-lg inline-flex items-center justify-center text-gray-600 hover:text-[#EF3B43] transition-colors"
+          className={`p-3 border rounded-full shadow-md hover:shadow-lg inline-flex items-center justify-center hover:text-[#EF3B43] transition-colors ${
+            isRedBlack ? 'bg-white/5 border-white/10 text-white/70' : 'bg-white border-gray-200 text-gray-600'
+          }`}
         >
           <ArrowDown size={18} strokeWidth={2.5} />
         </motion.a>

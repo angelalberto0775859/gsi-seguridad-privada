@@ -1,4 +1,5 @@
 import { ShieldCheck, LinkedinLogo, InstagramLogo, TiktokLogo, WhatsappLogo } from '@phosphor-icons/react'
+import { useSitePreferences } from '../lib/sitePreferences'
 
 interface FooterProps {
   currentPage?: 'home' | 'careers'
@@ -7,6 +8,7 @@ interface FooterProps {
 
 export default function Footer({ currentPage, setCurrentPage }: FooterProps) {
   const currentYear = new Date().getFullYear()
+  const { isRedBlack, t } = useSitePreferences()
 
   const handleNavigation = (hash: string) => {
     if (setCurrentPage && currentPage && currentPage !== 'home') {
@@ -40,7 +42,9 @@ export default function Footer({ currentPage, setCurrentPage }: FooterProps) {
   }
 
   return (
-    <footer className="bg-[#101820] text-white border-t border-white/5 py-16 relative overflow-hidden">
+    <footer className={`text-white border-t py-16 relative overflow-hidden transition-colors duration-500 ${
+      isRedBlack ? 'bg-black border-[#EF3B43]/20' : 'bg-[#101820] border-white/5'
+    }`}>
       {/* Background design accents */}
       <div className="absolute right-0 bottom-0 w-96 h-96 bg-white/[0.01] rounded-full translate-x-1/3 translate-y-1/3 pointer-events-none"></div>
       
@@ -57,7 +61,7 @@ export default function Footer({ currentPage, setCurrentPage }: FooterProps) {
               />
             </div>
             <p className="text-xs text-gray-400 leading-relaxed max-w-[35ch]">
-              Parte del Grupo Seguridad Integral (GSI). Proporcionando servicios estandarizados de seguridad privada, física y tecnológica a nivel nacional.
+              {t('footer.description')}
             </p>
             {/* Social Media Links */}
             <div className="flex space-x-3 pt-2">
@@ -103,7 +107,7 @@ export default function Footer({ currentPage, setCurrentPage }: FooterProps) {
           {/* Mapa del Sitio (Sitemap) */}
           <div className="space-y-4">
             <h5 className="font-display text-xs font-bold uppercase tracking-wider text-[#EF3B43]">
-              Mapa del Sitio
+              {t('footer.sitemap')}
             </h5>
             <ul className="space-y-2 text-xs text-gray-400">
               <li>
@@ -111,7 +115,7 @@ export default function Footer({ currentPage, setCurrentPage }: FooterProps) {
                   onClick={handleGoToHome} 
                   className="hover:text-white transition-colors cursor-pointer text-left focus:outline-none"
                 >
-                  Inicio
+                  {t('footer.home')}
                 </button>
               </li>
               <li>
@@ -119,7 +123,7 @@ export default function Footer({ currentPage, setCurrentPage }: FooterProps) {
                   onClick={() => handleNavigation('#story')} 
                   className="hover:text-white transition-colors cursor-pointer text-left focus:outline-none"
                 >
-                  Nuestra Historia
+                  {t('nav.history')}
                 </button>
               </li>
               <li>
@@ -127,7 +131,7 @@ export default function Footer({ currentPage, setCurrentPage }: FooterProps) {
                   onClick={() => handleNavigation('#services')} 
                   className="hover:text-white transition-colors cursor-pointer text-left focus:outline-none"
                 >
-                  Servicios
+                  {t('nav.services')}
                 </button>
               </li>
               <li>
@@ -135,7 +139,7 @@ export default function Footer({ currentPage, setCurrentPage }: FooterProps) {
                   onClick={() => handleNavigation('#coverage')} 
                   className="hover:text-white transition-colors cursor-pointer text-left focus:outline-none"
                 >
-                  Cobertura
+                  {t('nav.coverage')}
                 </button>
               </li>
               <li>
@@ -143,7 +147,7 @@ export default function Footer({ currentPage, setCurrentPage }: FooterProps) {
                   onClick={handleGoToCareers} 
                   className="hover:text-white transition-colors cursor-pointer text-left focus:outline-none"
                 >
-                  Bolsa de Trabajo
+                  {t('nav.careers')}
                 </button>
               </li>
               <li>
@@ -151,7 +155,7 @@ export default function Footer({ currentPage, setCurrentPage }: FooterProps) {
                   onClick={() => handleNavigation('#contact')} 
                   className="hover:text-white transition-colors cursor-pointer text-left focus:outline-none"
                 >
-                  Contacto
+                  {t('nav.contact')}
                 </button>
               </li>
             </ul>
@@ -160,7 +164,7 @@ export default function Footer({ currentPage, setCurrentPage }: FooterProps) {
           {/* Standards & Certifications */}
           <div className="space-y-4">
             <h5 className="font-display text-xs font-bold uppercase tracking-wider text-[#EF3B43]">
-              Acreditaciones
+              {t('footer.accreditations')}
             </h5>
             <div className="flex flex-col space-y-2">
               <button
@@ -197,11 +201,11 @@ export default function Footer({ currentPage, setCurrentPage }: FooterProps) {
           {/* Quick Info */}
           <div className="space-y-4">
             <h5 className="font-display text-xs font-bold uppercase tracking-wider text-[#EF3B43]">
-              Soporte Comercial
+              {t('footer.support')}
             </h5>
             <ul className="space-y-2 text-xs text-gray-400">
-              <li>Lunes a Viernes: 8:00 AM - 6:00 PM</li>
-              <li>Atención Operativa: 24 Horas / 365 Días</li>
+              <li>{t('footer.hours')}</li>
+              <li>{t('footer.operational')}</li>
               <li>Línea Directa: 800 8305 990</li>
               <li>contacto@gsiseguridad.com.mx</li>
             </ul>
@@ -213,25 +217,25 @@ export default function Footer({ currentPage, setCurrentPage }: FooterProps) {
 
         {/* Legal Bottom */}
         <div className="flex flex-col sm:flex-row justify-between items-center text-[10px] text-gray-500 space-y-4 sm:space-y-0">
-          <p>© {currentYear} GSI Seguridad Privada. Todos los derechos reservados.</p>
+          <p>© {currentYear} GSI Seguridad Privada. {t('footer.rights')}</p>
           <div className="flex flex-wrap gap-3 mt-2 sm:mt-0 justify-center">
             <button
               onClick={() => window.dispatchEvent(new CustomEvent('open-info-modal', { detail: { type: 'privacy' } }))}
               className="px-3 py-1.5 border border-white/10 hover:border-[#EF3B43]/50 hover:text-white transition-all text-gray-400 bg-white/5 rounded-lg cursor-pointer text-[10px] font-medium focus:outline-none"
             >
-              Aviso de Privacidad
+              {t('footer.privacy')}
             </button>
             <button
               onClick={() => window.dispatchEvent(new CustomEvent('open-info-modal', { detail: { type: 'terms' } }))}
               className="px-3 py-1.5 border border-white/10 hover:border-[#EF3B43]/50 hover:text-white transition-all text-gray-400 bg-white/5 rounded-lg cursor-pointer text-[10px] font-medium focus:outline-none"
             >
-              Términos del Servicio
+              {t('footer.terms')}
             </button>
             <button
               onClick={() => window.dispatchEvent(new CustomEvent('open-info-modal', { detail: { type: 'compliance' } }))}
               className="px-3 py-1.5 border border-white/10 hover:border-[#EF3B43]/50 hover:text-white transition-all text-gray-400 bg-white/5 rounded-lg cursor-pointer text-[10px] font-medium focus:outline-none"
             >
-              Permisos DGSP
+              {t('footer.dgsp')}
             </button>
           </div>
         </div>

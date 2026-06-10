@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { MapPin, Phone, Envelope, Clock, Broadcast, Shield, CheckCircle } from '@phosphor-icons/react'
+import { useSitePreferences } from '../lib/sitePreferences'
 
 interface Branch {
   id: string
@@ -404,13 +405,16 @@ const branches: Branch[] = [
 
 export default function InteractiveMap() {
   const [selectedBranch, setSelectedBranch] = useState<Branch>(branches[22]) // CDMX default
+  const { isRedBlack, t } = useSitePreferences()
 
   const handleSelectBranch = (branch: Branch) => {
     setSelectedBranch(branch)
   }
 
   return (
-    <section id="coverage" className="py-24 bg-white border-b border-gray-100 relative overflow-hidden">
+    <section id="coverage" className={`py-24 border-b relative overflow-hidden transition-colors duration-500 ${
+      isRedBlack ? 'bg-[#07080b] border-[#EF3B43]/15' : 'bg-white border-gray-100'
+    }`}>
       
       {/* Sliding tech grid background inside this section */}
       <div className="absolute inset-0 animate-tech-grid opacity-20 pointer-events-none"></div>
@@ -420,13 +424,13 @@ export default function InteractiveMap() {
         {/* Header */}
         <div className="text-center max-w-2xl mx-auto mb-16 space-y-4">
           <h2 className="font-display text-xs font-bold uppercase tracking-widest text-[#EF3B43]">
-            Presencia Estratégica
+            {t('map.eyebrow')}
           </h2>
-          <h3 className="font-display text-3xl md:text-5xl font-black text-[#101820] tracking-tight leading-none">
-            Cobertura Nacional Real
+          <h3 className={`font-display text-3xl md:text-5xl font-black tracking-tight leading-none ${isRedBlack ? 'text-white' : 'text-[#101820]'}`}>
+            {t('map.title')}
           </h3>
-          <p className="text-sm md:text-base text-gray-500 max-w-[55ch] mx-auto leading-relaxed">
-            Haz clic directamente en cualquiera de las sucursales sobre el mapa de la república para ver la información operativa de la delegación en la tarjeta de control izquierda.
+          <p className={`text-sm md:text-base max-w-[55ch] mx-auto leading-relaxed ${isRedBlack ? 'text-white/65' : 'text-gray-500'}`}>
+            {t('map.description')}
           </p>
         </div>
 
@@ -434,7 +438,9 @@ export default function InteractiveMap() {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
           
           {/* Left Details Panel (Displays ONLY the selected branch, limited and formatted text) */}
-          <div className="lg:col-span-4 order-2 lg:order-1 bg-white border border-gray-150 shadow-2xl p-6 md:p-7 rounded-[28px] flex flex-col justify-between overflow-hidden relative min-h-[520px] transition-all duration-300 hover:shadow-gray-200/50">
+          <div className={`lg:col-span-4 order-2 lg:order-1 border shadow-2xl p-6 md:p-7 rounded-[28px] flex flex-col justify-between overflow-hidden relative min-h-[520px] transition-all duration-300 ${
+            isRedBlack ? 'bg-[#0b0d11] border-[#EF3B43]/30 shadow-[#EF3B43]/10' : 'bg-white border-gray-150 hover:shadow-gray-200/50'
+          }`}>
             
             {/* Top Header & Instructions info */}
             <div className="space-y-4">
@@ -444,17 +450,17 @@ export default function InteractiveMap() {
                 <div className="flex items-center space-x-2 text-[#EF3B43]">
                   <Shield size={16} weight="fill" className="animate-pulse" />
                   <span className="text-[10px] font-extrabold tracking-widest uppercase text-[#EF3B43]/90">
-                    Centro de Mando Nacional GSI
+                    {t('map.command')}
                   </span>
                 </div>
-                <h4 className="font-display text-lg font-black text-[#101820] tracking-tight">
-                  Detalles de Delegación
+                <h4 className={`font-display text-lg font-black tracking-tight ${isRedBlack ? 'text-white' : 'text-[#101820]'}`}>
+                  {t('map.details')}
                 </h4>
               </div>
 
               {/* Minimalist user instructions */}
-              <p className="text-[11px] text-gray-400 font-medium">
-                Haz clic en cualquier punto del mapa para ver los datos de la sucursal.
+              <p className={`text-[11px] font-medium ${isRedBlack ? 'text-white/45' : 'text-gray-400'}`}>
+                {t('map.instructions')}
               </p>
 
             </div>
@@ -478,7 +484,7 @@ export default function InteractiveMap() {
                         <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
                       </span>
                       <span className="text-[9px] font-bold text-green-700 uppercase tracking-wider">
-                        Conexión Operativa Activa
+                        {t('map.status')}
                       </span>
                     </div>
 
@@ -487,20 +493,22 @@ export default function InteractiveMap() {
                       <span className="text-[9px] font-extrabold text-gray-400 uppercase tracking-widest block">
                         {selectedBranch.region}
                       </span>
-                      <h5 className="font-display text-xl font-black text-[#101820] tracking-tight leading-tight">
+                      <h5 className={`font-display text-xl font-black tracking-tight leading-tight ${isRedBlack ? 'text-white' : 'text-[#101820]'}`}>
                         {selectedBranch.name}
                       </h5>
                     </div>
 
                     {/* Ficha Técnica structured list - stacked cleanly to prevent overflow */}
-                    <div className="bg-gray-50/70 border border-gray-100 rounded-2xl p-4 space-y-4 text-xs text-gray-650">
+                    <div className={`border rounded-2xl p-4 space-y-4 text-xs ${
+                      isRedBlack ? 'bg-white/[0.03] border-white/10 text-white/70' : 'bg-gray-50/70 border-gray-100 text-gray-650'
+                    }`}>
                       
                       {/* Dirección */}
                       <div className="flex items-start space-x-3">
                         <MapPin size={16} className="text-[#EF3B43] shrink-0 mt-0.5" />
                         <div className="space-y-0.5">
-                          <p className="text-[9px] font-bold text-gray-400 uppercase tracking-widest">Dirección Operativa</p>
-                          <p className="font-medium text-gray-700 leading-relaxed text-[11px] line-clamp-2">
+                          <p className="text-[9px] font-bold text-gray-400 uppercase tracking-widest">{t('map.address')}</p>
+                          <p className={`font-medium leading-relaxed text-[11px] line-clamp-2 ${isRedBlack ? 'text-white/75' : 'text-gray-700'}`}>
                             {selectedBranch.address}
                           </p>
                         </div>
@@ -510,8 +518,8 @@ export default function InteractiveMap() {
                       <div className="flex items-start space-x-3">
                         <Phone size={16} className="text-[#EF3B43] shrink-0 mt-0.5" />
                         <div className="space-y-0.5">
-                          <p className="text-[9px] font-bold text-gray-400 uppercase tracking-widest">Teléfono de Enlace</p>
-                          <a href={`tel:${selectedBranch.phone}`} className="hover:text-[#EF3B43] transition-colors font-semibold text-gray-700 text-[11px]">
+                          <p className="text-[9px] font-bold text-gray-400 uppercase tracking-widest">{t('map.phone')}</p>
+                          <a href={`tel:${selectedBranch.phone}`} className={`hover:text-[#EF3B43] transition-colors font-semibold text-[11px] ${isRedBlack ? 'text-white/75' : 'text-gray-700'}`}>
                             {selectedBranch.phone}
                           </a>
                         </div>
@@ -521,8 +529,8 @@ export default function InteractiveMap() {
                       <div className="flex items-start space-x-3">
                         <Envelope size={16} className="text-[#EF3B43] shrink-0 mt-0.5" />
                         <div className="space-y-0.5 min-w-0">
-                          <p className="text-[9px] font-bold text-gray-400 uppercase tracking-widest">Correo Electrónico</p>
-                          <a href={`mailto:${selectedBranch.email}`} className="hover:text-[#EF3B43] transition-colors font-semibold text-gray-700 block truncate text-[11px]">
+                          <p className="text-[9px] font-bold text-gray-400 uppercase tracking-widest">{t('map.email')}</p>
+                          <a href={`mailto:${selectedBranch.email}`} className={`hover:text-[#EF3B43] transition-colors font-semibold block truncate text-[11px] ${isRedBlack ? 'text-white/75' : 'text-gray-700'}`}>
                             {selectedBranch.email}
                           </a>
                         </div>
@@ -532,8 +540,8 @@ export default function InteractiveMap() {
                       <div className="flex items-start space-x-3">
                         <Clock size={16} className="text-[#EF3B43] shrink-0 mt-0.5" />
                         <div className="space-y-0.5">
-                          <p className="text-[9px] font-bold text-gray-400 uppercase tracking-widest">Soporte Operativo</p>
-                          <p className="font-medium text-gray-700 text-[11px]">24 Horas / 365 Días al Año</p>
+                          <p className="text-[9px] font-bold text-gray-400 uppercase tracking-widest">{t('map.support')}</p>
+                          <p className={`font-medium text-[11px] ${isRedBlack ? 'text-white/75' : 'text-gray-700'}`}>{t('map.supportValue')}</p>
                         </div>
                       </div>
 
@@ -543,7 +551,7 @@ export default function InteractiveMap() {
                   {/* Coverage list - beautifully limited to prevent stretching */}
                   <div className="space-y-2 pt-4 border-t border-gray-100 mt-auto">
                     <p className="text-[9px] font-bold text-gray-400 uppercase tracking-widest">
-                      Cobertura y Despliegue:
+                      {t('map.coverage')}
                     </p>
                     <div className="flex flex-wrap gap-1.5 max-h-[76px] overflow-y-auto custom-scrollbar pr-1">
                       {selectedBranch.coverage.map((state, i) => (
@@ -629,7 +637,7 @@ export default function InteractiveMap() {
                 </span>
                 <span className="text-[8px] font-mono font-bold text-gray-650 tracking-wider uppercase flex items-center gap-1">
                   <Broadcast size={12} className="text-[#EF3B43] animate-pulse" />
-                  Supervisión: Activa
+                  {t('map.supervision')}
                 </span>
               </div>
 
@@ -637,9 +645,9 @@ export default function InteractiveMap() {
               <div className="absolute bottom-6 right-6 z-10 hidden sm:block text-[8px] font-mono text-gray-550 select-none bg-white/90 backdrop-blur-md px-3.5 py-2 border border-gray-150 rounded-lg shadow-sm">
                 <p className="font-bold text-green-600 flex items-center gap-1 uppercase">
                   <Shield size={10} weight="fill" />
-                  Presencia GSI Nacional
+                  {t('map.legend')}
                 </p>
-                <p className="uppercase mt-0.5 font-bold text-gray-700">ESTACIÓN: {selectedBranch.name.replace('Sucursal ', '').replace('Corporativo ', '')}</p>
+                <p className="uppercase mt-0.5 font-bold text-gray-700">{t('map.station')} {selectedBranch.name.replace('Sucursal ', '').replace('Corporativo ', '')}</p>
               </div>
 
             </div>
@@ -651,7 +659,7 @@ export default function InteractiveMap() {
         <div className="text-center mt-12 relative z-10">
           <p className="text-xs md:text-sm font-bold text-[#101820] tracking-widest uppercase flex items-center justify-center gap-2">
             <span className="w-2 h-2 rounded-full bg-[#EF3B43] animate-pulse shadow-sm shadow-[#EF3B43]/50"></span>
-            Contamos con más de 30 sucursales en todo México.
+                  {t('map.footer')}
           </p>
         </div>
 

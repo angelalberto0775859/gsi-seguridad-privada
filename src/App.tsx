@@ -12,16 +12,20 @@ import Footer from './components/Footer'
 import CookieBanner from './components/CookieBanner'
 import FloatingContact from './components/FloatingContact'
 import InfoModal from './components/InfoModal'
+import { SitePreferencesProvider, useSitePreferences } from './lib/sitePreferences'
 
-export default function App() {
+function AppContent() {
   const [currentPage, setCurrentPage] = useState<'home' | 'careers'>('home')
+  const { isRedBlack } = useSitePreferences()
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'instant' as any })
   }, [currentPage])
 
   return (
-    <div className="relative w-full min-h-[100dvh] bg-[#fafafa] antialiased overflow-x-hidden">
+    <div className={`relative w-full min-h-[100dvh] antialiased overflow-x-hidden transition-colors duration-500 ${
+      isRedBlack ? 'bg-[#050608] text-white' : 'bg-[#fafafa]'
+    }`}>
       {/* Floating Navigation Header */}
       <Navbar currentPage={currentPage} setCurrentPage={setCurrentPage} />
 
@@ -30,9 +34,15 @@ export default function App() {
 
       {/* Organic Animated Background Blobs */}
       <div className="fixed inset-0 z-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-1/4 -left-20 w-[450px] h-[450px] bg-red-100/25 rounded-full filter blur-[100px] animate-blob-1"></div>
-        <div className="absolute bottom-1/4 -right-20 w-[550px] h-[550px] bg-[#101820]/5 rounded-full filter blur-[120px] animate-blob-2"></div>
-        <div className="absolute top-2/3 left-1/4 w-[350px] h-[350px] bg-red-50/20 rounded-full filter blur-[80px] animate-blob-1" style={{ animationDelay: '5s' }}></div>
+        <div className={`absolute top-1/4 -left-20 w-[450px] h-[450px] rounded-full filter blur-[100px] animate-blob-1 ${
+          isRedBlack ? 'bg-[#EF3B43]/20' : 'bg-red-100/25'
+        }`}></div>
+        <div className={`absolute bottom-1/4 -right-20 w-[550px] h-[550px] rounded-full filter blur-[120px] animate-blob-2 ${
+          isRedBlack ? 'bg-black/40' : 'bg-[#101820]/5'
+        }`}></div>
+        <div className={`absolute top-2/3 left-1/4 w-[350px] h-[350px] rounded-full filter blur-[80px] animate-blob-1 ${
+          isRedBlack ? 'bg-[#EF3B43]/10' : 'bg-red-50/20'
+        }`} style={{ animationDelay: '5s' }}></div>
       </div>
 
       {/* Main Sections (z-10 to sit above animated background) */}
@@ -78,5 +88,13 @@ export default function App() {
       {/* Global Info Modals */}
       <InfoModal />
     </div>
+  )
+}
+
+export default function App() {
+  return (
+    <SitePreferencesProvider>
+      <AppContent />
+    </SitePreferencesProvider>
   )
 }

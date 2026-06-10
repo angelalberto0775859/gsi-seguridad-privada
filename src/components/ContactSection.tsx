@@ -1,7 +1,9 @@
 import { useState } from 'react'
 import { Phone, WhatsappLogo, ShieldCheck } from '@phosphor-icons/react'
+import { useSitePreferences } from '../lib/sitePreferences'
 
 export default function ContactSection() {
+  const { isRedBlack, t } = useSitePreferences()
   const [formData, setFormData] = useState({
     name: '',
     company: '',
@@ -22,7 +24,9 @@ export default function ContactSection() {
   }
 
   return (
-    <section id="contact" className="py-24 bg-[#101820] text-white relative overflow-hidden">
+    <section id="contact" className={`py-24 text-white relative overflow-hidden transition-colors duration-500 ${
+      isRedBlack ? 'bg-black' : 'bg-[#101820]'
+    }`}>
       {/* Background design accents */}
       <div className="absolute right-0 bottom-0 w-96 h-96 bg-white/[0.01] rounded-full translate-x-1/3 translate-y-1/3 pointer-events-none"></div>
 
@@ -32,13 +36,13 @@ export default function ContactSection() {
         <div className="lg:col-span-5 text-left space-y-8">
           <div className="space-y-4">
             <span className="text-[10px] font-bold text-[#EF3B43] tracking-widest uppercase">
-              Contacto B2B Directo
+              {t('contact.eyebrow')}
             </span>
             <h3 className="font-display text-3xl md:text-5xl font-black tracking-tight leading-none">
-              Protege tu operación hoy
+              {t('contact.title')}
             </h3>
             <p className="text-sm md:text-base text-gray-400 leading-relaxed max-w-[45ch]">
-              Agenda una consultoría de análisis de riesgos sin costo y descubre cómo GSI Seguridad Privada puede blindar tus instalaciones.
+              {t('contact.description')}
             </p>
           </div>
 
@@ -50,7 +54,7 @@ export default function ContactSection() {
               </div>
               <div>
                 <p className="text-[10px] text-gray-400 font-bold uppercase tracking-wider">
-                  Línea Telefónica Nacional (24/7)
+                  {t('contact.phone')}
                 </p>
                 <a
                   href="tel:8008305990"
@@ -68,7 +72,7 @@ export default function ContactSection() {
               </div>
               <div>
                 <p className="text-[10px] text-gray-400 font-bold uppercase tracking-wider">
-                  Atención Rápida Comercial
+                  {t('contact.whatsapp')}
                 </p>
                 <a
                   href="https://wa.me/5215500000000?text=Hola,%20me%20gustaría%20cotizar%20servicios%20de%20seguridad%20privada."
@@ -76,7 +80,7 @@ export default function ContactSection() {
                   rel="noreferrer"
                   className="font-display text-xl font-extrabold hover:text-[#25D366] transition-colors block mt-1"
                 >
-                  Chat vía WhatsApp
+                  {t('contact.whatsappCta')}
                 </a>
               </div>
             </div>
@@ -85,28 +89,30 @@ export default function ContactSection() {
 
         {/* Right Side: Form (Vanguard style, clean organic inputs) */}
         <div className="lg:col-span-7">
-          <div className="bg-white text-gray-900 p-8 md:p-10 shadow-2xl relative rounded-[32px] overflow-hidden">
+          <div className={`p-8 md:p-10 shadow-2xl relative rounded-[32px] overflow-hidden ${
+            isRedBlack ? 'bg-[#0b0d11] text-white border border-[#EF3B43]/25' : 'bg-white text-gray-900'
+          }`}>
             
             {submitted ? (
               <div className="py-12 text-center space-y-4">
                 <div className="w-16 h-16 bg-green-50 text-green-500 rounded-full flex items-center justify-center mx-auto">
                   <ShieldCheck size={36} weight="fill" />
                 </div>
-                <h4 className="font-display text-2xl font-bold text-[#101820]">
-                  Solicitud Enviada
+                <h4 className={`font-display text-2xl font-bold ${isRedBlack ? 'text-white' : 'text-[#101820]'}`}>
+                  {t('contact.successTitle')}
                 </h4>
                 <p className="text-sm text-gray-500 max-w-[40ch] mx-auto">
-                  Hemos recibido tus datos de contacto comercial. Un asesor regional de seguridad se comunicará contigo en breve.
+                  {t('contact.successText')}
                 </p>
               </div>
             ) : (
               <form onSubmit={handleSubmit} className="space-y-6">
                 <div className="text-left space-y-2 mb-8">
-                  <h4 className="font-display text-2xl font-black text-[#101820]">
-                    Solicitar Diagnóstico
+                  <h4 className={`font-display text-2xl font-black ${isRedBlack ? 'text-white' : 'text-[#101820]'}`}>
+                    {t('contact.formTitle')}
                   </h4>
                   <p className="text-xs text-gray-500">
-                    Ingresa los datos de tu empresa para contactarte.
+                    {t('contact.formText')}
                   </p>
                 </div>
 
@@ -114,7 +120,7 @@ export default function ContactSection() {
                   {/* Name Input */}
                   <div className="flex flex-col text-left">
                     <label className="text-[10px] font-bold text-gray-500 uppercase tracking-wider mb-2">
-                      Nombre Completo
+                      {t('contact.name')}
                     </label>
                     <input
                       type="text"
@@ -129,7 +135,7 @@ export default function ContactSection() {
                   {/* Company Input */}
                   <div className="flex flex-col text-left">
                     <label className="text-[10px] font-bold text-gray-500 uppercase tracking-wider mb-2">
-                      Empresa / Corporativo
+                      {t('contact.company')}
                     </label>
                     <input
                       type="text"
@@ -146,7 +152,7 @@ export default function ContactSection() {
                   {/* Email Input */}
                   <div className="flex flex-col text-left">
                     <label className="text-[10px] font-bold text-gray-500 uppercase tracking-wider mb-2">
-                      Correo Corporativo
+                      {t('contact.email')}
                     </label>
                     <input
                       type="email"
@@ -161,7 +167,7 @@ export default function ContactSection() {
                   {/* Phone Input */}
                   <div className="flex flex-col text-left">
                     <label className="text-[10px] font-bold text-gray-500 uppercase tracking-wider mb-2">
-                      Teléfono de Contacto
+                      {t('contact.phoneLabel')}
                     </label>
                     <input
                       type="tel"
@@ -177,8 +183,8 @@ export default function ContactSection() {
                 {/* Message Input */}
                 <div className="flex flex-col text-left">
                   <label className="text-[10px] font-bold text-gray-500 uppercase tracking-wider mb-2">
-                    Mensaje / Requerimiento
-                    <span className="text-gray-400 font-normal normal-case ml-1">(Opcional)</span>
+                    {t('contact.message')}
+                    <span className="text-gray-400 font-normal normal-case ml-1">{t('contact.optional')}</span>
                   </label>
                   <textarea
                     rows={4}
@@ -194,7 +200,7 @@ export default function ContactSection() {
                   type="submit"
                   className="w-full py-4 text-xs font-bold uppercase tracking-widest text-white bg-[#EF3B43] hover:bg-[#101820] transition-colors duration-300 shadow-lg shadow-[#EF3B43]/20 rounded-full"
                 >
-                  Enviar Información
+                  {t('contact.submit')}
                 </button>
               </form>
             )}
