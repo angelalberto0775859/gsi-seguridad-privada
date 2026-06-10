@@ -294,6 +294,8 @@ const contentDict: Record<Language, {
     successTitle: string
     successDesc: string
     successClose: string
+    statusPaused: string
+    statusPausedDesc: string
   }
 }> = {
   es: {
@@ -387,7 +389,9 @@ const contentDict: Record<Language, {
       submittingBtn: 'Enviando...',
       successTitle: '¡Postulación Recibida!',
       successDesc: 'Tu información ha sido enviada al departamento de Recursos Humanos de GSI. Evaluaremos tu perfil y nos pondremos en contacto contigo a la brevedad.',
-      successClose: 'Entendido'
+      successClose: 'Entendido',
+      statusPaused: 'Convocatoria en Pausa',
+      statusPausedDesc: 'El proceso de postulación digital se encuentra temporalmente en pausa. Agradecemos tu interés y te invitamos a consultar esta sección más adelante.'
     }
   },
   en: {
@@ -481,7 +485,9 @@ const contentDict: Record<Language, {
       submittingBtn: 'Submitting...',
       successTitle: 'Application Received!',
       successDesc: 'Your information has been sent to GSI\'s Human Resources department. We will evaluate your profile and contact you shortly.',
-      successClose: 'Got it'
+      successClose: 'Got it',
+      statusPaused: 'Recruitment Paused',
+      statusPausedDesc: 'The digital application process is temporarily on hold. Thank you for your interest; we invite you to check this section later.'
     }
   },
   zh: {
@@ -575,7 +581,9 @@ const contentDict: Record<Language, {
       submittingBtn: '正在提交...',
       successTitle: '求职申请已收到！',
       successDesc: '您的个人资料已成功发送至 GSI 人力资源部。我们将评估您的简历，并会尽快与您取得联系。',
-      successClose: '我知道了'
+      successClose: '我知道了',
+      statusPaused: '招聘暂停',
+      statusPausedDesc: '线上求职申请通道暂时关闭。感谢您的关注，我们邀请您稍后再次查看此栏目。'
     }
   }
 }
@@ -1194,6 +1202,7 @@ function JobDetailPage({
   isRedBlack: boolean
 }) {
   const { language } = useSitePreferences()
+  const isRecruitmentPaused = true // Set to false to activate recruitment options
   const [step, setStep] = useState(1)
   const [formData, setFormData] = useState({
     name: '',
@@ -1478,6 +1487,30 @@ function JobDetailPage({
           <div className={`p-6 sm:p-8 rounded-[24px] border relative overflow-hidden transition-all duration-500 ${
             isRedBlack ? 'bg-[#0b0d11] border-[#EF3B43]/20 shadow-2xl shadow-[#EF3B43]/5' : 'bg-white border-gray-200 shadow-xl'
           }`}>
+            {/* Glassmorphic overlay for paused convocatorias */}
+            {isRecruitmentPaused && (
+              <div className="absolute inset-0 z-20 backdrop-blur-[6px] flex flex-col items-center justify-center p-6 text-center transition-all duration-500 bg-black/40">
+                <div className={`p-6 sm:p-8 rounded-[24px] border max-w-sm space-y-4 shadow-2xl ${
+                  isRedBlack ? 'bg-[#0b0d11]/90 border-white/10' : 'bg-white/95 border-gray-150 shadow-gray-250/20'
+                }`}>
+                  <div className="mx-auto w-12 h-12 rounded-full bg-red-500/10 flex items-center justify-center text-[#EF3B43] animate-pulse">
+                    <Shield size={24} weight="fill" />
+                  </div>
+                  <div className="space-y-2">
+                    <h3 className={`font-display text-base font-black uppercase tracking-wider ${
+                      isRedBlack ? 'text-white' : 'text-[#101820]'
+                    }`}>
+                      {content.jobPage.statusPaused}
+                    </h3>
+                    <p className={`text-xs leading-relaxed ${
+                      isRedBlack ? 'text-white/60' : 'text-gray-500'
+                    }`}>
+                      {content.jobPage.statusPausedDesc}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            )}
             {/* Watermark inside form */}
             <div className="absolute -right-12 -bottom-12 w-48 h-48 opacity-[0.025] pointer-events-none select-none">
               <img 
@@ -1516,6 +1549,7 @@ function JobDetailPage({
                     <button
                       key={num}
                       type="button"
+                      disabled={isRecruitmentPaused}
                       onClick={() => {
                         if (num < step) {
                           setStep(num)
@@ -1564,7 +1598,13 @@ function JobDetailPage({
               </div>
             </div>
 
-            <form onSubmit={handleSubmit} className="space-y-6 relative z-10 pt-4">
+            <form 
+              onSubmit={handleSubmit} 
+              className={`space-y-6 relative z-10 pt-4 transition-opacity duration-300 ${
+                isRecruitmentPaused ? 'pointer-events-none select-none opacity-45' : ''
+              }`}
+              aria-hidden={isRecruitmentPaused}
+            >
               
               <AnimatePresence mode="wait">
                 <motion.div
