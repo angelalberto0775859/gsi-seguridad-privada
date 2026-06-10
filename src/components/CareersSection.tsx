@@ -591,6 +591,7 @@ const contentDict: Record<Language, {
 export default function CareersSection() {
   const [activeJobId, setActiveJobId] = useState<string | null>(null)
   const { isRedBlack, language } = useSitePreferences()
+  const isRecruitmentPaused = true // Toggle this to false to reactivate recruitment
   const content = contentDict[language]
   const jobOpenings = jobOpeningsData[language]
 
@@ -609,7 +610,7 @@ export default function CareersSection() {
   if (activeJob) {
     return (
       <section id="careers" className={`border-b relative overflow-hidden transition-colors duration-500 pt-36 pb-20 min-h-[100dvh] ${
-        isRedBlack ? 'bg-[#050608] border-[#EF3B43]/18 text-white' : 'bg-[#fafafa] border-gray-100 text-gray-800'
+        isRedBlack ? 'bg-[#050608] border-[#EF3B43]/18 text-white' : 'bg-[#fafafa] border-gray-150 text-gray-800'
       }`}>
         {/* Subtle decorative background watermark */}
         <div className="absolute top-1/2 -right-48 w-[500px] h-[500px] bg-red-150/15 rounded-full filter blur-[120px] pointer-events-none"></div>
@@ -618,6 +619,7 @@ export default function CareersSection() {
           job={activeJob}
           content={content}
           isRedBlack={isRedBlack}
+          isRecruitmentPaused={isRecruitmentPaused}
         />
       </section>
     )
@@ -934,18 +936,20 @@ export default function CareersSection() {
                 isRedBlack ? 'bg-white/[0.035] border-white/10 text-white/58' : 'bg-gray-100 border-gray-200 text-gray-600'
               }`}>
                 <div className={`w-9 h-9 rounded-xl flex items-center justify-center shrink-0 mt-0.5 shadow-sm ${
-                  isRedBlack ? 'bg-[#EF3B43]/10 text-[#EF3B43]' : 'bg-red-50 text-[#EF3B43]'
+                  isRecruitmentPaused
+                    ? 'bg-amber-500/10 text-amber-500'
+                    : isRedBlack ? 'bg-[#EF3B43]/10 text-[#EF3B43]' : 'bg-red-50 text-[#EF3B43]'
                 }`}>
-                  <Shield size={18} weight="fill" />
+                  <Shield size={18} weight="fill" className={isRecruitmentPaused ? 'animate-pulse' : ''} />
                 </div>
                 <div className="space-y-0.5">
                   <h5 className={`font-bold uppercase tracking-wider text-[10px] flex items-center gap-1.5 ${
-                    isRedBlack ? 'text-white/72' : 'text-gray-700'
+                    isRecruitmentPaused ? 'text-amber-500' : isRedBlack ? 'text-white/72' : 'text-gray-700'
                   }`}>
-                    {content.vacancies.alertTitle}
+                    {isRecruitmentPaused ? content.jobPage.statusPaused : content.vacancies.alertTitle}
                   </h5>
                   <p className={`text-[11px] leading-relaxed ${isRedBlack ? 'text-white/54' : 'text-gray-500'}`}>
-                    {content.vacancies.alertDesc}
+                    {isRecruitmentPaused ? content.jobPage.statusPausedDesc : content.vacancies.alertDesc}
                   </p>
                 </div>
               </div>
@@ -973,8 +977,10 @@ export default function CareersSection() {
                         className="w-full text-left p-5 flex items-center justify-between gap-4 cursor-pointer focus:outline-none"
                       >
                         <div className="space-y-1">
-                          <span className="text-[9px] font-bold text-green-500 uppercase tracking-widest">
-                            {content.vacancies.statusActive} · {job.type}
+                          <span className={`text-[9px] font-bold uppercase tracking-widest ${
+                            isRecruitmentPaused ? 'text-amber-500/95 font-extrabold' : 'text-green-500'
+                          }`}>
+                            {isRecruitmentPaused ? content.jobPage.statusPaused : content.vacancies.statusActive} · {job.type}
                           </span>
                           <h5 className={`font-display text-base font-bold tracking-tight hover:text-[#EF3B43] transition-colors ${
                             isRedBlack ? 'text-white/90' : 'text-gray-800'
@@ -1035,13 +1041,19 @@ export default function CareersSection() {
                                 <a
                                   href={`#careers/${job.id}`}
                                   className={`inline-flex items-center gap-2 px-5 py-2.5 text-xs font-bold uppercase tracking-wider rounded-xl transition-all duration-300 ${
-                                    isRedBlack
-                                      ? 'bg-[#EF3B43] text-white hover:bg-white hover:text-[#050608]'
-                                      : 'bg-[#EF3B43] text-white hover:bg-[#101820]'
+                                    isRecruitmentPaused
+                                      ? isRedBlack
+                                        ? 'bg-white/10 text-white/90 hover:bg-white/15'
+                                        : 'bg-gray-150 text-gray-700 hover:bg-gray-250'
+                                      : isRedBlack
+                                        ? 'bg-[#EF3B43] text-white hover:bg-white hover:text-[#050608]'
+                                        : 'bg-[#EF3B43] text-white hover:bg-[#101820]'
                                   }`}
                                 >
                                   <Shield size={14} weight="fill" />
-                                  {content.vacancies.applyBtn}
+                                  {isRecruitmentPaused 
+                                    ? (language === 'es' ? 'Ver Detalles' : language === 'zh' ? '查看详情' : 'View Details') 
+                                    : content.vacancies.applyBtn}
                                 </a>
                               </div>
                             </div>
@@ -1195,14 +1207,15 @@ export default function CareersSection() {
 function JobDetailPage({
   job,
   content,
-  isRedBlack
+  isRedBlack,
+  isRecruitmentPaused
 }: {
   job: JobOpening
   content: any
   isRedBlack: boolean
+  isRecruitmentPaused: boolean
 }) {
   const { language } = useSitePreferences()
-  const isRecruitmentPaused = true // Set to false to activate recruitment options
   const [step, setStep] = useState(1)
   const [formData, setFormData] = useState({
     name: '',
