@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { MapPin, Phone, Envelope, Clock, Broadcast, Shield, CheckCircle } from '@phosphor-icons/react'
 import { useSitePreferences } from '../lib/sitePreferences'
@@ -111,8 +111,8 @@ const branches: Branch[] = [
     phone: '800 8305 990',
     email: 'contacto.occidente@gsiseguridad.com.mx',
     address: 'Blvd. Miguel de la Madrid 1200, Zona Costera, Manzanillo, Colima.',
-    x: 45.8,
-    y: 62.5,
+    x: 44.0,
+    y: 63.0,
     coverage: ['Colima Costa', 'Manzanillo Puerto']
   },
   {
@@ -122,8 +122,8 @@ const branches: Branch[] = [
     phone: '800 8305 990',
     email: 'contacto.occidente@gsiseguridad.com.mx',
     address: 'Av. Lázaro Cárdenas 110, Col. Centro, Lázaro Cárdenas, Michoacán.',
-    x: 52.2,
-    y: 66.0,
+    x: 51.5,
+    y: 66.5,
     coverage: ['Michoacán Costa', 'Guerrero Norte-Occidente']
   },
   {
@@ -145,7 +145,7 @@ const branches: Branch[] = [
     email: 'contacto.occidente@gsiseguridad.com.mx',
     address: 'Paseo de Zihuatanejo s/n, Col. Centro, Zihuatanejo, Guerrero.',
     x: 54.2,
-    y: 67.5,
+    y: 68.5,
     coverage: ['Guerrero Costa Grande', 'Ixtapa']
   },
   {
@@ -188,7 +188,7 @@ const branches: Branch[] = [
     phone: '800 8305 990',
     email: 'contacto.occidente@gsiseguridad.com.mx',
     address: 'Av. Felipe Sevilla del Río 450, Col. Lomas de Circunvalación, Colima, Colima.',
-    x: 44.8,
+    x: 45.8,
     y: 63.9,
     coverage: ['Colima', 'Villa de Álvarez', 'Tecomán']
   },
@@ -210,8 +210,8 @@ const branches: Branch[] = [
     phone: '800 8305 990',
     email: 'contacto.centro@gsiseguridad.com.mx',
     address: 'Av. Lázaro Cárdenas 40, Col. Centro, Chilpancingo, Guerrero.',
-    x: 56.5,
-    y: 68.5,
+    x: 55.8,
+    y: 70.8,
     coverage: ['Guerrero Centro', 'Iguala', 'Taxco']
   },
   {
@@ -221,8 +221,8 @@ const branches: Branch[] = [
     phone: '800 8305 990',
     email: 'contacto.centro@gsiseguridad.com.mx',
     address: 'Costera Miguel Alemán 220, Fracc. Magallanes, Acapulco, Guerrero.',
-    x: 58.0,
-    y: 68.8,
+    x: 55.6,
+    y: 74.5,
     coverage: ['Guerrero Costa Chica', 'Acapulco Zona Diamante']
   },
   {
@@ -232,8 +232,8 @@ const branches: Branch[] = [
     phone: '442 215 0000',
     email: 'contacto.bajio@gsiseguridad.com.mx',
     address: 'Av. 5 de Febrero 100, Col. Centro, Querétaro, Qro.',
-    x: 53.1,
-    y: 60.7,
+    x: 52.8,
+    y: 60.2,
     coverage: ['Querétaro', 'Guanajuato', 'San Luis Potosí']
   },
   {
@@ -243,8 +243,8 @@ const branches: Branch[] = [
     phone: '800 8305 990',
     email: 'contacto.centro@gsiseguridad.com.mx',
     address: 'Av. Paseo Tollocan 850, Col. Santa Ana Tlapaltitlán, Toluca, Estado de México.',
-    x: 54.9,
-    y: 64.6,
+    x: 54.2,
+    y: 65.0,
     coverage: ['Estado de México Poniente', 'Lerma', 'Metepec']
   },
   {
@@ -266,7 +266,7 @@ const branches: Branch[] = [
     email: 'contacto.centro@gsiseguridad.com.mx',
     address: 'Av. Insurgentes Sur 1200, Col. Del Valle, Ciudad de México.',
     x: 56.6,
-    y: 65.7,
+    y: 65.2,
     coverage: ['Ciudad de México', 'Estado de México', 'Puebla', 'Morelos', 'Hidalgo']
   },
   {
@@ -287,8 +287,8 @@ const branches: Branch[] = [
     phone: '800 8305 990',
     email: 'contacto.centro@gsiseguridad.com.mx',
     address: 'Av. Plan de Ayala 400, Col. Teopanzolco, Cuernavaca, Morelos.',
-    x: 56.3,
-    y: 68.0,
+    x: 56.4,
+    y: 67.8,
     coverage: ['Morelos', 'Cuautla', 'Jiutepec']
   },
   {
@@ -309,8 +309,8 @@ const branches: Branch[] = [
     phone: '800 8305 990',
     email: 'contacto.centro@gsiseguridad.com.mx',
     address: 'Blvd. Everardo Márquez 150, Col. Centro, Pachuca, Hidalgo.',
-    x: 56.6,
-    y: 62.4,
+    x: 57.8,
+    y: 62.0,
     coverage: ['Hidalgo', 'Tulancingo', 'Tula', 'Actopan']
   },
   {
@@ -320,8 +320,8 @@ const branches: Branch[] = [
     phone: '800 8305 990',
     email: 'contacto.centro@gsiseguridad.com.mx',
     address: 'Av. Juárez 2900, Col. La Paz, Puebla, Puebla.',
-    x: 59.1,
-    y: 66.6,
+    x: 59.8,
+    y: 66.4,
     coverage: ['Puebla', 'Tlaxcala', 'Tehuacán', 'San Martín Texmelucan']
   },
   {
@@ -375,8 +375,8 @@ const branches: Branch[] = [
     phone: '800 8305 990',
     email: 'contacto.golfo@gsiseguridad.com.mx',
     address: 'Av. Paseo Tabasco 1200, Col. Tabasco 2000, Villahermosa, Tabasco.',
-    x: 75.5,
-    y: 71.0,
+    x: 76.5,
+    y: 69.5,
     coverage: ['Tabasco', 'Cárdenas', 'Comalcalco', 'Campeche Poniente']
   },
   {
@@ -386,8 +386,8 @@ const branches: Branch[] = [
     phone: '800 8305 990',
     email: 'contacto.golfo@gsiseguridad.com.mx',
     address: 'Blvd. Belisario Domínguez 2200, Col. Centro, Tuxtla Gutiérrez, Chiapas.',
-    x: 75.7,
-    y: 71.5,
+    x: 75.5,
+    y: 73.0,
     coverage: ['Chiapas', 'Tapachula', 'San Cristóbal de las Casas']
   },
   {
@@ -409,15 +409,98 @@ export default function InteractiveMap() {
 
   const handleSelectBranch = (branch: Branch) => {
     setSelectedBranch(branch)
+    
+    // Dispatch custom event to sync contact form dropdown state
+    const stateMap: Record<string, string> = {
+      tijuana: 'Baja California',
+      hermosillo: 'Sonora',
+      lapaz: 'Baja California Sur',
+      obregon: 'Sonora',
+      culiacan: 'Sinaloa',
+      juarez: 'Chihuahua',
+      chihuahua: 'Chihuahua',
+      vallarta: 'Jalisco',
+      manzanillo: 'Colima',
+      lazaro: 'Michoacán',
+      acapulco: 'Guerrero',
+      monterrey: 'Nuevo León',
+      torreon: 'Coahuila',
+      saltillo: 'Coahuila',
+      slp: 'San Luis Potosí',
+      zacatecas: 'Zacatecas',
+      aguascalientes: 'Aguascalientes',
+      leon: 'Guanajuato',
+      queretaro: 'Querétaro',
+      guadalajara: 'Jalisco',
+      toluca: 'Estado de México',
+      cuernavaca: 'Morelos',
+      cdmx: 'Ciudad de México (CDMX)',
+      puebla: 'Puebla',
+      veracruz: 'Veracruz',
+      coatzacoalcos: 'Veracruz',
+      villahermosa: 'Tabasco',
+      merida: 'Yucatán',
+      tuxtla: 'Chiapas',
+      cancun: 'Quintana Roo'
+    }
+    const stateName = stateMap[branch.id]
+    if (stateName) {
+      window.dispatchEvent(new CustomEvent('map-select-state', { detail: { state: stateName } }))
+    }
   }
+
+  // Listen to contact form state changes to focus map branch
+  useEffect(() => {
+    const handleFormSelectState = (e: Event) => {
+      const customEvent = e as CustomEvent<{ state: string }>
+      if (customEvent.detail && customEvent.detail.state) {
+        const targetState = customEvent.detail.state
+        const branchMap: Record<string, string> = {
+          'Baja California': 'tijuana',
+          'Sonora': 'hermosillo',
+          'Baja California Sur': 'lapaz',
+          'Sinaloa': 'culiacan',
+          'Chihuahua': 'chihuahua',
+          'Jalisco': 'guadalajara',
+          'Colima': 'manzanillo',
+          'Michoacán': 'lazaro',
+          'Guerrero': 'acapulco',
+          'Nuevo León': 'monterrey',
+          'Coahuila': 'saltillo',
+          'San Luis Potosí': 'slp',
+          'Zacatecas': 'zacatecas',
+          'Aguascalientes': 'aguascalientes',
+          'Guanajuato': 'leon',
+          'Querétaro': 'queretaro',
+          'Estado de México': 'toluca',
+          'Morelos': 'cuernavaca',
+          'Ciudad de México (CDMX)': 'cdmx',
+          'Puebla': 'puebla',
+          'Veracruz': 'veracruz',
+          'Tabasco': 'villahermosa',
+          'Yucatán': 'merida',
+          'Chiapas': 'tuxtla',
+          'Quintana Roo': 'cancun'
+        }
+        const branchId = branchMap[targetState]
+        if (branchId) {
+          const found = branches.find(b => b.id === branchId)
+          if (found) {
+            setSelectedBranch(found)
+          }
+        }
+      }
+    }
+    window.addEventListener('form-select-state', handleFormSelectState)
+    return () => window.removeEventListener('form-select-state', handleFormSelectState)
+  }, [])
 
   return (
     <section id="coverage" className={`py-24 border-b relative overflow-hidden transition-colors duration-500 ${
       isRedBlack ? 'bg-[#07080b] border-[#EF3B43]/15' : 'bg-white border-gray-100'
     }`}>
       
-      {/* Sliding tech grid background inside this section */}
-      <div className="absolute inset-0 animate-tech-grid opacity-20 pointer-events-none"></div>
+
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         
@@ -429,7 +512,7 @@ export default function InteractiveMap() {
           <h3 className={`font-display text-3xl md:text-5xl font-black tracking-tight leading-none ${isRedBlack ? 'text-white' : 'text-[#101820]'}`}>
             {t('map.title')}
           </h3>
-          <p className={`text-sm md:text-base max-w-[55ch] mx-auto leading-relaxed ${isRedBlack ? 'text-white/65' : 'text-gray-500'}`}>
+          <p className={`text-sm md:text-base max-w-[55ch] mx-auto leading-relaxed ${isRedBlack ? 'text-white/90' : 'text-gray-700'}`}>
             {t('map.description')}
           </p>
         </div>
@@ -459,7 +542,7 @@ export default function InteractiveMap() {
               </div>
 
               {/* Minimalist user instructions */}
-              <p className={`text-[11px] font-medium ${isRedBlack ? 'text-white/45' : 'text-gray-400'}`}>
+              <p className={`text-xs font-medium ${isRedBlack ? 'text-white/70' : 'text-gray-600'}`}>
                 {t('map.instructions')}
               </p>
 
@@ -508,7 +591,7 @@ export default function InteractiveMap() {
                         <MapPin size={16} className="text-[#EF3B43] shrink-0 mt-0.5" />
                         <div className="space-y-0.5">
                           <p className="text-[9px] font-bold text-gray-400 uppercase tracking-widest">{t('map.address')}</p>
-                          <p className={`font-medium leading-relaxed text-[11px] line-clamp-2 ${isRedBlack ? 'text-white/75' : 'text-gray-700'}`}>
+                          <p className={`font-medium leading-relaxed text-xs line-clamp-2 ${isRedBlack ? 'text-white/85' : 'text-gray-800'}`}>
                             {selectedBranch.address}
                           </p>
                         </div>
@@ -519,7 +602,7 @@ export default function InteractiveMap() {
                         <Phone size={16} className="text-[#EF3B43] shrink-0 mt-0.5" />
                         <div className="space-y-0.5">
                           <p className="text-[9px] font-bold text-gray-400 uppercase tracking-widest">{t('map.phone')}</p>
-                          <a href={`tel:${selectedBranch.phone}`} className={`hover:text-[#EF3B43] transition-colors font-semibold text-[11px] ${isRedBlack ? 'text-white/75' : 'text-gray-700'}`}>
+                          <a href={`tel:${selectedBranch.phone}`} className={`hover:text-[#EF3B43] transition-colors font-semibold text-xs ${isRedBlack ? 'text-white/85' : 'text-gray-800'}`}>
                             {selectedBranch.phone}
                           </a>
                         </div>
@@ -530,7 +613,7 @@ export default function InteractiveMap() {
                         <Envelope size={16} className="text-[#EF3B43] shrink-0 mt-0.5" />
                         <div className="space-y-0.5 min-w-0">
                           <p className="text-[9px] font-bold text-gray-400 uppercase tracking-widest">{t('map.email')}</p>
-                          <a href={`mailto:${selectedBranch.email}`} className={`hover:text-[#EF3B43] transition-colors font-semibold block truncate text-[11px] ${isRedBlack ? 'text-white/75' : 'text-gray-700'}`}>
+                          <a href={`mailto:${selectedBranch.email}`} className={`hover:text-[#EF3B43] transition-colors font-semibold block truncate text-xs ${isRedBlack ? 'text-white/85' : 'text-gray-800'}`}>
                             {selectedBranch.email}
                           </a>
                         </div>
@@ -541,7 +624,7 @@ export default function InteractiveMap() {
                         <Clock size={16} className="text-[#EF3B43] shrink-0 mt-0.5" />
                         <div className="space-y-0.5">
                           <p className="text-[9px] font-bold text-gray-400 uppercase tracking-widest">{t('map.support')}</p>
-                          <p className={`font-medium text-[11px] ${isRedBlack ? 'text-white/75' : 'text-gray-700'}`}>{t('map.supportValue')}</p>
+                          <p className={`font-medium text-xs ${isRedBlack ? 'text-white/85' : 'text-gray-800'}`}>{t('map.supportValue')}</p>
                         </div>
                       </div>
 
@@ -579,7 +662,7 @@ export default function InteractiveMap() {
             {/* The Map Frame (wider crop so Mexico fills the available space) */}
             <div className="relative w-full max-w-[900px] aspect-[4/3] rounded-[32px] overflow-hidden bg-white select-none">
               
-              <div className="absolute left-0 top-1/2 w-full aspect-square -translate-y-1/2">
+              <div className="absolute inset-0 w-full h-full">
                 {/* Realistic Green Satellite Map with blue Ocean */}
                 <img
                   src="/recursos/mexico_map_background.png"
@@ -587,8 +670,7 @@ export default function InteractiveMap() {
                   className="absolute inset-0 w-full h-full object-cover select-none pointer-events-none"
                 />
 
-                {/* Grid overlay for B2B aesthetics */}
-                <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(16,24,32,0.012)_1px,transparent_1px),linear-gradient(to_bottom,rgba(16,24,32,0.012)_1px,transparent_1px)] bg-[size:28px_28px] pointer-events-none"></div>
+
 
                 {/* Branch Node Markers */}
                 {branches.map((b) => {
@@ -601,12 +683,14 @@ export default function InteractiveMap() {
                       aria-label={`Ver información de ${b.name}`}
                       aria-pressed={isSelected}
                       title={b.name}
-                      className="absolute flex h-5 w-5 items-center justify-center rounded-full transition-transform duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#EF3B43] focus-visible:ring-offset-2 focus-visible:ring-offset-white"
+                      className={`absolute -translate-x-1/2 -translate-y-1/2 transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#EF3B43] focus-visible:ring-offset-2 focus-visible:ring-offset-white flex h-5 w-5 items-center justify-center rounded-full cursor-pointer ${
+                        isSelected
+                          ? 'scale-125 z-30'
+                          : 'scale-100 z-10 hover:scale-150 hover:z-40'
+                      }`}
                       style={{ 
                         left: `${b.x}%`, 
-                        top: `${b.y}%`, 
-                        zIndex: isSelected ? 30 : 10,
-                        transform: `translate(-50%, -50%) scale(${isSelected ? 1.2 : 1})`
+                        top: `${b.y}%`
                       }}
                       onClick={() => handleSelectBranch(b)}
                     >

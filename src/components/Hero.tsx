@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion'
-import { ShieldCheck, ArrowDown } from '@phosphor-icons/react'
+import { ShieldCheck, ArrowDown, MapPin } from '@phosphor-icons/react'
 import { useSitePreferences } from '../lib/sitePreferences'
 
 export default function Hero() {
@@ -8,150 +8,150 @@ export default function Hero() {
   return (
     <section
       id="hero"
-      className={`relative min-h-[100dvh] flex items-center pt-20 overflow-hidden transition-colors duration-500 ${
-        isRedBlack ? 'bg-[#050608]' : 'bg-[#fafafa]'
+      className={`relative min-h-[100dvh] flex items-center pt-32 pb-24 overflow-hidden transition-colors duration-500 ${
+        isRedBlack ? 'bg-[#050608]' : 'bg-[#101820]'
       }`}
     >
-      {/* Dynamic Background Accents */}
-      <div className="absolute inset-0 z-0 opacity-[0.03] pointer-events-none">
-        <svg width="100%" height="100%">
-          <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
-            <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#101820" strokeWidth="1" />
-          </pattern>
-          <rect width="100%" height="100%" fill="url(#grid)" />
-        </svg>
-      </div>
+      {/* Background Image - Clean and natural colors */}
+      <img
+        src="/recursos/gsi-equipo-rostros-distintos.png"
+        alt="Equipo de seguridad privada GSI"
+        className="absolute inset-0 z-0 h-full w-full object-cover brightness-[0.88] contrast-[1.03]"
+        loading="eager"
+        fetchPriority="high"
+      />
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full z-10 grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-        {/* Left Content (Asymmetric text layout) */}
-        <div className="lg:col-span-6 space-y-8 text-left">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ type: 'spring', stiffness: 100, damping: 20 }}
-            className={`inline-flex items-center space-x-2 px-3 py-1.5 border shadow-[inset_0_1px_0_rgba(255,255,255,0.08)] ${
-              isRedBlack ? 'bg-white/5 border-[#EF3B43]/30' : 'bg-white border-gray-200'
-            }`}
-          >
-            <ShieldCheck size={18} className="text-[#EF3B43]" weight="fill" />
-            <span className={`text-[10px] font-bold tracking-widest uppercase ${isRedBlack ? 'text-white/70' : 'text-gray-500'}`}>
-              {t('hero.badge')}
-            </span>
-          </motion.div>
+      {/* Header Vignette - Keeps logo/navbar perfectly readable */}
+      <div className="absolute top-0 inset-x-0 h-48 bg-gradient-to-b from-black/80 via-black/35 to-transparent z-10 pointer-events-none"></div>
 
-          <motion.h1
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ type: 'spring', stiffness: 100, damping: 20, delay: 0.1 }}
-            className={`font-display text-5xl md:text-7xl font-extrabold tracking-tighter leading-[0.95] ${isRedBlack ? 'text-white' : 'text-[#101820]'}`}
-          >
-            {t('hero.title.before')} <br /><span className="text-[#EF3B43]">{t('hero.title.accent')}</span>.
-          </motion.h1>
+      {/* Reddish overlay and left shadow gradients for maximum legibility & theme styling */}
+      <div
+        className={`absolute inset-0 z-0 pointer-events-none ${
+          isRedBlack
+            ? 'bg-[radial-gradient(circle_at_75%_50%,rgba(239,59,67,0.20),transparent_60%),linear-gradient(90deg,#050608_0%,rgba(5,6,8,0.6)_50%,transparent_100%),linear-gradient(180deg,transparent_75%,#050608_100%)]'
+            : 'bg-[radial-gradient(circle_at_75%_50%,rgba(239,59,67,0.18),transparent_60%),linear-gradient(90deg,#101820_0%,rgba(16,24,32,0.6)_50%,transparent_100%),linear-gradient(180deg,transparent_75%,#fafafa_100%)]'
+        }`}
+      ></div>
 
-          <motion.p
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ type: 'spring', stiffness: 100, damping: 20, delay: 0.2 }}
-            className={`text-base md:text-lg font-normal leading-relaxed max-w-[50ch] ${isRedBlack ? 'text-white/70' : 'text-gray-600'}`}
-          >
-            {t('hero.description')}
-          </motion.p>
-
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ type: 'spring', stiffness: 100, damping: 20, delay: 0.3 }}
-            className="flex flex-wrap gap-4 pt-2"
-          >
-            <a
-              href="#contact"
-              className={`px-8 py-4 text-xs font-bold uppercase tracking-wider text-white transition-colors duration-300 shadow-lg shadow-black/10 rounded-full ${
-                isRedBlack ? 'bg-[#EF3B43] hover:bg-white hover:text-[#101820]' : 'bg-[#101820] hover:bg-[#EF3B43]'
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full z-10 pt-16 lg:pt-20">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16 items-center">
+          
+          {/* Left Column: Typography Content directly on background */}
+          <div className="lg:col-span-7 flex flex-col items-start text-left space-y-6 text-white">
+            
+            {/* Badge */}
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ type: 'spring', stiffness: 100, damping: 20 }}
+              className={`inline-flex items-center space-x-2 px-3 py-1.5 border rounded-full ${
+                isRedBlack ? 'bg-black/35 border-[#EF3B43]/45' : 'bg-white/10 border-white/20'
               }`}
             >
-              {t('hero.primary')}
-            </a>
-            <a
-              href="#services"
-              className={`px-8 py-4 text-xs font-bold uppercase tracking-wider border transition-colors duration-300 rounded-full ${
-                isRedBlack ? 'text-white bg-white/5 border-white/15 hover:border-[#EF3B43]' : 'text-gray-800 bg-white border-gray-200 hover:border-gray-400'
-              }`}
-            >
-              {t('hero.secondary')}
-            </a>
-          </motion.div>
-        </div>
+              <ShieldCheck size={16} className="text-[#EF3B43]" weight="fill" />
+              <span className="text-[9px] font-bold tracking-widest uppercase text-white/90">
+                {t('hero.badge')}
+              </span>
+            </motion.div>
 
-        {/* Right Graphic/Image Panel with Guard Visual (Organic floating design) */}
-        <div className="lg:col-span-6 relative">
-          <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1, y: [0, -10, 0] }}
-            transition={{ 
-              scale: { type: 'spring', stiffness: 80, damping: 15, delay: 0.2 },
-              y: { repeat: Infinity, duration: 6, ease: 'easeInOut' }
-            }}
-            className={`relative w-full max-w-[540px] mx-auto aspect-[4/5] overflow-hidden shadow-2xl border rounded-[32px] ${
-              isRedBlack ? 'bg-[#101820] border-[#EF3B43]/30 shadow-[#EF3B43]/10' : 'bg-gray-100 border-white'
-            }`}
-          >
-            {/* The primary guard/team image */}
-            <img
-              src="/recursos/gsi-equipo-vertical-rostros-distintos.png"
-              alt="Guardias de Seguridad GSI"
-              className="w-full h-full object-cover grayscale-[20%] hover:grayscale-0 transition-all duration-750"
-            />
-            {/* Subtle red bottom indicator line */}
-            <div className="absolute bottom-0 left-0 right-0 h-2 bg-[#EF3B43]"></div>
-          </motion.div>
+            {/* Main H1 Title */}
+            <h1 className="font-display text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black leading-tight text-white tracking-tight text-balance">
+              {t('hero.title.before')} <br />
+              <span className="text-[#EF3B43]">{t('hero.title.accent')}</span>.
+            </h1>
 
-          {/* Floating Telemetry Box (Spring physics driven metrics, organic float) */}
-          <motion.div
-            initial={{ opacity: 0, x: 50 }}
-            animate={{ opacity: 1, x: 0, y: [0, 8, 0] }}
-            transition={{ 
-              x: { type: 'spring', stiffness: 120, damping: 18, delay: 0.4 },
-              y: { repeat: Infinity, duration: 5, ease: 'easeInOut', delay: 0.5 }
-            }}
-            className={`absolute -bottom-6 -left-6 backdrop-blur-md border p-5 shadow-xl max-w-[240px] hidden sm:block rounded-[24px] ${
-              isRedBlack ? 'bg-[#07080b]/95 border-[#EF3B43]/30' : 'bg-white/95 border-gray-200/80'
-            }`}
-          >
-            <div className="space-y-3">
-              {/* Metric 1: ISO Quality */}
-              <button
-                onClick={() => window.dispatchEvent(new CustomEvent('open-info-modal', { detail: { type: 'cert-iso' } }))}
-                className="w-full text-left p-3 hover:bg-red-50/50 border border-transparent hover:border-red-150 rounded-xl transition-all duration-300 cursor-pointer block focus:outline-none"
-              >
-                <p className={`font-display text-3xl font-extrabold leading-none ${isRedBlack ? 'text-white' : 'text-[#101820]'}`}>
-                  99.8%
-                </p>
-                <p className={`text-[9px] font-bold uppercase tracking-wider mt-1.5 flex items-center gap-1 ${isRedBlack ? 'text-white/60' : 'text-gray-500'}`}>
-                  <span className="w-1.5 h-1.5 rounded-full bg-green-500 inline-block animate-pulse"></span>
-                  {t('hero.metric.continuity')}
-                </p>
-              </button>
+            {/* Description */}
+            <p className="text-sm sm:text-base font-medium leading-relaxed text-white/90 max-w-[54ch]">
+              {t('hero.description')}
+            </p>
 
-              <div className="h-[1px] bg-gray-100 mx-2"></div>
-
-              {/* Metric 2: Coverage Scroll */}
+            {/* Call to Actions */}
+            <div className="flex flex-wrap gap-4 pt-2">
               <a
-                href="#coverage"
-                onClick={(e) => {
-                  e.preventDefault()
-                  document.getElementById('coverage')?.scrollIntoView({ behavior: 'smooth' })
-                }}
-                className="w-full text-left p-3 hover:bg-red-50/50 border border-transparent hover:border-red-150 rounded-xl transition-all duration-300 cursor-pointer block focus:outline-none"
+                href="#contact"
+                className={`px-6 py-3 text-xs font-bold uppercase tracking-wider text-white transition-all duration-300 shadow-lg shadow-black/10 rounded-full hover:scale-105 active:scale-95 ${
+                  isRedBlack ? 'bg-[#EF3B43] hover:bg-white hover:text-[#050608]' : 'bg-[#EF3B43] hover:bg-[#101820]'
+                }`}
               >
-                <p className={`font-display text-3xl font-extrabold leading-none ${isRedBlack ? 'text-white' : 'text-[#101820]'}`}>
-                  +35
-                </p>
-                <p className={`text-[9px] font-bold uppercase tracking-wider mt-1.5 ${isRedBlack ? 'text-white/60' : 'text-gray-500'}`}>
-                  {t('hero.metric.branches')}
-                </p>
+                {t('hero.primary')}
+              </a>
+              <a
+                href="#services"
+                className="px-6 py-3 text-xs font-bold uppercase tracking-wider border text-white bg-white/5 border-white/15 rounded-full hover:bg-white/10 hover:border-[#EF3B43] transition-all duration-300 hover:scale-105 active:scale-95"
+              >
+                {t('hero.secondary')}
               </a>
             </div>
-          </motion.div>
+
+          </div>
+
+          {/* Right Column: Subtle HUD & Interactive Staggered Metrics */}
+          <div className="lg:col-span-5 flex flex-col space-y-4">
+            
+            {/* Live Status indicator */}
+            <motion.div
+              initial={{ opacity: 0, x: 30 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ type: 'spring', stiffness: 100, damping: 20, delay: 0.12 }}
+              className="flex items-center space-x-2 px-1 pb-1"
+            >
+              <span className="relative flex h-2 w-2">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
+              </span>
+              <span className="text-[10px] font-bold tracking-widest text-white/85 uppercase">
+                Monitoreo Activo Nacional GSI
+              </span>
+            </motion.div>
+
+            {/* Metric 1: Continuity (Clickable Link to cert-iso modal) */}
+            <motion.button
+              initial={{ opacity: 0, x: 30 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ type: 'spring', stiffness: 100, damping: 20, delay: 0.2 }}
+              onClick={() => window.dispatchEvent(new CustomEvent('open-info-modal', { detail: { type: 'cert-iso' } }))}
+              className="group text-left border border-[#EF3B43]/30 hover:border-[#EF3B43] bg-black/35 hover:bg-[#EF3B43]/5 p-5 rounded-xl transition-all duration-300 cursor-pointer w-full"
+            >
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="font-display text-4xl font-black leading-none text-white tracking-tight">
+                    99.8%
+                  </p>
+                  <p className="mt-2 text-[9px] font-bold uppercase tracking-widest text-white/60 group-hover:text-white/90 transition-colors">
+                    {t('hero.metric.continuity')}
+                  </p>
+                </div>
+                <ShieldCheck size={20} className="text-[#EF3B43]/70 group-hover:text-[#EF3B43] transition-colors" weight="fill" />
+              </div>
+            </motion.button>
+
+            {/* Metric 2: Coverage (Clickable Link to map) */}
+            <motion.a
+              initial={{ opacity: 0, x: 30 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ type: 'spring', stiffness: 100, damping: 20, delay: 0.28 }}
+              href="#coverage"
+              onClick={(e) => {
+                e.preventDefault()
+                document.getElementById('coverage')?.scrollIntoView({ behavior: 'smooth' })
+              }}
+              className="group text-left border border-[#EF3B43]/30 hover:border-[#EF3B43] bg-black/35 hover:bg-[#EF3B43]/5 p-5 rounded-xl transition-all duration-300 cursor-pointer w-full block"
+            >
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="font-display text-4xl font-black leading-none text-white tracking-tight">
+                    +35
+                  </p>
+                  <p className="mt-2 text-[9px] font-bold uppercase tracking-widest text-white/60 group-hover:text-white/90 transition-colors">
+                    {t('hero.metric.branches')}
+                  </p>
+                </div>
+                <MapPin size={20} className="text-[#EF3B43]/70 group-hover:text-[#EF3B43] transition-colors" weight="fill" />
+              </div>
+            </motion.a>
+
+          </div>
+
         </div>
       </div>
 
@@ -161,7 +161,7 @@ export default function Hero() {
           animate={{ y: [0, 8, 0] }}
           transition={{ repeat: Infinity, duration: 2, ease: 'easeInOut' }}
           href="#story"
-          className={`p-3 border rounded-full shadow-md hover:shadow-lg inline-flex items-center justify-center hover:text-[#EF3B43] transition-colors ${
+          className={`p-3 border rounded-full shadow-md hover:shadow-lg inline-flex items-center justify-center hover:text-[#EF3B43] hover:border-[#EF3B43] transition-all ${
             isRedBlack ? 'bg-white/5 border-white/10 text-white/70' : 'bg-white border-gray-200 text-gray-600'
           }`}
         >

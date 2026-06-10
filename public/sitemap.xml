@@ -1,38 +1,47 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>https://www.gsiseguridad.com.mx/</loc>
-    <lastmod>2026-06-09</lastmod>
-    <changefreq>monthly</changefreq>
+    <lastmod>2026-06-10</lastmod>
+    <changefreq>weekly</changefreq>
     <priority>1.0</priority>
-  </url>
-  <url>
-    <loc>https://www.gsiseguridad.com.mx/#story</loc>
-    <lastmod>2026-06-09</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://www.gsiseguridad.com.mx/#services</loc>
-    <lastmod>2026-06-09</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://www.gsiseguridad.com.mx/#coverage</loc>
-    <lastmod>2026-06-09</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="es" href="https://www.gsiseguridad.com.mx/" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.gsiseguridad.com.mx/#en" />
+    <xhtml:link rel="alternate" hreflang="zh" href="https://www.gsiseguridad.com.mx/#zh" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.gsiseguridad.com.mx/" />
   </url>
   <url>
     <loc>https://www.gsiseguridad.com.mx/#careers</loc>
-    <lastmod>2026-06-09</lastmod>
-    <changefreq>monthly</changefreq>
+    <lastmod>2026-06-10</lastmod>
+    <changefreq>weekly</changefreq>
     <priority>0.9</priority>
+    <xhtml:link rel="alternate" hreflang="es" href="https://www.gsiseguridad.com.mx/#careers" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.gsiseguridad.com.mx/#careers-en" />
+    <xhtml:link rel="alternate" hreflang="zh" href="https://www.gsiseguridad.com.mx/#careers-zh" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.gsiseguridad.com.mx/#careers" />
+  </url>
+  <url>
+    <loc>https://www.gsiseguridad.com.mx/#services</loc>
+    <lastmod>2026-06-10</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.gsiseguridad.com.mx/#story</loc>
+    <lastmod>2026-06-10</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.gsiseguridad.com.mx/#coverage</loc>
+    <lastmod>2026-06-10</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.gsiseguridad.com.mx/#contact</loc>
-    <lastmod>2026-06-09</lastmod>
+    <lastmod>2026-06-10</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>

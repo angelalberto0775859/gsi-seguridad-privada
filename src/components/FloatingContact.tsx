@@ -1,9 +1,42 @@
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { WhatsappLogo, LinkedinLogo, InstagramLogo, TiktokLogo, X, ChatCircleDots } from '@phosphor-icons/react'
+import { useSitePreferences, type Language } from '../lib/sitePreferences'
+
+const contentDict: Record<Language, {
+  title: string
+  subtitle: string
+  whatsappCta: string
+  socialTitle: string
+  closeAria: string
+}> = {
+  es: {
+    title: 'Contacto & Soporte GSI',
+    subtitle: '¿Buscas servicios de seguridad o vacantes? Conéctate directo con nuestro equipo.',
+    whatsappCta: 'Escríbenos por WhatsApp',
+    socialTitle: 'Redes Sociales GSI',
+    closeAria: 'Cerrar menú de contacto'
+  },
+  en: {
+    title: 'GSI Contact & Support',
+    subtitle: 'Looking for security services or vacancies? Connect directly with our team.',
+    whatsappCta: 'Message us on WhatsApp',
+    socialTitle: 'GSI Social Networks',
+    closeAria: 'Close contact menu'
+  },
+  zh: {
+    title: 'GSI 联系与支持',
+    subtitle: '在寻找安保服务或工作机会？直接与我们的团队联系。',
+    whatsappCta: '通过 WhatsApp 联系我们',
+    socialTitle: 'GSI 社交媒体',
+    closeAria: '关闭联系菜单'
+  }
+}
 
 export default function FloatingContact() {
   const [isOpen, setIsOpen] = useState(false)
+  const { language } = useSitePreferences()
+  const content = contentDict[language]
 
   return (
     <div className="fixed bottom-6 right-6 z-50 flex flex-col items-end">
@@ -25,7 +58,7 @@ export default function FloatingContact() {
             <button
               onClick={() => setIsOpen(false)}
               className="absolute top-3.5 right-3.5 p-1 rounded-full hover:bg-white/10 text-gray-400 hover:text-white transition-colors cursor-pointer"
-              aria-label="Cerrar menú de contacto"
+              aria-label={content.closeAria}
             >
               <X size={14} weight="bold" />
             </button>
@@ -37,10 +70,10 @@ export default function FloatingContact() {
               <div className="space-y-1">
                 <h5 className="font-display text-xs font-black text-white tracking-tight flex items-center gap-1.5">
                   <ChatCircleDots size={16} className="text-[#EF3B43]" />
-                  Contacto & Soporte GSI
+                  {content.title}
                 </h5>
                 <p className="text-[10px] text-gray-400 leading-normal">
-                  ¿Buscas servicios de seguridad o vacantes? Conéctate directo con nuestro equipo.
+                  {content.subtitle}
                 </p>
               </div>
 
@@ -52,13 +85,13 @@ export default function FloatingContact() {
                 className="w-full py-2.5 bg-[#25D366] hover:bg-[#20ba56] text-white text-xs font-bold uppercase tracking-wider rounded-xl transition-all duration-300 flex items-center justify-center gap-2 shadow-md shadow-green-500/10 cursor-pointer active:scale-95"
               >
                 <WhatsappLogo size={18} weight="fill" />
-                Escríbenos por WhatsApp
+                {content.whatsappCta}
               </a>
 
               {/* Social networks container */}
               <div className="space-y-2 pt-3 border-t border-white/10">
                 <span className="text-[9px] font-bold text-gray-400 uppercase tracking-widest block">
-                  Redes Sociales GSI
+                  {content.socialTitle}
                 </span>
                 
                 <div className="flex justify-around pt-1">

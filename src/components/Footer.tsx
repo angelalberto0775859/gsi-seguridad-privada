@@ -1,43 +1,30 @@
 import { ShieldCheck, LinkedinLogo, InstagramLogo, TiktokLogo, WhatsappLogo } from '@phosphor-icons/react'
 import { useSitePreferences } from '../lib/sitePreferences'
 
-interface FooterProps {
-  currentPage?: 'home' | 'careers'
-  setCurrentPage?: (page: 'home' | 'careers') => void
-}
-
-export default function Footer({ currentPage, setCurrentPage }: FooterProps) {
+export default function Footer() {
   const currentYear = new Date().getFullYear()
   const { isRedBlack, t } = useSitePreferences()
 
   const handleNavigation = (hash: string) => {
-    if (setCurrentPage && currentPage && currentPage !== 'home') {
-      setCurrentPage('home')
-      setTimeout(() => {
-        const element = document.getElementById(hash.replace('#', ''))
-        if (element) {
-          element.scrollIntoView({ behavior: 'smooth' })
-        }
-      }, 150)
-    } else {
+    if (window.location.hash === hash) {
       const element = document.getElementById(hash.replace('#', ''))
       if (element) {
         element.scrollIntoView({ behavior: 'smooth' })
       }
+    } else {
+      window.location.hash = hash
     }
   }
 
   const handleGoToCareers = () => {
-    if (setCurrentPage) {
-      setCurrentPage('careers')
-      window.scrollTo({ top: 0, behavior: 'smooth' })
-    }
+    window.location.hash = '#careers'
   }
 
   const handleGoToHome = () => {
-    if (setCurrentPage) {
-      setCurrentPage('home')
+    if (window.location.hash === '' || window.location.hash === '#') {
       window.scrollTo({ top: 0, behavior: 'smooth' })
+    } else {
+      window.location.hash = '#'
     }
   }
 

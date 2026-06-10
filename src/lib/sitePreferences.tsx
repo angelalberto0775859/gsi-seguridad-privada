@@ -56,6 +56,18 @@ type TranslationKey =
   | 'contact.message'
   | 'contact.optional'
   | 'contact.submit'
+  | 'contact.placeholder.name'
+  | 'contact.placeholder.company'
+  | 'contact.placeholder.phone'
+  | 'contact.placeholder.message'
+  | 'contact.state'
+  | 'contact.propertyType'
+  | 'contact.serviceType'
+  | 'contact.placeholder.select'
+  | 'contact.captcha.label'
+  | 'contact.captcha.instruction'
+  | 'contact.captcha.error'
+  | 'contact.captcha.placeholder'
   | 'footer.description'
   | 'footer.sitemap'
   | 'footer.home'
@@ -136,6 +148,18 @@ const translations: Record<Language, Record<TranslationKey, string>> = {
     'contact.message': 'Mensaje / Requerimiento',
     'contact.optional': '(Opcional)',
     'contact.submit': 'Enviar Información',
+    'contact.placeholder.name': 'Ej. Ing. Carlos Mendoza',
+    'contact.placeholder.company': 'Ej. Logística Industrial S.A.',
+    'contact.placeholder.phone': '10 dígitos',
+    'contact.placeholder.message': 'Describe brevemente tus requerimientos o número de guardias requeridos...',
+    'contact.state': 'Estado de la República',
+    'contact.propertyType': 'Tipo de Inmueble a Resguardar',
+    'contact.serviceType': 'Tipo de Servicio',
+    'contact.placeholder.select': 'Selecciona una opción...',
+    'contact.captcha.label': 'Verificación de Seguridad',
+    'contact.captcha.instruction': 'Ingresa el código que se muestra al lado',
+    'contact.captcha.error': 'Código de verificación incorrecto',
+    'contact.captcha.placeholder': 'Código',
     'footer.description': 'Parte del Grupo Seguridad Integral (GSI). Proporcionando servicios estandarizados de seguridad privada, física y tecnológica a nivel nacional.',
     'footer.sitemap': 'Mapa del Sitio',
     'footer.home': 'Inicio',
@@ -206,6 +230,18 @@ const translations: Record<Language, Record<TranslationKey, string>> = {
     'contact.message': 'Message / Requirement',
     'contact.optional': '(Optional)',
     'contact.submit': 'Send Information',
+    'contact.placeholder.name': 'e.g. John Doe',
+    'contact.placeholder.company': 'e.g. Industrial Logistics Inc.',
+    'contact.placeholder.phone': '10 digits',
+    'contact.placeholder.message': 'Briefly describe your requirements or number of guards needed...',
+    'contact.state': 'State / Region',
+    'contact.propertyType': 'Property Type to Protect',
+    'contact.serviceType': 'Type of Service',
+    'contact.placeholder.select': 'Select an option...',
+    'contact.captcha.label': 'Security Verification',
+    'contact.captcha.instruction': 'Enter the code shown on the side',
+    'contact.captcha.error': 'Incorrect verification code',
+    'contact.captcha.placeholder': 'Code',
     'footer.description': 'Part of Grupo Seguridad Integral (GSI). Providing standardized private, physical, and technology security services nationwide.',
     'footer.sitemap': 'Site Map',
     'footer.home': 'Home',
@@ -276,6 +312,18 @@ const translations: Record<Language, Record<TranslationKey, string>> = {
     'contact.message': '留言 / 需求',
     'contact.optional': '(可选)',
     'contact.submit': '发送信息',
+    'contact.placeholder.name': '例如：张伟先生',
+    'contact.placeholder.company': '例如：工业物流有限公司',
+    'contact.placeholder.phone': '10 位数字',
+    'contact.placeholder.message': '简要描述您的需求或所需的警卫人数...',
+    'contact.state': '墨西哥省份 / 地区',
+    'contact.propertyType': '待保护的物业类型',
+    'contact.serviceType': '服务类型',
+    'contact.placeholder.select': '请选择一个选项...',
+    'contact.captcha.label': '安全验证',
+    'contact.captcha.instruction': '请输入侧面显示的验证码',
+    'contact.captcha.error': '验证码输入错误',
+    'contact.captcha.placeholder': '验证码',
     'footer.description': '隶属于Grupo Seguridad Integral (GSI)。在全国范围内提供标准化私人、实体与技术安保服务。',
     'footer.sitemap': '网站地图',
     'footer.home': '首页',
@@ -305,6 +353,11 @@ const SitePreferencesContext = createContext<PreferencesContextValue | null>(nul
 
 export function SitePreferencesProvider({ children }: { children: ReactNode }) {
   const [language, setLanguageState] = useState<Language>(() => {
+    // Check URL hash first for SEO language deep-linking
+    const hash = typeof window !== 'undefined' ? window.location.hash : ''
+    if (hash.includes('en')) return 'en'
+    if (hash.includes('zh')) return 'zh'
+
     const stored = localStorage.getItem('gsi-language')
     return stored === 'en' || stored === 'zh' ? stored : 'es'
   })
@@ -321,6 +374,21 @@ export function SitePreferencesProvider({ children }: { children: ReactNode }) {
     setVisualModeState(nextMode)
     localStorage.setItem('gsi-visual-mode', nextMode)
   }
+
+  useEffect(() => {
+    const handleHashLanguage = () => {
+      const hash = window.location.hash
+      if (hash.includes('en')) {
+        setLanguageState('en')
+      } else if (hash.includes('zh')) {
+        setLanguageState('zh')
+      }
+    }
+    
+    // Check language hash change events
+    window.addEventListener('hashchange', handleHashLanguage)
+    return () => window.removeEventListener('hashchange', handleHashLanguage)
+  }, [])
 
   useEffect(() => {
     document.documentElement.lang = language === 'zh' ? 'zh-Hans' : language

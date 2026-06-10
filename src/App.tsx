@@ -19,29 +19,49 @@ function AppContent() {
   const { isRedBlack } = useSitePreferences()
 
   useEffect(() => {
-    window.scrollTo({ top: 0, behavior: 'instant' as any })
-  }, [currentPage])
+    const handleHashChange = () => {
+      const hash = window.location.hash
+      if (hash.startsWith('#careers')) {
+        setCurrentPage('careers')
+        window.scrollTo({ top: 0, behavior: 'instant' as any })
+      } else {
+        setCurrentPage('home')
+        if (hash && hash !== '#' && hash !== '#home') {
+          // Wait for DOM to render if switching sections
+          setTimeout(() => {
+            const target = document.getElementById(hash.substring(1))
+            if (target) {
+              target.scrollIntoView({ behavior: 'smooth' })
+            }
+          }, 150)
+        }
+      }
+    }
+
+    // Initialize on mount
+    handleHashChange()
+
+    window.addEventListener('hashchange', handleHashChange)
+    return () => window.removeEventListener('hashchange', handleHashChange)
+  }, [])
 
   return (
     <div className={`relative w-full min-h-[100dvh] antialiased overflow-x-hidden transition-colors duration-500 ${
       isRedBlack ? 'bg-[#050608] text-white' : 'bg-[#fafafa]'
     }`}>
       {/* Floating Navigation Header */}
-      <Navbar currentPage={currentPage} setCurrentPage={setCurrentPage} />
-
-      {/* Moving Tech Grid Background for the entire page */}
-      <div className="fixed inset-0 z-0 animate-tech-grid opacity-35 pointer-events-none"></div>
+      <Navbar currentPage={currentPage} />
 
       {/* Organic Animated Background Blobs */}
       <div className="fixed inset-0 z-0 overflow-hidden pointer-events-none">
         <div className={`absolute top-1/4 -left-20 w-[450px] h-[450px] rounded-full filter blur-[100px] animate-blob-1 ${
-          isRedBlack ? 'bg-[#EF3B43]/20' : 'bg-red-100/25'
+          isRedBlack ? 'bg-[#EF3B43]/30' : 'bg-red-100/25'
         }`}></div>
         <div className={`absolute bottom-1/4 -right-20 w-[550px] h-[550px] rounded-full filter blur-[120px] animate-blob-2 ${
           isRedBlack ? 'bg-black/40' : 'bg-[#101820]/5'
         }`}></div>
         <div className={`absolute top-2/3 left-1/4 w-[350px] h-[350px] rounded-full filter blur-[80px] animate-blob-1 ${
-          isRedBlack ? 'bg-[#EF3B43]/10' : 'bg-red-50/20'
+          isRedBlack ? 'bg-[#EF3B43]/18' : 'bg-red-50/20'
         }`} style={{ animationDelay: '5s' }}></div>
       </div>
 
@@ -77,7 +97,7 @@ function AppContent() {
       </main>
 
       {/* Footer Block */}
-      <Footer currentPage={currentPage} setCurrentPage={setCurrentPage} />
+      <Footer />
 
       {/* Floating Cookie Consent Banner */}
       <CookieBanner />

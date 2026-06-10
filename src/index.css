@@ -132,3 +132,35 @@ body {
 .custom-scrollbar::-webkit-scrollbar-thumb:hover {
   background: rgba(239, 59, 67, 0.5);
 }
+
+/* --- Global Legibility & Readability Optimizations --- */
+
+/* Form Input Sizing for Better Reading */
+input, select, textarea {
+  font-size: 0.875rem !important; /* Forces text-sm (14px) instead of text-xs (12px) for user inputs */
+  line-height: 1.25rem !important;
+}
+
+/* Form Labels Legibility Boost */
+label {
+  font-size: 0.6875rem !important; /* Slightly larger labels (11px instead of 9px) */
+  font-weight: 700 !important;
+  letter-spacing: 0.05em !important;
+  color: #4b5563 !important; /* text-gray-600 for high light-mode contrast */
+  text-transform: uppercase !important;
+}
+
+/* Adapt labels in Dark Mode (Red & Black theme) */
+.theme-redblack label {
+  color: rgba(255, 255, 255, 0.7) !important; /* Brighter and fully readable in dark mode */
+}
+
+/* Ensure paragraph line spacing is relaxed for optimal reading flow */
+p {
+  line-height: 1.625 !important; /* relaxed line height */
+}
+
+/* Specific heading corrections to prevent overlapping lines */
+h1, h2, h3, h4, h5, h6 {
+  line-height: 1.25 !important; /* relaxed heading line height */
+}
