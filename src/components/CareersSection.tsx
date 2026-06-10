@@ -1,6 +1,6 @@
-import { useState } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Shield, GraduationCap, Handshake, Users, Phone, Envelope, Lock, CaretRight, ArrowDown } from '@phosphor-icons/react'
+import { Shield, GraduationCap, Handshake, Users, Phone, Envelope, CaretRight, ArrowDown, ArrowLeft, UploadSimple, CheckCircle, FilePdf, Trash, MapPin, Clock } from '@phosphor-icons/react'
 import { useSitePreferences, type Language } from '../lib/sitePreferences'
 
 interface JobOpening {
@@ -219,6 +219,8 @@ const contentDict: Record<Language, {
     salary: string
     requirements: string
     closedBtn: string
+    statusActive: string
+    applyBtn: string
   }
   cinematic: {
     badge: string
@@ -242,6 +244,42 @@ const contentDict: Record<Language, {
     profiles: string
     operation: string
   }
+  jobPage: {
+    backBtn: string
+    formTitle: string
+    fieldName: string
+    fieldNamePl: string
+    fieldEmail: string
+    fieldEmailPl: string
+    fieldPhone: string
+    fieldPhonePl: string
+    fieldAge: string
+    fieldAgePl: string
+    fieldMilitary: string
+    militaryOpts: {
+      liberada: string
+      tramite: string
+      noAplica: string
+      noCuento: string
+    }
+    fieldEducation: string
+    eduOpts: {
+      secundaria: string
+      preparatoria: string
+      licenciatura: string
+      otro: string
+    }
+    fieldCv: string
+    cvPl: string
+    cvSuccess: string
+    fieldComments: string
+    fieldCommentsPl: string
+    submitBtn: string
+    submittingBtn: string
+    successTitle: string
+    successDesc: string
+    successClose: string
+  }
 }> = {
   es: {
     about: {
@@ -261,12 +299,14 @@ const contentDict: Record<Language, {
     },
     vacancies: {
       title: 'Vacantes disponibles',
-      alertTitle: 'Actualmente no estamos contratando',
-      alertDesc: 'Las postulaciones se encuentran cerradas por el momento. Puedes revisar la información de cada perfil para conocer requisitos y funciones.',
+      alertTitle: 'Convocatoria Abierta',
+      alertDesc: 'Selecciona una vacante habilitada para revisar los requisitos y enviar tu postulación en línea.',
       closed: 'Cerrada',
       salary: 'Salario: Reservado',
       requirements: 'Requisitos Indispensables:',
-      closedBtn: 'Vacante cerrada'
+      closedBtn: 'Vacante cerrada',
+      statusActive: 'Vacante Habilitada',
+      applyBtn: 'Postularse Ahora'
     },
     cinematic: {
       badge: 'Reclutamiento Activo',
@@ -289,6 +329,42 @@ const contentDict: Record<Language, {
     stats: {
       profiles: 'Perfiles de Puesto',
       operation: 'Operación Nacional'
+    },
+    jobPage: {
+      backBtn: 'Volver a Vacantes',
+      formTitle: 'Enviar Postulación',
+      fieldName: 'Nombre Completo',
+      fieldNamePl: 'Ej. Juan Pérez',
+      fieldEmail: 'Correo Electrónico',
+      fieldEmailPl: 'ejemplo@gsi.com.mx',
+      fieldPhone: 'Teléfono de Contacto',
+      fieldPhonePl: '10 dígitos (Ej. 5512345678)',
+      fieldAge: 'Edad',
+      fieldAgePl: 'Ej. 28',
+      fieldMilitary: 'Cartilla de Servicio Militar',
+      militaryOpts: {
+        liberada: 'Liberada (Indispensable para armados)',
+        tramite: 'En trámite / Precartilla',
+        noAplica: 'No aplica / Mujeres',
+        noCuento: 'No cuento con ella'
+      },
+      fieldEducation: 'Último Grado de Estudios',
+      eduOpts: {
+        secundaria: 'Secundaria Concluida',
+        preparatoria: 'Preparatoria / Bachillerato',
+        licenciatura: 'Licenciatura / Superior',
+        otro: 'Otro'
+      },
+      fieldCv: 'Subir Currículum Vitae (CV)',
+      cvPl: 'Arrastra tu archivo aquí o haz clic para buscar (.pdf, .docx, .doc, .jpg)',
+      cvSuccess: '¡Archivo listo!',
+      fieldComments: 'Mensaje o comentarios adicionales',
+      fieldCommentsPl: 'Cuéntanos brevemente sobre tu experiencia laboral...',
+      submitBtn: 'Enviar Postulación',
+      submittingBtn: 'Enviando...',
+      successTitle: '¡Postulación Recibida!',
+      successDesc: 'Tu información ha sido enviada al departamento de Recursos Humanos de GSI. Evaluaremos tu perfil y nos pondremos en contacto contigo a la brevedad.',
+      successClose: 'Entendido'
     }
   },
   en: {
@@ -309,12 +385,14 @@ const contentDict: Record<Language, {
     },
     vacancies: {
       title: 'Available vacancies',
-      alertTitle: 'We are currently not hiring',
-      alertDesc: 'Applications are closed for the moment. You can review the details of each profile to learn about requirements and duties.',
+      alertTitle: 'Active Recruitment',
+      alertDesc: 'Select an enabled vacancy to review details and submit your application online.',
       closed: 'Closed',
       salary: 'Salary: Confidential',
       requirements: 'Essential Requirements:',
-      closedBtn: 'Vacancy closed'
+      closedBtn: 'Vacancy closed',
+      statusActive: 'Vacancy Enabled',
+      applyBtn: 'Apply Now'
     },
     cinematic: {
       badge: 'Active Recruitment',
@@ -337,6 +415,42 @@ const contentDict: Record<Language, {
     stats: {
       profiles: 'Job Profiles',
       operation: 'National Operation'
+    },
+    jobPage: {
+      backBtn: 'Back to Vacancies',
+      formTitle: 'Submit Application',
+      fieldName: 'Full Name',
+      fieldNamePl: 'e.g. John Doe',
+      fieldEmail: 'Email Address',
+      fieldEmailPl: 'example@gsi.com.mx',
+      fieldPhone: 'Phone Number',
+      fieldPhonePl: '10 digits (e.g. 5512345678)',
+      fieldAge: 'Age',
+      fieldAgePl: 'e.g. 28',
+      fieldMilitary: 'Military Service Status',
+      militaryOpts: {
+        liberada: 'Released (Mandatory for armed guards)',
+        tramite: 'In progress / Pre-card',
+        noAplica: 'Not applicable / Female',
+        noCuento: 'Do not have it'
+      },
+      fieldEducation: 'Highest Level of Education',
+      eduOpts: {
+        secundaria: 'Middle School / Junior High',
+        preparatoria: 'High School / College Prep',
+        licenciatura: 'Bachelor Degree / Higher',
+        otro: 'Other'
+      },
+      fieldCv: 'Upload Resume / CV',
+      cvPl: 'Drag your file here or click to browse (.pdf, .docx, .doc, .jpg)',
+      cvSuccess: 'File ready!',
+      fieldComments: 'Additional comments or message',
+      fieldCommentsPl: 'Briefly tell us about your work experience...',
+      submitBtn: 'Submit Application',
+      submittingBtn: 'Submitting...',
+      successTitle: 'Application Received!',
+      successDesc: 'Your information has been sent to GSI\'s Human Resources department. We will evaluate your profile and contact you shortly.',
+      successClose: 'Got it'
     }
   },
   zh: {
@@ -357,12 +471,14 @@ const contentDict: Record<Language, {
     },
     vacancies: {
       title: '可申请岗位',
-      alertTitle: '当前暂无招聘需求',
-      alertDesc: '申请目前已关闭。您可以查看每个岗位的详细信息，以了解相关要求和职责。',
+      alertTitle: '正在招聘',
+      alertDesc: '选择一个开放的岗位以查看详情并在线提交求职申请。',
       closed: '已关闭',
       salary: '薪资：保密',
       requirements: '基本要求：',
-      closedBtn: '岗位已关闭'
+      closedBtn: '岗位已关闭',
+      statusActive: '岗位开放中',
+      applyBtn: '立即申请'
     },
     cinematic: {
       badge: '招聘进行中',
@@ -385,6 +501,42 @@ const contentDict: Record<Language, {
     stats: {
       profiles: '工作岗位',
       operation: '全国化运营'
+    },
+    jobPage: {
+      backBtn: '返回职位列表',
+      formTitle: '提交求职申请',
+      fieldName: '姓名',
+      fieldNamePl: '例如：张三',
+      fieldEmail: '电子邮件',
+      fieldEmailPl: 'example@gsi.com.mx',
+      fieldPhone: '联系电话',
+      fieldPhonePl: '10位数字 (例如: 5512345678)',
+      fieldAge: '年龄',
+      fieldAgePl: '例如：28',
+      fieldMilitary: '服兵役情况 (男性)',
+      militaryOpts: {
+        liberada: '已服完兵役 (武装警卫必备)',
+        tramite: '办理中 / 预备兵役',
+        noAplica: '不适用 / 女性',
+        noCuento: '未持有兵役卡'
+      },
+      fieldEducation: '最高学历',
+      eduOpts: {
+        secundaria: '初中毕业',
+        preparatoria: '高中 / 中专毕业',
+        licenciatura: '本科 / 大专毕业',
+        otro: '其他'
+      },
+      fieldCv: '上传个人简历 (CV)',
+      cvPl: '拖拽文件到此处或点击浏览 (.pdf, .docx, .doc, .jpg)',
+      cvSuccess: '文件已就绪！',
+      fieldComments: '附加说明或留言',
+      fieldCommentsPl: '简要介绍您的工作经历及相关背景...',
+      submitBtn: '提交申请',
+      submittingBtn: '正在提交...',
+      successTitle: '求职申请已收到！',
+      successDesc: '您的个人资料已成功发送至 GSI 人力资源部。我们将评估您的简历，并会尽快与您取得联系。',
+      successClose: '我知道了'
     }
   }
 }
@@ -394,6 +546,35 @@ export default function CareersSection() {
   const { isRedBlack, language } = useSitePreferences()
   const content = contentDict[language]
   const jobOpenings = jobOpeningsData[language]
+
+  const [currentHash, setCurrentHash] = useState(window.location.hash)
+
+  useEffect(() => {
+    const handleHashChange = () => {
+      setCurrentHash(window.location.hash)
+    }
+    window.addEventListener('hashchange', handleHashChange)
+    return () => window.removeEventListener('hashchange', handleHashChange)
+  }, [])
+
+  const activeJob = jobOpenings.find(job => currentHash.includes(job.id))
+
+  if (activeJob) {
+    return (
+      <section id="careers" className={`border-b relative overflow-hidden transition-colors duration-500 pt-36 pb-20 min-h-[100dvh] ${
+        isRedBlack ? 'bg-[#050608] border-[#EF3B43]/18 text-white' : 'bg-[#fafafa] border-gray-100 text-gray-800'
+      }`}>
+        {/* Subtle decorative background watermark */}
+        <div className="absolute top-1/2 -right-48 w-[500px] h-[500px] bg-red-150/15 rounded-full filter blur-[120px] pointer-events-none"></div>
+
+         <JobDetailPage 
+          job={activeJob}
+          content={content}
+          isRedBlack={isRedBlack}
+        />
+      </section>
+    )
+  }
 
   return (
     <section id="careers" className={`border-b relative overflow-hidden transition-colors duration-500 ${
@@ -706,9 +887,9 @@ export default function CareersSection() {
                 isRedBlack ? 'bg-white/[0.035] border-white/10 text-white/58' : 'bg-gray-100 border-gray-200 text-gray-600'
               }`}>
                 <div className={`w-9 h-9 rounded-xl flex items-center justify-center shrink-0 mt-0.5 shadow-sm ${
-                  isRedBlack ? 'bg-white/8 text-white/50' : 'bg-gray-200 text-gray-500'
+                  isRedBlack ? 'bg-[#EF3B43]/10 text-[#EF3B43]' : 'bg-red-50 text-[#EF3B43]'
                 }`}>
-                  <Lock size={18} weight="fill" />
+                  <Shield size={18} weight="fill" />
                 </div>
                 <div className="space-y-0.5">
                   <h5 className={`font-bold uppercase tracking-wider text-[10px] flex items-center gap-1.5 ${
@@ -745,11 +926,11 @@ export default function CareersSection() {
                         className="w-full text-left p-5 flex items-center justify-between gap-4 cursor-pointer focus:outline-none"
                       >
                         <div className="space-y-1">
-                          <span className="text-[9px] font-bold text-gray-400 uppercase tracking-widest">
-                            {content.vacancies.closed} · {job.type}
+                          <span className="text-[9px] font-bold text-green-500 uppercase tracking-widest">
+                            {content.vacancies.statusActive} · {job.type}
                           </span>
                           <h5 className={`font-display text-base font-bold tracking-tight hover:text-[#EF3B43] transition-colors ${
-                            isRedBlack ? 'text-white/68' : 'text-gray-600'
+                            isRedBlack ? 'text-white/90' : 'text-gray-800'
                           }`}>
                             {job.title}
                           </h5>
@@ -802,15 +983,19 @@ export default function CareersSection() {
                                 </ul>
                               </div>
 
-                              {/* Disabled Application Button */}
+                              {/* Apply Button */}
                               <div className="pt-2">
-                                <button
-                                  disabled
-                                  className="px-5 py-2.5 bg-gray-100 text-gray-400 border border-gray-200 text-xs font-bold uppercase tracking-wider rounded-xl cursor-not-allowed flex items-center gap-2"
+                                <a
+                                  href={`#careers/${job.id}`}
+                                  className={`inline-flex items-center gap-2 px-5 py-2.5 text-xs font-bold uppercase tracking-wider rounded-xl transition-all duration-300 ${
+                                    isRedBlack
+                                      ? 'bg-[#EF3B43] text-white hover:bg-white hover:text-[#050608]'
+                                      : 'bg-[#EF3B43] text-white hover:bg-[#101820]'
+                                  }`}
                                 >
-                                  <Lock size={14} weight="fill" />
-                                  {content.vacancies.closedBtn}
-                                </button>
+                                  <Shield size={14} weight="fill" />
+                                  {content.vacancies.applyBtn}
+                                </a>
                               </div>
                             </div>
                           </motion.div>
@@ -954,5 +1139,502 @@ export default function CareersSection() {
 
       </div>
     </section>
+  )
+}
+
+// ==========================================
+// JOB DETAIL PAGE & APPLICATION FORM COMPONENT
+// ==========================================
+function JobDetailPage({
+  job,
+  content,
+  isRedBlack
+}: {
+  job: JobOpening
+  content: any
+  isRedBlack: boolean
+}) {
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    phone: '',
+    age: '',
+    militaryCard: 'liberada',
+    education: 'secundaria',
+    comments: ''
+  })
+  const [cvFile, setCvFile] = useState<File | null>(null)
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [isSuccess, setIsSuccess] = useState(false)
+  const fileInputRef = useRef<HTMLInputElement>(null)
+
+  const handleInputChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
+  ) => {
+    const { name, value } = e.target
+    setFormData(prev => ({ ...prev, [name]: value }))
+  }
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      setCvFile(e.target.files[0])
+    }
+  }
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault()
+    setIsSubmitting(true)
+    setTimeout(() => {
+      setIsSubmitting(false)
+      setIsSuccess(true)
+    }, 1200)
+  }
+
+  const handleDragOver = (e: React.DragEvent) => {
+    e.preventDefault()
+  }
+
+  const handleDrop = (e: React.DragEvent) => {
+    e.preventDefault()
+    if (e.dataTransfer.files && e.dataTransfer.files[0]) {
+      setCvFile(e.dataTransfer.files[0])
+    }
+  }
+
+  const clearFile = () => {
+    setCvFile(null)
+    if (fileInputRef.current) {
+      fileInputRef.current.value = ''
+    }
+  }
+
+  const closeSuccess = () => {
+    setIsSuccess(false)
+    setFormData({
+      name: '',
+      email: '',
+      phone: '',
+      age: '',
+      militaryCard: 'liberada',
+      education: 'secundaria',
+      comments: ''
+    })
+    setCvFile(null)
+    window.location.hash = '#careers'
+  }
+
+  return (
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 relative z-10">
+      {/* Back button */}
+      <div className="mb-8 text-left">
+        <a
+          href="#careers"
+          className={`inline-flex items-center space-x-2 text-xs font-bold uppercase tracking-wider transition-colors duration-300 ${
+            isRedBlack ? 'text-white/60 hover:text-[#EF3B43]' : 'text-gray-500 hover:text-[#EF3B43]'
+          }`}
+        >
+          <ArrowLeft size={16} />
+          <span>{content.jobPage.backBtn}</span>
+        </a>
+      </div>
+
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
+        {/* Left Column: Job Details */}
+        <div className="lg:col-span-6 space-y-6 text-left">
+          <div className="space-y-3">
+            <span className={`inline-flex items-center px-3 py-1 text-[9px] font-bold uppercase tracking-wider border rounded-full ${
+              isRedBlack ? 'bg-red-500/10 border-red-500/20 text-[#EF3B43]' : 'bg-red-50 text-[#EF3B43] border-red-150'
+            }`}>
+              {content.vacancies.statusActive}
+            </span>
+            <h1 className={`font-display text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight leading-[1.1] ${
+              isRedBlack ? 'text-white' : 'text-[#101820]'
+            }`}>
+              {job.title}
+            </h1>
+            <div className="flex flex-wrap items-center gap-x-6 gap-y-2 text-xs text-gray-500 font-semibold pt-1">
+              <span className="flex items-center gap-1.5 font-bold">
+                <MapPin size={16} className="text-[#EF3B43]" />
+                {job.location}
+              </span>
+              <span className="flex items-center gap-1.5 font-bold">
+                <Clock size={16} className="text-[#EF3B43]" />
+                {job.type}
+              </span>
+              <span className="flex items-center gap-1.5 font-bold">
+                <Shield size={16} className="text-[#EF3B43]" />
+                {content.vacancies.salary}
+              </span>
+            </div>
+          </div>
+
+          <div className={`p-6 rounded-2xl border ${
+            isRedBlack ? 'bg-[#0b0d11] border-white/10' : 'bg-white border-gray-150 shadow-sm'
+          }`}>
+            <p className={`text-sm leading-relaxed ${isRedBlack ? 'text-white/70' : 'text-gray-600'}`}>
+              {job.description}
+            </p>
+          </div>
+
+          {/* Requirements list */}
+          <div className="space-y-4">
+            <h3 className={`font-display text-sm font-black uppercase tracking-widest ${
+              isRedBlack ? 'text-white/90' : 'text-[#101820]'
+            }`}>
+              {content.vacancies.requirements}
+            </h3>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              {job.requirements.map((req, i) => (
+                <div 
+                  key={i} 
+                  className={`flex items-start space-x-3 p-3.5 border rounded-xl transition-all duration-300 hover:scale-[1.01] ${
+                    isRedBlack ? 'bg-white/[0.02] border-white/5 text-white/80' : 'bg-gray-50/50 border-gray-100 text-gray-600'
+                  }`}
+                >
+                  <CheckCircle size={18} className="text-[#EF3B43] shrink-0 mt-0.5" weight="fill" />
+                  <span className="text-xs font-medium leading-relaxed">{req}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        {/* Right Column: Application Form */}
+        <div className="lg:col-span-6">
+          <div className={`p-6 sm:p-8 rounded-[24px] border relative overflow-hidden transition-all duration-500 ${
+            isRedBlack ? 'bg-[#0b0d11] border-[#EF3B43]/20 shadow-2xl shadow-[#EF3B43]/5' : 'bg-white border-gray-200 shadow-xl'
+          }`}>
+            {/* Watermark inside form */}
+            <div className="absolute -right-12 -bottom-12 w-48 h-48 opacity-[0.025] pointer-events-none select-none">
+              <img 
+                src={isRedBlack ? "/recursos/gsi-isomarca-white.png" : "/recursos/gsi-isomarca-black.png"} 
+                alt="GSI Watermark" 
+                className="w-full h-full object-contain"
+              />
+            </div>
+
+            <h2 className={`font-display text-xl sm:text-2xl font-black tracking-tight mb-6 text-left ${
+              isRedBlack ? 'text-white' : 'text-[#101820]'
+            }`}>
+              {content.jobPage.formTitle}
+            </h2>
+
+            <form onSubmit={handleSubmit} className="space-y-5 relative z-10">
+              {/* Name field */}
+              <div className="space-y-1.5 text-left">
+                <label className={`block text-[10px] font-extrabold uppercase tracking-wider ${
+                  isRedBlack ? 'text-white/60' : 'text-gray-500'
+                }`}>
+                  {content.jobPage.fieldName} *
+                </label>
+                <input
+                  type="text"
+                  name="name"
+                  required
+                  value={formData.name}
+                  onChange={handleInputChange}
+                  placeholder={content.jobPage.fieldNamePl}
+                  className={`w-full px-4 py-3 rounded-xl text-xs font-semibold border outline-none transition-all duration-300 ${
+                    isRedBlack 
+                      ? 'bg-black/45 border-white/10 text-white placeholder-white/25 focus:border-[#EF3B43] focus:ring-1 focus:ring-[#EF3B43]/50'
+                      : 'bg-gray-50 border-gray-200 text-gray-800 placeholder-gray-400 focus:border-[#EF3B43] focus:ring-1 focus:ring-[#EF3B43]/30'
+                  }`}
+                />
+              </div>
+
+              {/* Grid: Email & Phone */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                {/* Email field */}
+                <div className="space-y-1.5 text-left">
+                  <label className={`block text-[10px] font-extrabold uppercase tracking-wider ${
+                    isRedBlack ? 'text-white/60' : 'text-gray-500'
+                  }`}>
+                    {content.jobPage.fieldEmail} *
+                  </label>
+                  <input
+                    type="email"
+                    name="email"
+                    required
+                    value={formData.email}
+                    onChange={handleInputChange}
+                    placeholder={content.jobPage.fieldEmailPl}
+                    className={`w-full px-4 py-3 rounded-xl text-xs font-semibold border outline-none transition-all duration-300 ${
+                      isRedBlack 
+                        ? 'bg-black/45 border-white/10 text-white placeholder-white/25 focus:border-[#EF3B43] focus:ring-1 focus:ring-[#EF3B43]/50'
+                        : 'bg-gray-50 border-gray-200 text-gray-800 placeholder-gray-400 focus:border-[#EF3B43] focus:ring-1 focus:ring-[#EF3B43]/30'
+                    }`}
+                  />
+                </div>
+
+                {/* Phone field */}
+                <div className="space-y-1.5 text-left">
+                  <label className={`block text-[10px] font-extrabold uppercase tracking-wider ${
+                    isRedBlack ? 'text-white/60' : 'text-gray-500'
+                  }`}>
+                    {content.jobPage.fieldPhone} *
+                  </label>
+                  <input
+                    type="tel"
+                    name="phone"
+                    required
+                    pattern="[0-9]{10}"
+                    value={formData.phone}
+                    onChange={handleInputChange}
+                    placeholder={content.jobPage.fieldPhonePl}
+                    className={`w-full px-4 py-3 rounded-xl text-xs font-semibold border outline-none transition-all duration-300 ${
+                      isRedBlack 
+                        ? 'bg-black/45 border-white/10 text-white placeholder-white/25 focus:border-[#EF3B43] focus:ring-1 focus:ring-[#EF3B43]/50'
+                        : 'bg-gray-50 border-gray-200 text-gray-800 placeholder-gray-400 focus:border-[#EF3B43] focus:ring-1 focus:ring-[#EF3B43]/30'
+                    }`}
+                  />
+                </div>
+              </div>
+
+              {/* Grid: Age & Cartilla Militar */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                {/* Age field */}
+                <div className="space-y-1.5 text-left">
+                  <label className={`block text-[10px] font-extrabold uppercase tracking-wider ${
+                    isRedBlack ? 'text-white/60' : 'text-gray-500'
+                  }`}>
+                    {content.jobPage.fieldAge} *
+                  </label>
+                  <input
+                    type="number"
+                    name="age"
+                    required
+                    min="18"
+                    max="65"
+                    value={formData.age}
+                    onChange={handleInputChange}
+                    placeholder={content.jobPage.fieldAgePl}
+                    className={`w-full px-4 py-3 rounded-xl text-xs font-semibold border outline-none transition-all duration-300 ${
+                      isRedBlack 
+                        ? 'bg-black/45 border-white/10 text-white placeholder-white/25 focus:border-[#EF3B43] focus:ring-1 focus:ring-[#EF3B43]/50'
+                        : 'bg-gray-50 border-gray-200 text-gray-800 placeholder-gray-400 focus:border-[#EF3B43] focus:ring-1 focus:ring-[#EF3B43]/30'
+                    }`}
+                  />
+                </div>
+
+                {/* Military Card (Cartilla) */}
+                <div className="space-y-1.5 text-left">
+                  <label className={`block text-[10px] font-extrabold uppercase tracking-wider ${
+                    isRedBlack ? 'text-white/60' : 'text-gray-500'
+                  }`}>
+                    {content.jobPage.fieldMilitary} *
+                  </label>
+                  <select
+                    name="militaryCard"
+                    value={formData.militaryCard}
+                    onChange={handleInputChange}
+                    className={`w-full px-4 py-3 rounded-xl text-xs font-semibold border outline-none transition-all duration-300 ${
+                      isRedBlack 
+                        ? 'bg-black/45 border-white/10 text-white focus:border-[#EF3B43] focus:ring-1 focus:ring-[#EF3B43]/50 [&>option]:bg-[#0b0d11]'
+                        : 'bg-gray-50 border-gray-200 text-gray-800 focus:border-[#EF3B43] focus:ring-1 focus:ring-[#EF3B43]/30 [&>option]:bg-white'
+                    }`}
+                  >
+                    <option value="liberada">{content.jobPage.militaryOpts.liberada}</option>
+                    <option value="tramite">{content.jobPage.militaryOpts.tramite}</option>
+                    <option value="noAplica">{content.jobPage.militaryOpts.noAplica}</option>
+                    <option value="noCuento">{content.jobPage.militaryOpts.noCuento}</option>
+                  </select>
+                </div>
+              </div>
+
+              {/* Education field */}
+              <div className="space-y-1.5 text-left">
+                <label className={`block text-[10px] font-extrabold uppercase tracking-wider ${
+                  isRedBlack ? 'text-white/60' : 'text-gray-500'
+                }`}>
+                  {content.jobPage.fieldEducation} *
+                </label>
+                <select
+                  name="education"
+                  value={formData.education}
+                  onChange={handleInputChange}
+                  className={`w-full px-4 py-3 rounded-xl text-xs font-semibold border outline-none transition-all duration-300 ${
+                    isRedBlack 
+                      ? 'bg-black/45 border-white/10 text-white focus:border-[#EF3B43] focus:ring-1 focus:ring-[#EF3B43]/50 [&>option]:bg-[#0b0d11]'
+                      : 'bg-gray-50 border-gray-200 text-gray-800 focus:border-[#EF3B43] focus:ring-1 focus:ring-[#EF3B43]/30 [&>option]:bg-white'
+                  }`}
+                >
+                  <option value="secundaria">{content.jobPage.eduOpts.secundaria}</option>
+                  <option value="preparatoria">{content.jobPage.eduOpts.preparatoria}</option>
+                  <option value="licenciatura">{content.jobPage.eduOpts.licenciatura}</option>
+                  <option value="otro">{content.jobPage.eduOpts.otro}</option>
+                </select>
+              </div>
+
+              {/* File Upload drag and drop */}
+              <div className="space-y-1.5 text-left">
+                <label className={`block text-[10px] font-extrabold uppercase tracking-wider ${
+                  isRedBlack ? 'text-white/60' : 'text-gray-500'
+                }`}>
+                  {content.jobPage.fieldCv} *
+                </label>
+                
+                <input
+                  type="file"
+                  ref={fileInputRef}
+                  onChange={handleFileChange}
+                  accept=".pdf,.doc,.docx,.jpg,.jpeg"
+                  required={!cvFile}
+                  className="hidden"
+                  id="cv-upload-input"
+                />
+
+                {!cvFile ? (
+                  <div
+                    onDragOver={handleDragOver}
+                    onDrop={handleDrop}
+                    onClick={() => fileInputRef.current?.click()}
+                    className={`border-2 border-dashed rounded-xl p-5 text-center cursor-pointer transition-all duration-300 flex flex-col items-center justify-center space-y-2 group ${
+                      isRedBlack 
+                        ? 'border-white/10 bg-black/25 hover:border-[#EF3B43]/50 hover:bg-[#EF3B43]/5' 
+                        : 'border-gray-200 bg-gray-50/50 hover:border-[#EF3B43]/50 hover:bg-red-50/10'
+                    }`}
+                  >
+                    <UploadSimple size={24} className={`transition-colors duration-300 ${
+                      isRedBlack ? 'text-white/40 group-hover:text-[#EF3B43]' : 'text-gray-400 group-hover:text-[#EF3B43]'
+                    }`} />
+                    <p className={`text-[11px] leading-relaxed max-w-[280px] mx-auto ${
+                      isRedBlack ? 'text-white/50' : 'text-gray-500'
+                    }`}>
+                      {content.jobPage.cvPl}
+                    </p>
+                  </div>
+                ) : (
+                  <div className={`flex items-center justify-between p-3.5 border rounded-xl ${
+                    isRedBlack ? 'bg-white/5 border-white/10' : 'bg-gray-50 border-gray-150'
+                  }`}>
+                    <div className="flex items-center space-x-2.5 overflow-hidden">
+                      <FilePdf size={20} className="text-[#EF3B43] shrink-0" weight="fill" />
+                      <div className="text-left overflow-hidden">
+                        <p className={`text-xs font-bold truncate ${isRedBlack ? 'text-white/90' : 'text-gray-700'}`}>
+                          {cvFile.name}
+                        </p>
+                        <p className="text-[10px] text-green-500 font-bold">
+                          {content.jobPage.cvSuccess} ({(cvFile.size / 1024 / 1024).toFixed(2)} MB)
+                        </p>
+                      </div>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={clearFile}
+                      className={`p-1.5 rounded-lg transition-colors shrink-0 ${
+                        isRedBlack ? 'hover:bg-white/10 text-white/50 hover:text-white' : 'hover:bg-gray-150 text-gray-400 hover:text-gray-600'
+                      }`}
+                    >
+                      <Trash size={16} />
+                    </button>
+                  </div>
+                )}
+              </div>
+
+              {/* Comments field */}
+              <div className="space-y-1.5 text-left">
+                <label className={`block text-[10px] font-extrabold uppercase tracking-wider ${
+                  isRedBlack ? 'text-white/60' : 'text-gray-500'
+                }`}>
+                  {content.jobPage.fieldComments}
+                </label>
+                <textarea
+                  name="comments"
+                  rows={3}
+                  value={formData.comments}
+                  onChange={handleInputChange}
+                  placeholder={content.jobPage.fieldCommentsPl}
+                  className={`w-full px-4 py-3 rounded-xl text-xs font-semibold border outline-none transition-all duration-300 resize-none ${
+                    isRedBlack 
+                      ? 'bg-black/45 border-white/10 text-white placeholder-white/25 focus:border-[#EF3B43] focus:ring-1 focus:ring-[#EF3B43]/50'
+                      : 'bg-gray-50 border-gray-200 text-gray-800 placeholder-gray-400 focus:border-[#EF3B43] focus:ring-1 focus:ring-[#EF3B43]/30'
+                  }`}
+                />
+              </div>
+
+              {/* Submit button */}
+              <div className="pt-2">
+                <button
+                  type="submit"
+                  disabled={isSubmitting}
+                  className={`w-full py-3.5 text-xs font-bold uppercase tracking-wider text-white transition-all duration-300 rounded-xl cursor-pointer flex items-center justify-center space-x-2 ${
+                    isSubmitting 
+                      ? 'bg-red-500/50 cursor-not-allowed'
+                      : isRedBlack 
+                        ? 'bg-[#EF3B43] hover:bg-white hover:text-[#050608] shadow-lg shadow-red-500/10' 
+                        : 'bg-[#EF3B43] hover:bg-[#101820] shadow-lg shadow-red-500/15'
+                  }`}
+                >
+                  {isSubmitting ? (
+                    <>
+                      <svg className="animate-spin -ml-1 mr-3 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                      </svg>
+                      <span>{content.jobPage.submittingBtn}</span>
+                    </>
+                  ) : (
+                    <>
+                      <Shield size={14} weight="fill" />
+                      <span>{content.jobPage.submitBtn}</span>
+                    </>
+                  )}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+
+      {/* Success Modal */}
+      <AnimatePresence>
+        {isSuccess && (
+          <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="absolute inset-0 bg-black/80 backdrop-blur-sm"
+              onClick={closeSuccess}
+            ></motion.div>
+            
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.9, y: 20 }}
+              transition={{ type: 'spring', stiffness: 100, damping: 15 }}
+              className={`relative z-10 max-w-md w-full p-8 rounded-[28px] border text-center space-y-5 shadow-2xl ${
+                isRedBlack ? 'bg-[#0b0d11] border-white/10 text-white' : 'bg-white border-gray-150 text-gray-800'
+              }`}
+            >
+              <div className="mx-auto w-16 h-16 rounded-full bg-green-500/10 flex items-center justify-center text-green-500">
+                <CheckCircle size={36} weight="fill" />
+              </div>
+
+              <div className="space-y-2">
+                <h3 className={`font-display text-xl font-black tracking-tight ${isRedBlack ? 'text-white' : 'text-[#101820]'}`}>
+                  {content.jobPage.successTitle}
+                </h3>
+                <p className={`text-xs leading-relaxed ${isRedBlack ? 'text-white/60' : 'text-gray-500'}`}>
+                  {content.jobPage.successDesc}
+                </p>
+              </div>
+
+              <div className="pt-2">
+                <button
+                  type="button"
+                  onClick={closeSuccess}
+                  className={`w-full py-3 text-xs font-bold uppercase tracking-wider text-white transition-all duration-300 rounded-xl cursor-pointer ${
+                    isRedBlack ? 'bg-white/10 hover:bg-[#EF3B43]' : 'bg-[#101820] hover:bg-[#EF3B43]'
+                  }`}
+                >
+                  {content.jobPage.successClose}
+                </button>
+              </div>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
+    </div>
   )
 }
