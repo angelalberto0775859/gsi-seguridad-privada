@@ -28,7 +28,7 @@ const jobOpeningsData: Record<Language, JobOpening[]> = {
         'Documentación básica en regla (RFC, CURP, NSS)',
         'Sin antecedentes penales (Carta federal o estatal)'
       ],
-      image: '/recursos/gsi-careers-about-us.png'
+      image: '/recursos/gsi-security-team.png'
     },
     {
       id: 'guardia-armado',
@@ -90,7 +90,7 @@ const jobOpeningsData: Record<Language, JobOpening[]> = {
         'Basic paperwork in order (RFC, CURP, NSS)',
         'No criminal record (federal or state letter)'
       ],
-      image: '/recursos/gsi-careers-about-us.png'
+      image: '/recursos/gsi-security-team.png'
     },
     {
       id: 'guardia-armado',
@@ -152,7 +152,7 @@ const jobOpeningsData: Record<Language, JobOpening[]> = {
         '基本证件齐全（RFC, CURP, NSS）',
         '无犯罪记录证明（联邦或州级）'
       ],
-      image: '/recursos/gsi-careers-about-us.png'
+      image: '/recursos/gsi-security-team.png'
     },
     {
       id: 'guardia-armado',
@@ -265,6 +265,11 @@ const contentDict: Record<Language, {
     fieldPhonePl: string
     fieldAge: string
     fieldAgePl: string
+    fieldGender: string
+    genderOpts: {
+      hombre: string
+      mujer: string
+    }
     fieldMilitary: string
     militaryOpts: {
       liberada: string
@@ -354,6 +359,11 @@ const contentDict: Record<Language, {
       fieldPhonePl: '10 dígitos (Ej. 5512345678)',
       fieldAge: 'Edad',
       fieldAgePl: 'Ej. 28',
+      fieldGender: 'Sexo',
+      genderOpts: {
+        hombre: 'Hombre',
+        mujer: 'Mujer'
+      },
       fieldMilitary: 'Cartilla de Servicio Militar',
       militaryOpts: {
         liberada: 'Liberada (Indispensable para armados)',
@@ -443,6 +453,11 @@ const contentDict: Record<Language, {
       fieldPhonePl: '10 digits (e.g. 5512345678)',
       fieldAge: 'Age',
       fieldAgePl: 'e.g. 28',
+      fieldGender: 'Gender',
+      genderOpts: {
+        hombre: 'Male',
+        mujer: 'Female'
+      },
       fieldMilitary: 'Military Service Status',
       militaryOpts: {
         liberada: 'Released (Mandatory for armed guards)',
@@ -532,7 +547,12 @@ const contentDict: Record<Language, {
       fieldPhonePl: '10位数字 (例如: 5512345678)',
       fieldAge: '年龄',
       fieldAgePl: '例如：28',
-      fieldMilitary: '服兵役情况 (男性)',
+      fieldGender: '性别',
+      genderOpts: {
+        hombre: '男',
+        mujer: '女'
+      },
+      fieldMilitary: '服兵役情况',
       militaryOpts: {
         liberada: '已服完兵役 (武装警卫必备)',
         tramite: '办理中 / 预备兵役',
@@ -1180,6 +1200,7 @@ function JobDetailPage({
     email: '',
     phone: '',
     age: '',
+    gender: 'hombre',
     militaryCard: 'liberada',
     education: 'secundaria',
     comments: ''
@@ -1194,7 +1215,13 @@ function JobDetailPage({
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
   ) => {
     const { name, value } = e.target
-    setFormData(prev => ({ ...prev, [name]: value }))
+    setFormData(prev => {
+      const next = { ...prev, [name]: value }
+      if (name === 'gender' && value === 'mujer') {
+        next.militaryCard = 'noAplica'
+      }
+      return next
+    })
     if (errors[name]) {
       setErrors(prev => {
         const next = { ...prev }
@@ -1335,6 +1362,7 @@ function JobDetailPage({
       email: '',
       phone: '',
       age: '',
+      gender: 'hombre',
       militaryCard: 'liberada',
       education: 'secundaria',
       comments: ''
@@ -1730,6 +1758,38 @@ function JobDetailPage({
 
                   {step === 2 && (
                     <div className="space-y-4 text-left">
+                      {/* Gender field */}
+                      <div className="space-y-1.5 group">
+                        <label className={`block text-[10px] font-extrabold uppercase tracking-wider transition-colors duration-300 ${
+                          isRedBlack ? 'text-white/60 group-focus-within:text-[#EF3B43]' : 'text-gray-500 group-focus-within:text-[#EF3B43]'
+                        }`}>
+                          {content.jobPage.fieldGender} *
+                        </label>
+                        <div className="relative rounded-xl shadow-sm">
+                          <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none">
+                            <Users className={`h-4 w-4 transition-colors duration-300 ${
+                              isRedBlack ? 'text-white/30 group-focus-within:text-[#EF3B43]' : 'text-gray-400 group-focus-within:text-[#EF3B43]'
+                            }`} />
+                          </div>
+                          <select
+                            name="gender"
+                            value={formData.gender}
+                            onChange={handleInputChange}
+                            className={`w-full pl-10 pr-4 py-3 rounded-xl text-xs font-semibold border outline-none transition-all duration-300 appearance-none ${
+                              isRedBlack 
+                                ? 'bg-black/45 border-white/10 text-white focus:border-[#EF3B43] focus:ring-1 focus:ring-[#EF3B43]/50 [&>option]:bg-[#0b0d11]'
+                                : 'bg-gray-50 border-gray-200 text-gray-800 focus:border-[#EF3B43] focus:ring-1 focus:ring-[#EF3B43]/30 [&>option]:bg-white'
+                            }`}
+                          >
+                            <option value="hombre">{content.jobPage.genderOpts.hombre}</option>
+                            <option value="mujer">{content.jobPage.genderOpts.mujer}</option>
+                          </select>
+                          <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+                            <ArrowDown size={14} className={isRedBlack ? 'text-white/40' : 'text-gray-450'} />
+                          </div>
+                        </div>
+                      </div>
+
                       {/* Education field */}
                       <div className="space-y-1.5 group">
                         <label className={`block text-[10px] font-extrabold uppercase tracking-wider transition-colors duration-300 ${
@@ -1765,38 +1825,48 @@ function JobDetailPage({
                       </div>
 
                       {/* Military Card (Cartilla) */}
-                      <div className="space-y-1.5 group">
-                        <label className={`block text-[10px] font-extrabold uppercase tracking-wider transition-colors duration-300 ${
-                          isRedBlack ? 'text-white/60 group-focus-within:text-[#EF3B43]' : 'text-gray-500 group-focus-within:text-[#EF3B43]'
-                        }`}>
-                          {content.jobPage.fieldMilitary} *
-                        </label>
-                        <div className="relative rounded-xl shadow-sm">
-                          <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none">
-                            <Shield className={`h-4 w-4 transition-colors duration-300 ${
-                              isRedBlack ? 'text-white/30 group-focus-within:text-[#EF3B43]' : 'text-gray-400 group-focus-within:text-[#EF3B43]'
-                            }`} />
-                          </div>
-                          <select
-                            name="militaryCard"
-                            value={formData.militaryCard}
-                            onChange={handleInputChange}
-                            className={`w-full pl-10 pr-4 py-3 rounded-xl text-xs font-semibold border outline-none transition-all duration-300 appearance-none ${
-                              isRedBlack 
-                                ? 'bg-black/45 border-white/10 text-white focus:border-[#EF3B43] focus:ring-1 focus:ring-[#EF3B43]/50 [&>option]:bg-[#0b0d11]'
-                                : 'bg-gray-50 border-gray-200 text-gray-800 focus:border-[#EF3B43] focus:ring-1 focus:ring-[#EF3B43]/30 [&>option]:bg-white'
-                            }`}
+                      <AnimatePresence initial={false}>
+                        {formData.gender === 'hombre' && (
+                          <motion.div
+                            initial={{ opacity: 0, height: 0 }}
+                            animate={{ opacity: 1, height: 'auto' }}
+                            exit={{ opacity: 0, height: 0 }}
+                            transition={{ duration: 0.25, ease: 'easeInOut' }}
+                            className="space-y-1.5 group overflow-hidden"
                           >
-                            <option value="liberada">{content.jobPage.militaryOpts.liberada}</option>
-                            <option value="tramite">{content.jobPage.militaryOpts.tramite}</option>
-                            <option value="noAplica">{content.jobPage.militaryOpts.noAplica}</option>
-                            <option value="noCuento">{content.jobPage.militaryOpts.noCuento}</option>
-                          </select>
-                          <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
-                            <ArrowDown size={14} className={isRedBlack ? 'text-white/40' : 'text-gray-450'} />
-                          </div>
-                        </div>
-                      </div>
+                            <label className={`block text-[10px] font-extrabold uppercase tracking-wider transition-colors duration-300 ${
+                              isRedBlack ? 'text-white/60 group-focus-within:text-[#EF3B43]' : 'text-gray-500 group-focus-within:text-[#EF3B43]'
+                            }`}>
+                              {content.jobPage.fieldMilitary} *
+                            </label>
+                            <div className="relative rounded-xl shadow-sm">
+                              <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none">
+                                <Shield className={`h-4 w-4 transition-colors duration-300 ${
+                                  isRedBlack ? 'text-white/30 group-focus-within:text-[#EF3B43]' : 'text-gray-400 group-focus-within:text-[#EF3B43]'
+                                }`} />
+                              </div>
+                              <select
+                                name="militaryCard"
+                                value={formData.militaryCard}
+                                onChange={handleInputChange}
+                                className={`w-full pl-10 pr-4 py-3 rounded-xl text-xs font-semibold border outline-none transition-all duration-300 appearance-none ${
+                                  isRedBlack 
+                                    ? 'bg-black/45 border-white/10 text-white focus:border-[#EF3B43] focus:ring-1 focus:ring-[#EF3B43]/50 [&>option]:bg-[#0b0d11]'
+                                    : 'bg-gray-50 border-gray-200 text-gray-800 focus:border-[#EF3B43] focus:ring-1 focus:ring-[#EF3B43]/30 [&>option]:bg-white'
+                                }`}
+                              >
+                                <option value="liberada">{content.jobPage.militaryOpts.liberada}</option>
+                                <option value="tramite">{content.jobPage.militaryOpts.tramite}</option>
+                                <option value="noAplica">{content.jobPage.militaryOpts.noAplica}</option>
+                                <option value="noCuento">{content.jobPage.militaryOpts.noCuento}</option>
+                              </select>
+                              <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+                                <ArrowDown size={14} className={isRedBlack ? 'text-white/40' : 'text-gray-450'} />
+                              </div>
+                            </div>
+                          </motion.div>
+                        )}
+                      </AnimatePresence>
                     </div>
                   )}
 
