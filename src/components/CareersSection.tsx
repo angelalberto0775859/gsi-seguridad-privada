@@ -238,6 +238,10 @@ const contentDict: Record<Language, {
     desc: string
     grid: string[]
   }
+  stats: {
+    profiles: string
+    operation: string
+  }
 }> = {
   es: {
     about: {
@@ -281,6 +285,10 @@ const contentDict: Record<Language, {
       title: 'Crece dentro de una operación nacional seria',
       desc: 'En GSI cada puesto tiene respaldo operativo, capacitación continua y supervisión real. Buscamos personas disciplinadas que quieran construir una carrera estable en seguridad privada.',
       grid: ['Pagos puntuales', 'Capacitación táctica', 'Uniformes y equipo', 'Crecimiento interno']
+    },
+    stats: {
+      profiles: 'Perfiles de Puesto',
+      operation: 'Operación Nacional'
     }
   },
   en: {
@@ -325,6 +333,10 @@ const contentDict: Record<Language, {
       title: 'Grow within a serious national operation',
       desc: 'At GSI each position has operational backing, continuous training, and real supervision. We look for disciplined people who want to build a stable career in private security.',
       grid: ['On-time payments', 'Tactical training', 'Uniforms & gear', 'Internal growth']
+    },
+    stats: {
+      profiles: 'Job Profiles',
+      operation: 'National Operation'
     }
   },
   zh: {
@@ -369,6 +381,10 @@ const contentDict: Record<Language, {
       title: '在正规的全国化运营中成长',
       desc: '在 GSI，每个岗位都有运营支持、持续的培训和真实的现场指导。我们寻找有纪律性、想在私人安保领域建立稳定职业生涯的人才。',
       grid: ['按时发放薪资', '战术训练', '制服与装备', '内部晋升']
+    },
+    stats: {
+      profiles: '工作岗位',
+      operation: '全国化运营'
     }
   }
 }
@@ -471,10 +487,10 @@ export default function CareersSection() {
                   className="group text-left border border-[#EF3B43]/30 hover:border-[#EF3B43] bg-black/35 hover:bg-[#EF3B43]/5 p-5 rounded-xl transition-all duration-300 w-full"
                 >
                   <p className="font-display text-4xl font-black leading-none text-white tracking-tight">
-                    3
+                    {jobOpenings.length}
                   </p>
                   <p className="mt-2 text-[9px] font-bold uppercase tracking-widest text-white/60">
-                    Perfiles de Puesto
+                    {content.stats.profiles}
                   </p>
                 </motion.div>
 
@@ -489,7 +505,7 @@ export default function CareersSection() {
                     24/7
                   </p>
                   <p className="mt-2 text-[9px] font-bold uppercase tracking-widest text-white/60">
-                    Operación Nacional
+                    {content.stats.operation}
                   </p>
                 </motion.div>
               </div>
