@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Shield, GraduationCap, Handshake, Users, Phone, Envelope, CaretRight, ArrowDown, ArrowLeft, UploadSimple, CheckCircle, FilePdf, Trash, MapPin, Clock } from '@phosphor-icons/react'
+import { Shield, GraduationCap, Handshake, Users, Phone, Envelope, CaretRight, CaretLeft, ArrowDown, ArrowLeft, UploadSimple, CheckCircle, FilePdf, Trash, MapPin, Clock, User, ChatText, Calendar, FileText } from '@phosphor-icons/react'
 import { useSitePreferences, type Language } from '../lib/sitePreferences'
 
 interface JobOpening {
@@ -10,6 +10,7 @@ interface JobOpening {
   type: string
   requirements: string[]
   description: string
+  image: string
 }
 
 const jobOpeningsData: Record<Language, JobOpening[]> = {
@@ -26,7 +27,8 @@ const jobOpeningsData: Record<Language, JobOpening[]> = {
         'Edad de 22 a 48 años',
         'Documentación básica en regla (RFC, CURP, NSS)',
         'Sin antecedentes penales (Carta federal o estatal)'
-      ]
+      ],
+      image: '/recursos/gsi-careers-about-us.png'
     },
     {
       id: 'guardia-armado',
@@ -40,7 +42,8 @@ const jobOpeningsData: Record<Language, JobOpening[]> = {
         'Edad de 25 a 45 años',
         'Experiencia mínima de 1 año en portación de armas o seguridad armada',
         'Aprobación de evaluaciones de control y confianza'
-      ]
+      ],
+      image: '/recursos/gsi-guardia-armado-apuntando.png'
     }
     /* HIDE FOR LATER USE:
     {
@@ -86,7 +89,8 @@ const jobOpeningsData: Record<Language, JobOpening[]> = {
         'Age between 22 and 48 years',
         'Basic paperwork in order (RFC, CURP, NSS)',
         'No criminal record (federal or state letter)'
-      ]
+      ],
+      image: '/recursos/gsi-careers-about-us.png'
     },
     {
       id: 'guardia-armado',
@@ -100,7 +104,8 @@ const jobOpeningsData: Record<Language, JobOpening[]> = {
         'Age between 25 and 45 years',
         'Minimum of 1 year of experience in armed security or weapon carrying',
         'Passing of security background check and trust evaluations'
-      ]
+      ],
+      image: '/recursos/gsi-guardia-armado-apuntando.png'
     }
     /* HIDE FOR LATER USE:
     {
@@ -146,7 +151,8 @@ const jobOpeningsData: Record<Language, JobOpening[]> = {
         '年龄 22 至 48 岁',
         '基本证件齐全（RFC, CURP, NSS）',
         '无犯罪记录证明（联邦或州级）'
-      ]
+      ],
+      image: '/recursos/gsi-careers-about-us.png'
     },
     {
       id: 'guardia-armado',
@@ -160,7 +166,8 @@ const jobOpeningsData: Record<Language, JobOpening[]> = {
         '年龄在 25 至 45 岁之间',
         '至少 1 年武装安保或持枪工作经验',
         '通过安全背景审查与信任评估'
-      ]
+      ],
+      image: '/recursos/gsi-guardia-armado-apuntando.png'
     }
     /* HIDE FOR LATER USE:
     {
@@ -247,6 +254,9 @@ const contentDict: Record<Language, {
   jobPage: {
     backBtn: string
     formTitle: string
+    secPersonal: string
+    secProfessional: string
+    secDocuments: string
     fieldName: string
     fieldNamePl: string
     fieldEmail: string
@@ -333,6 +343,9 @@ const contentDict: Record<Language, {
     jobPage: {
       backBtn: 'Volver a Vacantes',
       formTitle: 'Enviar Postulación',
+      secPersonal: '1. Datos Personales',
+      secProfessional: '2. Información Profesional',
+      secDocuments: '3. Documentación',
       fieldName: 'Nombre Completo',
       fieldNamePl: 'Ej. Juan Pérez',
       fieldEmail: 'Correo Electrónico',
@@ -419,6 +432,9 @@ const contentDict: Record<Language, {
     jobPage: {
       backBtn: 'Back to Vacancies',
       formTitle: 'Submit Application',
+      secPersonal: '1. Personal Information',
+      secProfessional: '2. Professional Profile',
+      secDocuments: '3. Resume & Documents',
       fieldName: 'Full Name',
       fieldNamePl: 'e.g. John Doe',
       fieldEmail: 'Email Address',
@@ -505,6 +521,9 @@ const contentDict: Record<Language, {
     jobPage: {
       backBtn: '返回职位列表',
       formTitle: '提交求职申请',
+      secPersonal: '1. 个人基本信息',
+      secProfessional: '2. 专业背景信息',
+      secDocuments: '3. 求职简历及附件',
       fieldName: '姓名',
       fieldNamePl: '例如：张三',
       fieldEmail: '电子邮件',
@@ -1154,6 +1173,8 @@ function JobDetailPage({
   content: any
   isRedBlack: boolean
 }) {
+  const { language } = useSitePreferences()
+  const [step, setStep] = useState(1)
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -1166,6 +1187,7 @@ function JobDetailPage({
   const [cvFile, setCvFile] = useState<File | null>(null)
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isSuccess, setIsSuccess] = useState(false)
+  const [errors, setErrors] = useState<Record<string, string>>({})
   const fileInputRef = useRef<HTMLInputElement>(null)
 
   const handleInputChange = (
@@ -1173,21 +1195,112 @@ function JobDetailPage({
   ) => {
     const { name, value } = e.target
     setFormData(prev => ({ ...prev, [name]: value }))
+    if (errors[name]) {
+      setErrors(prev => {
+        const next = { ...prev }
+        delete next[name]
+        return next
+      })
+    }
   }
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
       setCvFile(e.target.files[0])
+      if (errors.cv) {
+        setErrors(prev => {
+          const next = { ...prev }
+          delete next.cv
+          return next
+        })
+      }
     }
+  }
+
+  const getErrorMsg = (field: string) => {
+    if (language === 'es') {
+      if (field === 'name') return 'El nombre es obligatorio.'
+      if (field === 'emailRequired') return 'El correo es obligatorio.'
+      if (field === 'emailInvalid') return 'Formato de correo inválido.'
+      if (field === 'phoneRequired') return 'El teléfono es obligatorio.'
+      if (field === 'phoneInvalid') return 'El teléfono debe tener 10 dígitos.'
+      if (field === 'ageRequired') return 'La edad es obligatoria.'
+      if (field === 'ageInvalid') return 'La edad debe estar entre 18 y 65 años.'
+      if (field === 'cv') return 'El CV es obligatorio.'
+    } else if (language === 'zh') {
+      if (field === 'name') return '姓名是必填项。'
+      if (field === 'emailRequired') return '电子邮箱是必填项。'
+      if (field === 'emailInvalid') return '电子邮箱格式不正确。'
+      if (field === 'phoneRequired') return '联系电话是必填项。'
+      if (field === 'phoneInvalid') return '电话必须是10位数字。'
+      if (field === 'ageRequired') return '年龄是必填项。'
+      if (field === 'ageInvalid') return '年龄必须在18至65岁之间。'
+      if (field === 'cv') return '简历是必填文件。'
+    } else {
+      if (field === 'name') return 'Name is required.'
+      if (field === 'emailRequired') return 'Email is required.'
+      if (field === 'emailInvalid') return 'Invalid email format.'
+      if (field === 'phoneRequired') return 'Phone number is required.'
+      if (field === 'phoneInvalid') return 'Phone must be 10 digits.'
+      if (field === 'ageRequired') return 'Age is required.'
+      if (field === 'ageInvalid') return 'Age must be between 18 and 65.'
+      if (field === 'cv') return 'Resume file is required.'
+    }
+    return ''
+  }
+
+  const validateStep = (currentStep: number): boolean => {
+    const stepErrors: Record<string, string> = {}
+    if (currentStep === 1) {
+      if (!formData.name.trim()) {
+        stepErrors.name = getErrorMsg('name')
+      }
+      if (!formData.email.trim()) {
+        stepErrors.email = getErrorMsg('emailRequired')
+      } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
+        stepErrors.email = getErrorMsg('emailInvalid')
+      }
+      if (!formData.phone.trim()) {
+        stepErrors.phone = getErrorMsg('phoneRequired')
+      } else if (!/^[0-9]{10}$/.test(formData.phone)) {
+        stepErrors.phone = getErrorMsg('phoneInvalid')
+      }
+      if (!formData.age.trim()) {
+        stepErrors.age = getErrorMsg('ageRequired')
+      } else {
+        const ageNum = parseInt(formData.age, 10)
+        if (isNaN(ageNum) || ageNum < 18 || ageNum > 65) {
+          stepErrors.age = getErrorMsg('ageInvalid')
+        }
+      }
+    } else if (currentStep === 3) {
+      if (!cvFile) {
+        stepErrors.cv = getErrorMsg('cv')
+      }
+    }
+    setErrors(stepErrors)
+    return Object.keys(stepErrors).length === 0
+  }
+
+  const handleNext = () => {
+    if (validateStep(step)) {
+      setStep(prev => prev + 1)
+    }
+  }
+
+  const handlePrev = () => {
+    setStep(prev => prev - 1)
   }
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
-    setIsSubmitting(true)
-    setTimeout(() => {
-      setIsSubmitting(false)
-      setIsSuccess(true)
-    }, 1200)
+    if (validateStep(3)) {
+      setIsSubmitting(true)
+      setTimeout(() => {
+        setIsSubmitting(false)
+        setIsSuccess(true)
+      }, 1500)
+    }
   }
 
   const handleDragOver = (e: React.DragEvent) => {
@@ -1198,6 +1311,13 @@ function JobDetailPage({
     e.preventDefault()
     if (e.dataTransfer.files && e.dataTransfer.files[0]) {
       setCvFile(e.dataTransfer.files[0])
+      if (errors.cv) {
+        setErrors(prev => {
+          const next = { ...prev }
+          delete next.cv
+          return next
+        })
+      }
     }
   }
 
@@ -1220,7 +1340,17 @@ function JobDetailPage({
       comments: ''
     })
     setCvFile(null)
+    setStep(1)
     window.location.hash = '#careers'
+  }
+
+  const getStepTitle = (num: number) => {
+    const full = num === 1 
+      ? content.jobPage.secPersonal 
+      : num === 2 
+        ? content.jobPage.secProfessional 
+        : content.jobPage.secDocuments
+    return full.replace(/^\d+\.\s*/, '')
   }
 
   return (
@@ -1241,6 +1371,22 @@ function JobDetailPage({
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
         {/* Left Column: Job Details */}
         <div className="lg:col-span-6 space-y-6 text-left">
+          {/* Job Illustrative Image */}
+          {job.image && (
+            <div className={`relative h-64 sm:h-80 w-full overflow-hidden border rounded-[24px] group shadow-lg ${
+              isRedBlack ? 'border-white/10 bg-white/[0.02]' : 'border-gray-200 bg-white'
+            }`}>
+              <img
+                src={job.image}
+                alt={job.title}
+                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+              />
+              <div className={`absolute inset-0 z-10 pointer-events-none bg-gradient-to-t ${
+                isRedBlack ? 'from-[#050608]/70 via-transparent' : 'from-black/40 via-transparent'
+              }`}></div>
+            </div>
+          )}
+
           <div className="space-y-3">
             <span className={`inline-flex items-center px-3 py-1 text-[9px] font-bold uppercase tracking-wider border rounded-full ${
               isRedBlack ? 'bg-red-500/10 border-red-500/20 text-[#EF3B43]' : 'bg-red-50 text-[#EF3B43] border-red-150'
@@ -1319,267 +1465,510 @@ function JobDetailPage({
               {content.jobPage.formTitle}
             </h2>
 
-            <form onSubmit={handleSubmit} className="space-y-5 relative z-10">
-              {/* Name field */}
-              <div className="space-y-1.5 text-left">
-                <label className={`block text-[10px] font-extrabold uppercase tracking-wider ${
-                  isRedBlack ? 'text-white/60' : 'text-gray-500'
-                }`}>
-                  {content.jobPage.fieldName} *
-                </label>
-                <input
-                  type="text"
-                  name="name"
-                  required
-                  value={formData.name}
-                  onChange={handleInputChange}
-                  placeholder={content.jobPage.fieldNamePl}
-                  className={`w-full px-4 py-3 rounded-xl text-xs font-semibold border outline-none transition-all duration-300 ${
-                    isRedBlack 
-                      ? 'bg-black/45 border-white/10 text-white placeholder-white/25 focus:border-[#EF3B43] focus:ring-1 focus:ring-[#EF3B43]/50'
-                      : 'bg-gray-50 border-gray-200 text-gray-800 placeholder-gray-400 focus:border-[#EF3B43] focus:ring-1 focus:ring-[#EF3B43]/30'
-                  }`}
-                />
-              </div>
-
-              {/* Grid: Email & Phone */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                {/* Email field */}
-                <div className="space-y-1.5 text-left">
-                  <label className={`block text-[10px] font-extrabold uppercase tracking-wider ${
-                    isRedBlack ? 'text-white/60' : 'text-gray-500'
-                  }`}>
-                    {content.jobPage.fieldEmail} *
-                  </label>
-                  <input
-                    type="email"
-                    name="email"
-                    required
-                    value={formData.email}
-                    onChange={handleInputChange}
-                    placeholder={content.jobPage.fieldEmailPl}
-                    className={`w-full px-4 py-3 rounded-xl text-xs font-semibold border outline-none transition-all duration-300 ${
-                      isRedBlack 
-                        ? 'bg-black/45 border-white/10 text-white placeholder-white/25 focus:border-[#EF3B43] focus:ring-1 focus:ring-[#EF3B43]/50'
-                        : 'bg-gray-50 border-gray-200 text-gray-800 placeholder-gray-400 focus:border-[#EF3B43] focus:ring-1 focus:ring-[#EF3B43]/30'
-                    }`}
-                  />
-                </div>
-
-                {/* Phone field */}
-                <div className="space-y-1.5 text-left">
-                  <label className={`block text-[10px] font-extrabold uppercase tracking-wider ${
-                    isRedBlack ? 'text-white/60' : 'text-gray-500'
-                  }`}>
-                    {content.jobPage.fieldPhone} *
-                  </label>
-                  <input
-                    type="tel"
-                    name="phone"
-                    required
-                    pattern="[0-9]{10}"
-                    value={formData.phone}
-                    onChange={handleInputChange}
-                    placeholder={content.jobPage.fieldPhonePl}
-                    className={`w-full px-4 py-3 rounded-xl text-xs font-semibold border outline-none transition-all duration-300 ${
-                      isRedBlack 
-                        ? 'bg-black/45 border-white/10 text-white placeholder-white/25 focus:border-[#EF3B43] focus:ring-1 focus:ring-[#EF3B43]/50'
-                        : 'bg-gray-50 border-gray-200 text-gray-800 placeholder-gray-400 focus:border-[#EF3B43] focus:ring-1 focus:ring-[#EF3B43]/30'
-                    }`}
-                  />
-                </div>
-              </div>
-
-              {/* Grid: Age & Cartilla Militar */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                {/* Age field */}
-                <div className="space-y-1.5 text-left">
-                  <label className={`block text-[10px] font-extrabold uppercase tracking-wider ${
-                    isRedBlack ? 'text-white/60' : 'text-gray-500'
-                  }`}>
-                    {content.jobPage.fieldAge} *
-                  </label>
-                  <input
-                    type="number"
-                    name="age"
-                    required
-                    min="18"
-                    max="65"
-                    value={formData.age}
-                    onChange={handleInputChange}
-                    placeholder={content.jobPage.fieldAgePl}
-                    className={`w-full px-4 py-3 rounded-xl text-xs font-semibold border outline-none transition-all duration-300 ${
-                      isRedBlack 
-                        ? 'bg-black/45 border-white/10 text-white placeholder-white/25 focus:border-[#EF3B43] focus:ring-1 focus:ring-[#EF3B43]/50'
-                        : 'bg-gray-50 border-gray-200 text-gray-800 placeholder-gray-400 focus:border-[#EF3B43] focus:ring-1 focus:ring-[#EF3B43]/30'
-                    }`}
-                  />
-                </div>
-
-                {/* Military Card (Cartilla) */}
-                <div className="space-y-1.5 text-left">
-                  <label className={`block text-[10px] font-extrabold uppercase tracking-wider ${
-                    isRedBlack ? 'text-white/60' : 'text-gray-500'
-                  }`}>
-                    {content.jobPage.fieldMilitary} *
-                  </label>
-                  <select
-                    name="militaryCard"
-                    value={formData.militaryCard}
-                    onChange={handleInputChange}
-                    className={`w-full px-4 py-3 rounded-xl text-xs font-semibold border outline-none transition-all duration-300 ${
-                      isRedBlack 
-                        ? 'bg-black/45 border-white/10 text-white focus:border-[#EF3B43] focus:ring-1 focus:ring-[#EF3B43]/50 [&>option]:bg-[#0b0d11]'
-                        : 'bg-gray-50 border-gray-200 text-gray-800 focus:border-[#EF3B43] focus:ring-1 focus:ring-[#EF3B43]/30 [&>option]:bg-white'
-                    }`}
-                  >
-                    <option value="liberada">{content.jobPage.militaryOpts.liberada}</option>
-                    <option value="tramite">{content.jobPage.militaryOpts.tramite}</option>
-                    <option value="noAplica">{content.jobPage.militaryOpts.noAplica}</option>
-                    <option value="noCuento">{content.jobPage.militaryOpts.noCuento}</option>
-                  </select>
-                </div>
-              </div>
-
-              {/* Education field */}
-              <div className="space-y-1.5 text-left">
-                <label className={`block text-[10px] font-extrabold uppercase tracking-wider ${
-                  isRedBlack ? 'text-white/60' : 'text-gray-500'
-                }`}>
-                  {content.jobPage.fieldEducation} *
-                </label>
-                <select
-                  name="education"
-                  value={formData.education}
-                  onChange={handleInputChange}
-                  className={`w-full px-4 py-3 rounded-xl text-xs font-semibold border outline-none transition-all duration-300 ${
-                    isRedBlack 
-                      ? 'bg-black/45 border-white/10 text-white focus:border-[#EF3B43] focus:ring-1 focus:ring-[#EF3B43]/50 [&>option]:bg-[#0b0d11]'
-                      : 'bg-gray-50 border-gray-200 text-gray-800 focus:border-[#EF3B43] focus:ring-1 focus:ring-[#EF3B43]/30 [&>option]:bg-white'
-                  }`}
-                >
-                  <option value="secundaria">{content.jobPage.eduOpts.secundaria}</option>
-                  <option value="preparatoria">{content.jobPage.eduOpts.preparatoria}</option>
-                  <option value="licenciatura">{content.jobPage.eduOpts.licenciatura}</option>
-                  <option value="otro">{content.jobPage.eduOpts.otro}</option>
-                </select>
-              </div>
-
-              {/* File Upload drag and drop */}
-              <div className="space-y-1.5 text-left">
-                <label className={`block text-[10px] font-extrabold uppercase tracking-wider ${
-                  isRedBlack ? 'text-white/60' : 'text-gray-500'
-                }`}>
-                  {content.jobPage.fieldCv} *
-                </label>
+            {/* Step indicator */}
+            <div className="mb-10 relative z-10">
+              <div className="flex items-center justify-between max-w-md mx-auto relative">
+                {/* Line behind steps */}
+                <div className={`absolute top-1/2 left-0 right-0 h-[3px] -translate-y-1/2 ${
+                  isRedBlack ? 'bg-white/5' : 'bg-gray-100'
+                }`} />
                 
-                <input
-                  type="file"
-                  ref={fileInputRef}
-                  onChange={handleFileChange}
-                  accept=".pdf,.doc,.docx,.jpg,.jpeg"
-                  required={!cvFile}
-                  className="hidden"
-                  id="cv-upload-input"
+                {/* Active progress line */}
+                <div 
+                  className="absolute top-1/2 left-0 h-[3px] -translate-y-1/2 bg-[#EF3B43] transition-all duration-500 shadow-[0_0_8px_rgba(239,59,67,0.5)]" 
+                  style={{ width: `${((step - 1) / 2) * 100}%` }}
                 />
 
-                {!cvFile ? (
-                  <div
-                    onDragOver={handleDragOver}
-                    onDrop={handleDrop}
-                    onClick={() => fileInputRef.current?.click()}
-                    className={`border-2 border-dashed rounded-xl p-5 text-center cursor-pointer transition-all duration-300 flex flex-col items-center justify-center space-y-2 group ${
-                      isRedBlack 
-                        ? 'border-white/10 bg-black/25 hover:border-[#EF3B43]/50 hover:bg-[#EF3B43]/5' 
-                        : 'border-gray-200 bg-gray-50/50 hover:border-[#EF3B43]/50 hover:bg-red-50/10'
-                    }`}
-                  >
-                    <UploadSimple size={24} className={`transition-colors duration-300 ${
-                      isRedBlack ? 'text-white/40 group-hover:text-[#EF3B43]' : 'text-gray-400 group-hover:text-[#EF3B43]'
-                    }`} />
-                    <p className={`text-[11px] leading-relaxed max-w-[280px] mx-auto ${
-                      isRedBlack ? 'text-white/50' : 'text-gray-500'
-                    }`}>
-                      {content.jobPage.cvPl}
-                    </p>
-                  </div>
-                ) : (
-                  <div className={`flex items-center justify-between p-3.5 border rounded-xl ${
-                    isRedBlack ? 'bg-white/5 border-white/10' : 'bg-gray-50 border-gray-150'
-                  }`}>
-                    <div className="flex items-center space-x-2.5 overflow-hidden">
-                      <FilePdf size={20} className="text-[#EF3B43] shrink-0" weight="fill" />
-                      <div className="text-left overflow-hidden">
-                        <p className={`text-xs font-bold truncate ${isRedBlack ? 'text-white/90' : 'text-gray-700'}`}>
-                          {cvFile.name}
-                        </p>
-                        <p className="text-[10px] text-green-500 font-bold">
-                          {content.jobPage.cvSuccess} ({(cvFile.size / 1024 / 1024).toFixed(2)} MB)
-                        </p>
-                      </div>
-                    </div>
+                {[1, 2, 3].map((num) => {
+                  const isActive = step === num
+                  const isCompleted = step > num
+                  const IconComp = num === 1 ? User : num === 2 ? GraduationCap : FileText
+                  
+                  return (
                     <button
+                      key={num}
                       type="button"
-                      onClick={clearFile}
-                      className={`p-1.5 rounded-lg transition-colors shrink-0 ${
-                        isRedBlack ? 'hover:bg-white/10 text-white/50 hover:text-white' : 'hover:bg-gray-150 text-gray-400 hover:text-gray-600'
+                      onClick={() => {
+                        if (num < step) {
+                          setStep(num)
+                        } else if (num > step) {
+                          let valid = true
+                          for (let s = step; s < num; s++) {
+                            if (!validateStep(s)) {
+                              valid = false
+                              break
+                            }
+                          }
+                          if (valid) setStep(num)
+                        }
+                      }}
+                      className={`relative z-10 w-9 h-9 rounded-full flex items-center justify-center border transition-all duration-500 outline-none ${
+                        isCompleted
+                          ? 'bg-[#EF3B43] border-[#EF3B43] text-white shadow-md shadow-red-500/20'
+                          : isActive
+                            ? isRedBlack 
+                              ? 'bg-black border-[#EF3B43] text-[#EF3B43] shadow-lg shadow-[#EF3B43]/30'
+                              : 'bg-white border-[#EF3B43] text-[#EF3B43] shadow-md shadow-[#EF3B43]/20'
+                            : isRedBlack
+                              ? 'bg-[#0b0d11] border-white/10 text-white/40 hover:border-white/20'
+                              : 'bg-white border-gray-200 text-gray-400 hover:border-gray-300'
                       }`}
                     >
-                      <Trash size={16} />
+                      {isCompleted ? (
+                        <CheckCircle size={18} weight="fill" className="text-white" />
+                      ) : (
+                        <IconComp size={16} weight={isActive ? 'fill' : 'regular'} />
+                      )}
+                      
+                      {/* Label under step */}
+                      <span className={`absolute -bottom-6 left-1/2 -translate-x-1/2 whitespace-nowrap text-[9px] font-black tracking-widest uppercase transition-all duration-300 ${
+                        isActive 
+                          ? 'text-[#EF3B43]' 
+                          : isCompleted
+                            ? isRedBlack ? 'text-white' : 'text-gray-800'
+                            : 'text-gray-400'
+                      }`}>
+                        {getStepTitle(num)}
+                      </span>
                     </button>
-                  </div>
+                  )
+                })}
+              </div>
+            </div>
+
+            <form onSubmit={handleSubmit} className="space-y-6 relative z-10 pt-4">
+              
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={step}
+                  initial={{ opacity: 0, x: 15 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: -15 }}
+                  transition={{ duration: 0.2, ease: 'easeInOut' }}
+                  className="space-y-5"
+                >
+                  {step === 1 && (
+                    <div className="space-y-4 text-left">
+                      {/* Name field */}
+                      <div className="space-y-1.5 group">
+                        <label className={`block text-[10px] font-extrabold uppercase tracking-wider transition-colors duration-300 ${
+                          errors.name 
+                            ? 'text-red-500' 
+                            : isRedBlack 
+                              ? 'text-white/60 group-focus-within:text-[#EF3B43]' 
+                              : 'text-gray-500 group-focus-within:text-[#EF3B43]'
+                        }`}>
+                          {content.jobPage.fieldName} *
+                        </label>
+                        <div className="relative rounded-xl shadow-sm">
+                          <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none">
+                            <User className={`h-4 w-4 transition-colors duration-300 ${
+                              errors.name
+                                ? 'text-red-500/60'
+                                : isRedBlack 
+                                  ? 'text-white/30 group-focus-within:text-[#EF3B43]' 
+                                  : 'text-gray-400 group-focus-within:text-[#EF3B43]'
+                            }`} />
+                          </div>
+                          <input
+                            type="text"
+                            name="name"
+                            value={formData.name}
+                            onChange={handleInputChange}
+                            placeholder={content.jobPage.fieldNamePl}
+                            className={`w-full pl-10 pr-4 py-3 rounded-xl text-xs font-semibold border outline-none transition-all duration-300 ${
+                              errors.name
+                                ? 'border-red-500/50 bg-red-500/[0.02] focus:border-red-500 focus:ring-1 focus:ring-red-500/30 text-red-900 placeholder-red-500/30'
+                                : isRedBlack 
+                                  ? 'bg-black/45 border-white/10 text-white placeholder-white/25 focus:border-[#EF3B43] focus:ring-1 focus:ring-[#EF3B43]/50'
+                                  : 'bg-gray-50 border-gray-200 text-gray-800 placeholder-gray-400 focus:border-[#EF3B43] focus:ring-1 focus:ring-[#EF3B43]/30'
+                            }`}
+                          />
+                        </div>
+                        {errors.name && (
+                          <span className="text-[10px] text-red-500 font-bold block mt-1">
+                            {errors.name}
+                          </span>
+                        )}
+                      </div>
+
+                      {/* Grid: Email & Age */}
+                      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                        {/* Email field */}
+                        <div className="space-y-1.5 sm:col-span-2 group">
+                          <label className={`block text-[10px] font-extrabold uppercase tracking-wider transition-colors duration-300 ${
+                            errors.email 
+                              ? 'text-red-500' 
+                              : isRedBlack 
+                                ? 'text-white/60 group-focus-within:text-[#EF3B43]' 
+                                : 'text-gray-500 group-focus-within:text-[#EF3B43]'
+                          }`}>
+                            {content.jobPage.fieldEmail} *
+                          </label>
+                          <div className="relative rounded-xl shadow-sm">
+                            <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none">
+                              <Envelope className={`h-4 w-4 transition-colors duration-300 ${
+                                errors.email
+                                  ? 'text-red-500/60'
+                                  : isRedBlack 
+                                    ? 'text-white/30 group-focus-within:text-[#EF3B43]' 
+                                    : 'text-gray-400 group-focus-within:text-[#EF3B43]'
+                              }`} />
+                            </div>
+                            <input
+                              type="email"
+                              name="email"
+                              value={formData.email}
+                              onChange={handleInputChange}
+                              placeholder={content.jobPage.fieldEmailPl}
+                              className={`w-full pl-10 pr-4 py-3 rounded-xl text-xs font-semibold border outline-none transition-all duration-300 ${
+                                errors.email
+                                  ? 'border-red-500/50 bg-red-500/[0.02] focus:border-red-500 focus:ring-1 focus:ring-red-500/30 text-red-900 placeholder-red-500/30'
+                                  : isRedBlack 
+                                    ? 'bg-black/45 border-white/10 text-white placeholder-white/25 focus:border-[#EF3B43] focus:ring-1 focus:ring-[#EF3B43]/50'
+                                    : 'bg-gray-50 border-gray-200 text-gray-800 placeholder-gray-400 focus:border-[#EF3B43] focus:ring-1 focus:ring-[#EF3B43]/30'
+                              }`}
+                            />
+                          </div>
+                          {errors.email && (
+                            <span className="text-[10px] text-red-500 font-bold block mt-1">
+                              {errors.email}
+                            </span>
+                          )}
+                        </div>
+
+                        {/* Age field */}
+                        <div className="space-y-1.5 group">
+                          <label className={`block text-[10px] font-extrabold uppercase tracking-wider transition-colors duration-300 ${
+                            errors.age 
+                              ? 'text-red-500' 
+                              : isRedBlack 
+                                ? 'text-white/60 group-focus-within:text-[#EF3B43]' 
+                                : 'text-gray-500 group-focus-within:text-[#EF3B43]'
+                          }`}>
+                            {content.jobPage.fieldAge} *
+                          </label>
+                          <div className="relative rounded-xl shadow-sm">
+                            <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none">
+                              <Calendar className={`h-4 w-4 transition-colors duration-300 ${
+                                errors.age
+                                  ? 'text-red-500/60'
+                                  : isRedBlack 
+                                    ? 'text-white/30 group-focus-within:text-[#EF3B43]' 
+                                    : 'text-gray-400 group-focus-within:text-[#EF3B43]'
+                              }`} />
+                            </div>
+                            <input
+                              type="number"
+                              name="age"
+                              min="18"
+                              max="65"
+                              value={formData.age}
+                              onChange={handleInputChange}
+                              placeholder={content.jobPage.fieldAgePl}
+                              className={`w-full pl-10 pr-4 py-3 rounded-xl text-xs font-semibold border outline-none transition-all duration-300 ${
+                                errors.age
+                                  ? 'border-red-500/50 bg-red-500/[0.02] focus:border-red-500 focus:ring-1 focus:ring-red-500/30 text-red-900 placeholder-red-500/30'
+                                  : isRedBlack 
+                                    ? 'bg-black/45 border-white/10 text-white placeholder-white/25 focus:border-[#EF3B43] focus:ring-1 focus:ring-[#EF3B43]/50'
+                                    : 'bg-gray-50 border-gray-200 text-gray-800 placeholder-gray-400 focus:border-[#EF3B43] focus:ring-1 focus:ring-[#EF3B43]/30'
+                              }`}
+                            />
+                          </div>
+                          {errors.age && (
+                            <span className="text-[10px] text-red-500 font-bold block mt-1">
+                              {errors.age}
+                            </span>
+                          )}
+                        </div>
+                      </div>
+
+                      {/* Phone field */}
+                      <div className="space-y-1.5 group">
+                        <label className={`block text-[10px] font-extrabold uppercase tracking-wider transition-colors duration-300 ${
+                          errors.phone 
+                            ? 'text-red-500' 
+                            : isRedBlack 
+                              ? 'text-white/60 group-focus-within:text-[#EF3B43]' 
+                              : 'text-gray-500 group-focus-within:text-[#EF3B43]'
+                        }`}>
+                          {content.jobPage.fieldPhone} *
+                        </label>
+                        <div className="relative rounded-xl shadow-sm">
+                          <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none">
+                            <Phone className={`h-4 w-4 transition-colors duration-300 ${
+                              errors.phone
+                                ? 'text-red-500/60'
+                                : isRedBlack 
+                                  ? 'text-white/30 group-focus-within:text-[#EF3B43]' 
+                                  : 'text-gray-400 group-focus-within:text-[#EF3B43]'
+                            }`} />
+                          </div>
+                          <input
+                            type="tel"
+                            name="phone"
+                            value={formData.phone}
+                            onChange={handleInputChange}
+                            placeholder={content.jobPage.fieldPhonePl}
+                            className={`w-full pl-10 pr-4 py-3 rounded-xl text-xs font-semibold border outline-none transition-all duration-300 ${
+                              errors.phone
+                                ? 'border-red-500/50 bg-red-500/[0.02] focus:border-red-500 focus:ring-1 focus:ring-red-500/30 text-red-900 placeholder-red-500/30'
+                                : isRedBlack 
+                                  ? 'bg-black/45 border-white/10 text-white placeholder-white/25 focus:border-[#EF3B43] focus:ring-1 focus:ring-[#EF3B43]/50'
+                                  : 'bg-gray-50 border-gray-200 text-gray-800 placeholder-gray-400 focus:border-[#EF3B43] focus:ring-1 focus:ring-[#EF3B43]/30'
+                            }`}
+                          />
+                        </div>
+                        {errors.phone && (
+                          <span className="text-[10px] text-red-500 font-bold block mt-1">
+                            {errors.phone}
+                          </span>
+                        )}
+                      </div>
+                    </div>
+                  )}
+
+                  {step === 2 && (
+                    <div className="space-y-4 text-left">
+                      {/* Education field */}
+                      <div className="space-y-1.5 group">
+                        <label className={`block text-[10px] font-extrabold uppercase tracking-wider transition-colors duration-300 ${
+                          isRedBlack ? 'text-white/60 group-focus-within:text-[#EF3B43]' : 'text-gray-500 group-focus-within:text-[#EF3B43]'
+                        }`}>
+                          {content.jobPage.fieldEducation} *
+                        </label>
+                        <div className="relative rounded-xl shadow-sm">
+                          <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none">
+                            <GraduationCap className={`h-4 w-4 transition-colors duration-300 ${
+                              isRedBlack ? 'text-white/30 group-focus-within:text-[#EF3B43]' : 'text-gray-400 group-focus-within:text-[#EF3B43]'
+                            }`} />
+                          </div>
+                          <select
+                            name="education"
+                            value={formData.education}
+                            onChange={handleInputChange}
+                            className={`w-full pl-10 pr-4 py-3 rounded-xl text-xs font-semibold border outline-none transition-all duration-300 appearance-none ${
+                              isRedBlack 
+                                ? 'bg-black/45 border-white/10 text-white focus:border-[#EF3B43] focus:ring-1 focus:ring-[#EF3B43]/50 [&>option]:bg-[#0b0d11]'
+                                : 'bg-gray-50 border-gray-200 text-gray-800 focus:border-[#EF3B43] focus:ring-1 focus:ring-[#EF3B43]/30 [&>option]:bg-white'
+                            }`}
+                          >
+                            <option value="secundaria">{content.jobPage.eduOpts.secundaria}</option>
+                            <option value="preparatoria">{content.jobPage.eduOpts.preparatoria}</option>
+                            <option value="licenciatura">{content.jobPage.eduOpts.licenciatura}</option>
+                            <option value="otro">{content.jobPage.eduOpts.otro}</option>
+                          </select>
+                          <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+                            <ArrowDown size={14} className={isRedBlack ? 'text-white/40' : 'text-gray-450'} />
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Military Card (Cartilla) */}
+                      <div className="space-y-1.5 group">
+                        <label className={`block text-[10px] font-extrabold uppercase tracking-wider transition-colors duration-300 ${
+                          isRedBlack ? 'text-white/60 group-focus-within:text-[#EF3B43]' : 'text-gray-500 group-focus-within:text-[#EF3B43]'
+                        }`}>
+                          {content.jobPage.fieldMilitary} *
+                        </label>
+                        <div className="relative rounded-xl shadow-sm">
+                          <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none">
+                            <Shield className={`h-4 w-4 transition-colors duration-300 ${
+                              isRedBlack ? 'text-white/30 group-focus-within:text-[#EF3B43]' : 'text-gray-400 group-focus-within:text-[#EF3B43]'
+                            }`} />
+                          </div>
+                          <select
+                            name="militaryCard"
+                            value={formData.militaryCard}
+                            onChange={handleInputChange}
+                            className={`w-full pl-10 pr-4 py-3 rounded-xl text-xs font-semibold border outline-none transition-all duration-300 appearance-none ${
+                              isRedBlack 
+                                ? 'bg-black/45 border-white/10 text-white focus:border-[#EF3B43] focus:ring-1 focus:ring-[#EF3B43]/50 [&>option]:bg-[#0b0d11]'
+                                : 'bg-gray-50 border-gray-200 text-gray-800 focus:border-[#EF3B43] focus:ring-1 focus:ring-[#EF3B43]/30 [&>option]:bg-white'
+                            }`}
+                          >
+                            <option value="liberada">{content.jobPage.militaryOpts.liberada}</option>
+                            <option value="tramite">{content.jobPage.militaryOpts.tramite}</option>
+                            <option value="noAplica">{content.jobPage.militaryOpts.noAplica}</option>
+                            <option value="noCuento">{content.jobPage.militaryOpts.noCuento}</option>
+                          </select>
+                          <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+                            <ArrowDown size={14} className={isRedBlack ? 'text-white/40' : 'text-gray-450'} />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+
+                  {step === 3 && (
+                    <div className="space-y-4 text-left">
+                      {/* File Upload drag and drop */}
+                      <div className="space-y-1.5">
+                        <label className={`block text-[10px] font-extrabold uppercase tracking-wider ${
+                          errors.cv ? 'text-red-500' : isRedBlack ? 'text-white/60' : 'text-gray-500'
+                        }`}>
+                          {content.jobPage.fieldCv} *
+                        </label>
+                        
+                        <input
+                          type="file"
+                          ref={fileInputRef}
+                          onChange={handleFileChange}
+                          accept=".pdf,.doc,.docx,.jpg,.jpeg"
+                          required={!cvFile}
+                          className="hidden"
+                          id="cv-upload-input"
+                        />
+
+                        {!cvFile ? (
+                          <div
+                            onDragOver={handleDragOver}
+                            onDrop={handleDrop}
+                            onClick={() => fileInputRef.current?.click()}
+                            className={`border-2 border-dashed rounded-xl p-6 text-center cursor-pointer transition-all duration-300 flex flex-col items-center justify-center space-y-2 group ${
+                              errors.cv
+                                ? 'border-red-500/50 bg-red-500/[0.02] hover:border-red-500 hover:bg-red-500/[0.05]'
+                                : isRedBlack 
+                                  ? 'border-white/10 bg-black/25 hover:border-[#EF3B43]/50 hover:bg-[#EF3B43]/5' 
+                                  : 'border-gray-200 bg-gray-50/50 hover:border-[#EF3B43]/50 hover:bg-red-50/10'
+                            }`}
+                          >
+                            <UploadSimple size={24} className={`transition-colors duration-300 ${
+                              errors.cv
+                                ? 'text-red-500'
+                                : isRedBlack ? 'text-white/40 group-hover:text-[#EF3B43]' : 'text-gray-400 group-hover:text-[#EF3B43]'
+                            }`} />
+                            <p className={`text-[11px] leading-relaxed max-w-[280px] mx-auto ${
+                              errors.cv
+                                ? 'text-red-500/80 font-semibold'
+                                : isRedBlack ? 'text-white/50' : 'text-gray-500'
+                            }`}>
+                              {content.jobPage.cvPl}
+                            </p>
+                          </div>
+                        ) : (
+                          <div className={`flex items-center justify-between p-3.5 border rounded-xl ${
+                            isRedBlack ? 'bg-white/5 border-white/10' : 'bg-gray-50 border-gray-150'
+                          }`}>
+                            <div className="flex items-center space-x-2.5 overflow-hidden">
+                              <FilePdf size={20} className="text-[#EF3B43] shrink-0" weight="fill" />
+                              <div className="text-left overflow-hidden">
+                                <p className={`text-xs font-bold truncate ${isRedBlack ? 'text-white/90' : 'text-gray-700'}`}>
+                                  {cvFile.name}
+                                </p>
+                                <p className="text-[10px] text-green-500 font-bold">
+                                  {content.jobPage.cvSuccess} ({(cvFile.size / 1024 / 1024).toFixed(2)} MB)
+                                </p>
+                              </div>
+                            </div>
+                            <button
+                              type="button"
+                              onClick={clearFile}
+                              className={`p-1.5 rounded-lg transition-colors shrink-0 ${
+                                isRedBlack ? 'hover:bg-white/10 text-white/50 hover:text-white' : 'hover:bg-gray-150 text-gray-400 hover:text-gray-600'
+                              }`}
+                            >
+                              <Trash size={16} />
+                            </button>
+                          </div>
+                        )}
+                        {errors.cv && (
+                          <span className="text-[10px] text-red-500 font-bold block mt-1">
+                            {errors.cv}
+                          </span>
+                        )}
+                      </div>
+
+                      {/* Comments field */}
+                      <div className="space-y-1.5 group">
+                        <label className={`block text-[10px] font-extrabold uppercase tracking-wider transition-colors duration-300 ${
+                          isRedBlack ? 'text-white/60 group-focus-within:text-[#EF3B43]' : 'text-gray-500 group-focus-within:text-[#EF3B43]'
+                        }`}>
+                          {content.jobPage.fieldComments}
+                        </label>
+                        <div className="relative rounded-xl shadow-sm">
+                          <div className="absolute top-3.5 left-3.5 flex items-center pointer-events-none">
+                            <ChatText className={`h-4 w-4 transition-colors duration-300 ${
+                              isRedBlack ? 'text-white/30 group-focus-within:text-[#EF3B43]' : 'text-gray-400 group-focus-within:text-[#EF3B43]'
+                            }`} />
+                          </div>
+                          <textarea
+                            name="comments"
+                            rows={3}
+                            value={formData.comments}
+                            onChange={handleInputChange}
+                            placeholder={content.jobPage.fieldCommentsPl}
+                            className={`w-full pl-10 pr-4 py-3 rounded-xl text-xs font-semibold border outline-none transition-all duration-300 resize-none ${
+                              isRedBlack 
+                                ? 'bg-black/45 border-white/10 text-white placeholder-white/25 focus:border-[#EF3B43] focus:ring-1 focus:ring-[#EF3B43]/50'
+                                : 'bg-gray-50 border-gray-200 text-gray-800 placeholder-gray-400 focus:border-[#EF3B43] focus:ring-1 focus:ring-[#EF3B43]/30'
+                            }`}
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                </motion.div>
+              </AnimatePresence>
+
+              {/* Navigation & Submit buttons */}
+              <div className="flex items-center gap-3 pt-6 border-t border-dashed border-white/10 mt-6">
+                {step > 1 && (
+                  <button
+                    type="button"
+                    onClick={handlePrev}
+                    className={`px-5 py-3 text-xs font-bold uppercase tracking-wider transition-all duration-300 rounded-xl flex items-center justify-center space-x-1.5 border outline-none cursor-pointer ${
+                      isRedBlack 
+                        ? 'bg-transparent border-white/10 text-white hover:bg-white/5' 
+                        : 'bg-transparent border-gray-200 text-gray-700 hover:bg-gray-50'
+                    }`}
+                  >
+                    <CaretLeft size={14} weight="bold" />
+                    <span>{language === 'es' ? 'Atrás' : language === 'zh' ? '返回' : 'Back'}</span>
+                  </button>
                 )}
-              </div>
-
-              {/* Comments field */}
-              <div className="space-y-1.5 text-left">
-                <label className={`block text-[10px] font-extrabold uppercase tracking-wider ${
-                  isRedBlack ? 'text-white/60' : 'text-gray-500'
-                }`}>
-                  {content.jobPage.fieldComments}
-                </label>
-                <textarea
-                  name="comments"
-                  rows={3}
-                  value={formData.comments}
-                  onChange={handleInputChange}
-                  placeholder={content.jobPage.fieldCommentsPl}
-                  className={`w-full px-4 py-3 rounded-xl text-xs font-semibold border outline-none transition-all duration-300 resize-none ${
-                    isRedBlack 
-                      ? 'bg-black/45 border-white/10 text-white placeholder-white/25 focus:border-[#EF3B43] focus:ring-1 focus:ring-[#EF3B43]/50'
-                      : 'bg-gray-50 border-gray-200 text-gray-800 placeholder-gray-400 focus:border-[#EF3B43] focus:ring-1 focus:ring-[#EF3B43]/30'
-                  }`}
-                />
-              </div>
-
-              {/* Submit button */}
-              <div className="pt-2">
-                <button
-                  type="submit"
-                  disabled={isSubmitting}
-                  className={`w-full py-3.5 text-xs font-bold uppercase tracking-wider text-white transition-all duration-300 rounded-xl cursor-pointer flex items-center justify-center space-x-2 ${
-                    isSubmitting 
-                      ? 'bg-red-500/50 cursor-not-allowed'
-                      : isRedBlack 
+                
+                {step < 3 ? (
+                  <button
+                    type="button"
+                    onClick={handleNext}
+                    className={`flex-1 py-3 text-xs font-bold uppercase tracking-wider text-white transition-all duration-300 rounded-xl flex items-center justify-center space-x-1.5 cursor-pointer outline-none ${
+                      isRedBlack 
                         ? 'bg-[#EF3B43] hover:bg-white hover:text-[#050608] shadow-lg shadow-red-500/10' 
                         : 'bg-[#EF3B43] hover:bg-[#101820] shadow-lg shadow-red-500/15'
-                  }`}
-                >
-                  {isSubmitting ? (
-                    <>
-                      <svg className="animate-spin -ml-1 mr-3 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                      </svg>
-                      <span>{content.jobPage.submittingBtn}</span>
-                    </>
-                  ) : (
-                    <>
-                      <Shield size={14} weight="fill" />
-                      <span>{content.jobPage.submitBtn}</span>
-                    </>
-                  )}
-                </button>
+                    }`}
+                  >
+                    <span>{language === 'es' ? 'Siguiente' : language === 'zh' ? '下一步' : 'Next'}</span>
+                    <CaretRight size={14} weight="bold" />
+                  </button>
+                ) : (
+                  <button
+                    type="submit"
+                    disabled={isSubmitting}
+                    className={`flex-1 py-3 text-xs font-bold uppercase tracking-wider text-white transition-all duration-300 rounded-xl cursor-pointer flex items-center justify-center space-x-2 outline-none ${
+                      isSubmitting 
+                        ? 'bg-[#EF3B43]/50 cursor-not-allowed'
+                        : isRedBlack 
+                          ? 'bg-[#EF3B43] hover:bg-white hover:text-[#050608] shadow-lg shadow-red-500/10' 
+                          : 'bg-[#EF3B43] hover:bg-[#101820] shadow-lg shadow-red-500/15'
+                    }`}
+                  >
+                    {isSubmitting ? (
+                      <>
+                        <svg className="animate-spin -ml-1 mr-3 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                          <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                          <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                        </svg>
+                        <span>{content.jobPage.submittingBtn}</span>
+                      </>
+                    ) : (
+                      <>
+                        <Shield size={14} weight="fill" />
+                        <span>{content.jobPage.submitBtn}</span>
+                      </>
+                    )}
+                  </button>
+                )}
               </div>
             </form>
           </div>
