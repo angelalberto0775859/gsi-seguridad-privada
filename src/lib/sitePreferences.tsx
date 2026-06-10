@@ -22,6 +22,7 @@ type TranslationKey =
   | 'hero.secondary'
   | 'hero.metric.continuity'
   | 'hero.metric.branches'
+  | 'hero.liveStatus'
   | 'map.eyebrow'
   | 'map.title'
   | 'map.description'
@@ -114,6 +115,7 @@ const translations: Record<Language, Record<TranslationKey, string>> = {
     'hero.secondary': 'Explorar Servicios',
     'hero.metric.continuity': 'Continuidad Operativa →',
     'hero.metric.branches': 'Sucursales en México →',
+    'hero.liveStatus': 'Monitoreo Activo Nacional GSI',
     'map.eyebrow': 'Presencia Estratégica',
     'map.title': 'Cobertura Nacional Real',
     'map.description': 'Haz clic directamente en cualquiera de las sucursales sobre el mapa de la república para ver la información operativa de la delegación en la tarjeta de control izquierda.',
@@ -196,6 +198,7 @@ const translations: Record<Language, Record<TranslationKey, string>> = {
     'hero.secondary': 'Explore Services',
     'hero.metric.continuity': 'Operational Continuity →',
     'hero.metric.branches': 'Branches in Mexico →',
+    'hero.liveStatus': 'GSI National Active Monitoring',
     'map.eyebrow': 'Strategic Presence',
     'map.title': 'Real National Coverage',
     'map.description': 'Click any branch on the map of Mexico to review operational information for that location in the control card.',
@@ -278,6 +281,7 @@ const translations: Record<Language, Record<TranslationKey, string>> = {
     'hero.secondary': '查看服务',
     'hero.metric.continuity': '运营连续性 →',
     'hero.metric.branches': '墨西哥分支机构 →',
+    'hero.liveStatus': 'GSI 全国实时监控中',
     'map.eyebrow': '战略布局',
     'map.title': '全国真实覆盖',
     'map.description': '点击墨西哥地图上的任一分支点，即可在左侧控制卡中查看该地点的运营信息。',
@@ -354,9 +358,9 @@ const SitePreferencesContext = createContext<PreferencesContextValue | null>(nul
 export function SitePreferencesProvider({ children }: { children: ReactNode }) {
   const [language, setLanguageState] = useState<Language>(() => {
     // Check URL hash first for SEO language deep-linking
-    const hash = typeof window !== 'undefined' ? window.location.hash : ''
-    if (hash.includes('en')) return 'en'
-    if (hash.includes('zh')) return 'zh'
+    const hash = typeof window !== 'undefined' ? window.location.hash.toLowerCase() : ''
+    if (hash === '#en' || hash.startsWith('#en/') || hash.startsWith('#en?')) return 'en'
+    if (hash === '#zh' || hash.startsWith('#zh/') || hash.startsWith('#zh?')) return 'zh'
 
     const stored = localStorage.getItem('gsi-language')
     return stored === 'en' || stored === 'zh' ? stored : 'es'
@@ -377,10 +381,10 @@ export function SitePreferencesProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     const handleHashLanguage = () => {
-      const hash = window.location.hash
-      if (hash.includes('en')) {
+      const hash = window.location.hash.toLowerCase()
+      if (hash === '#en' || hash.startsWith('#en/') || hash.startsWith('#en?')) {
         setLanguageState('en')
-      } else if (hash.includes('zh')) {
+      } else if (hash === '#zh' || hash.startsWith('#zh/') || hash.startsWith('#zh?')) {
         setLanguageState('zh')
       }
     }

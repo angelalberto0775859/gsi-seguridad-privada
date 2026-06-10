@@ -203,6 +203,15 @@ const jobOpeningsData: Record<Language, JobOpening[]> = {
 }
 
 const contentDict: Record<Language, {
+  hero: {
+    eyebrow: string
+    titleLine1: string
+    titleLine2: string
+    desc: string
+    cta: string
+    benefitsTitle: string
+    benefits: string[]
+  }
   about: {
     eyebrow: string
     title: string
@@ -299,6 +308,20 @@ const contentDict: Record<Language, {
   }
 }> = {
   es: {
+    hero: {
+      eyebrow: 'Únete al Equipo Elite GSI',
+      titleLine1: 'Bolsa de Trabajo',
+      titleLine2: '& Carrera Profesional',
+      desc: 'Forma parte del consorcio de seguridad privada líder en México. Ofrecemos estabilidad laboral, capacitación táctica certificada y oportunidades reales de crecimiento.',
+      cta: 'Ver Perfiles y Vacantes',
+      benefitsTitle: 'BENEFICIOS GSI ELITE',
+      benefits: [
+        'Pagos Quincenales Puntuales',
+        'Prestaciones de Ley Completas',
+        'Capacitación Táctica Certificada',
+        'Uniformes de Alta Gama Sin Costo'
+      ]
+    },
     about: {
       eyebrow: 'Sobre nosotros',
       title: 'Seguridad privada con método, presencia y respaldo',
@@ -395,6 +418,20 @@ const contentDict: Record<Language, {
     }
   },
   en: {
+    hero: {
+      eyebrow: 'Join the GSI Elite Team',
+      titleLine1: 'Job Board',
+      titleLine2: '& Professional Career',
+      desc: 'Become part of the leading private security consortium in Mexico. We offer job stability, certified tactical training, and real opportunities for growth.',
+      cta: 'View Profiles & Vacancies',
+      benefitsTitle: 'GSI ELITE BENEFITS',
+      benefits: [
+        'Punctual Biweekly Payments',
+        'Full Statutory Law Benefits',
+        'Certified Tactical Training',
+        'High-End Uniforms at No Cost'
+      ]
+    },
     about: {
       eyebrow: 'About us',
       title: 'Private security with method, presence, and backing',
@@ -491,6 +528,20 @@ const contentDict: Record<Language, {
     }
   },
   zh: {
+    hero: {
+      eyebrow: '加入 GSI 精英团队',
+      titleLine1: '求职中心',
+      titleLine2: '与职业生涯规划',
+      desc: '成为墨西哥领先私人安保集团的一员。我们提供稳定的工作、认证的战术培训和切实的晋升机会。',
+      cta: '查看职位与空缺',
+      benefitsTitle: 'GSI 精英福利',
+      benefits: [
+        '准时双周薪水发放',
+        '完善的法定社会福利',
+        '认证的专业战术培训',
+        '免费提供高端制服装备'
+      ]
+    },
     about: {
       eyebrow: '关于我们',
       title: '具有系统方法、全国布局和雄厚实力的私人安保',
@@ -636,7 +687,7 @@ export default function CareersSection() {
         {/* Background Image - Clean and natural colors */}
         <img
           src="/recursos/gsi-careers-hero-recruitment-v2.png"
-          alt="Reclutamiento profesional de seguridad privada GSI"
+          alt={language === 'es' ? 'Reclutamiento profesional de seguridad privada GSI' : language === 'zh' ? 'GSI 私人安保专业招聘' : 'GSI Private Security Professional Recruitment'}
           className="absolute inset-0 h-full w-full object-cover brightness-[0.88] contrast-[1.03]"
           loading="eager"
           fetchPriority="high"
@@ -671,19 +722,19 @@ export default function CareersSection() {
               >
                 <span className="w-1.5 h-1.5 rounded-full bg-[#EF3B43] animate-pulse"></span>
                 <span className="text-[9px] font-bold tracking-widest uppercase text-white/90">
-                  Únete al Equipo Elite GSI
+                  {content.hero.eyebrow}
                 </span>
               </motion.div>
 
               {/* Main Title */}
               <h1 className="font-display text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black leading-[1.0] text-white tracking-tight text-balance">
-                Bolsa de Trabajo <br />
-                <span className="text-[#EF3B43]">& Carrera Profesional</span>.
+                {content.hero.titleLine1} <br />
+                <span className="text-[#EF3B43]">{content.hero.titleLine2}</span>.
               </h1>
 
               {/* Description */}
               <p className="text-sm sm:text-base font-medium leading-relaxed text-white/80 max-w-[54ch]">
-                Forma parte del consorcio de seguridad privada líder en México. Ofrecemos estabilidad laboral, capacitación táctica certificada y oportunidades reales de crecimiento.
+                {content.hero.desc}
               </p>
 
               {/* Call to Action */}
@@ -698,7 +749,7 @@ export default function CareersSection() {
                     isRedBlack ? 'bg-[#EF3B43] hover:bg-white hover:text-[#050608]' : 'bg-[#EF3B43] hover:bg-[#101820]'
                   }`}
                 >
-                  Ver Perfiles y Vacantes
+                  {content.hero.cta}
                 </a>
               </div>
 
@@ -750,27 +801,17 @@ export default function CareersSection() {
                 <div className="flex items-center space-x-2 border-b border-white/10 pb-2.5">
                   <Shield size={16} className="text-[#EF3B43]" weight="fill" />
                   <span className="text-[10px] font-black tracking-widest uppercase text-white/90">
-                    BENEFICIOS GSI ELITE
+                    {content.hero.benefitsTitle}
                   </span>
                 </div>
                 
                 <div className="grid grid-cols-1 gap-2 text-xs font-semibold text-white/80">
-                  <div className="flex items-center space-x-2">
-                    <span className="h-1.5 w-1.5 rounded-full bg-[#EF3B43]"></span>
-                    <span>Pagos Quincenales Puntuales</span>
-                  </div>
-                  <div className="flex items-center space-x-2">
-                    <span className="h-1.5 w-1.5 rounded-full bg-[#EF3B43]"></span>
-                    <span>Prestaciones de Ley Completas</span>
-                  </div>
-                  <div className="flex items-center space-x-2">
-                    <span className="h-1.5 w-1.5 rounded-full bg-[#EF3B43]"></span>
-                    <span>Capacitación Táctica Certificada</span>
-                  </div>
-                  <div className="flex items-center space-x-2">
-                    <span className="h-1.5 w-1.5 rounded-full bg-[#EF3B43]"></span>
-                    <span>Uniformes de Alta Gama Sin Costo</span>
-                  </div>
+                  {content.hero.benefits.map((benefit, idx) => (
+                    <div key={idx} className="flex items-center space-x-2">
+                      <span className="h-1.5 w-1.5 rounded-full bg-[#EF3B43]"></span>
+                      <span>{benefit}</span>
+                    </div>
+                  ))}
                 </div>
               </motion.div>
 
@@ -787,7 +828,7 @@ export default function CareersSection() {
             className={`p-3 border rounded-full shadow-md hover:shadow-lg inline-flex items-center justify-center hover:text-[#EF3B43] hover:border-[#EF3B43] transition-all ${
               isRedBlack ? 'bg-white/5 border-white/10 text-white/70' : 'bg-white border-gray-200 text-gray-600'
             }`}
-            aria-label="Ver vacantes"
+            aria-label={language === 'es' ? 'Ver vacantes' : language === 'zh' ? '查看职位空缺' : 'View vacancies'}
           >
             <ArrowDown size={18} strokeWidth={2.5} />
           </motion.a>
@@ -805,7 +846,7 @@ export default function CareersSection() {
           >
             <img
               src="/recursos/gsi-careers-about-us.png"
-              alt="Equipo operativo y supervisores de GSI Seguridad Privada"
+              alt={language === 'es' ? 'Equipo operativo y supervisores de GSI Seguridad Privada' : language === 'zh' ? 'GSI 私人安保运营团队与主管' : 'GSI Private Security operational team and supervisors'}
               className="absolute inset-0 h-full w-full object-cover"
               loading="lazy"
             />
@@ -1076,7 +1117,7 @@ export default function CareersSection() {
               
               <img
                 src="/recursos/gsi-careers-cinematic.png"
-                alt="Personal elite de seguridad GSI en centro de control operativo"
+                alt={language === 'es' ? 'Personal elite de seguridad GSI en centro de control operativo' : language === 'zh' ? '运营控制中心的 GSI 精英安全人员' : 'GSI elite security personnel in operational control center'}
                 className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                 loading="lazy"
               />
@@ -1187,7 +1228,7 @@ export default function CareersSection() {
           >
             <img
               src="/recursos/gsi-careers-why-work.png"
-              alt="Capacitación y desarrollo profesional en GSI Seguridad Privada"
+              alt={language === 'es' ? 'Capacitación y desarrollo profesional en GSI Seguridad Privada' : language === 'zh' ? 'GSI 私人安保的专业培训与职业发展' : 'Professional training and career development at GSI Private Security'}
               className="absolute inset-0 h-full w-full object-cover"
               loading="lazy"
             />

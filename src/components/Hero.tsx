@@ -100,7 +100,7 @@ export default function Hero() {
                 <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
               </span>
               <span className="text-[10px] font-bold tracking-widest text-white/85 uppercase">
-                Monitoreo Activo Nacional GSI
+                {t('hero.liveStatus')}
               </span>
             </motion.div>
 
