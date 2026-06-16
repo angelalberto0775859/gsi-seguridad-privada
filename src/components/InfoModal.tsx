@@ -40,7 +40,6 @@ export default function InfoModal() {
       if (customEvent.detail && customEvent.detail.type) {
         setModalType(customEvent.detail.type)
         setIsOpen(true)
-        document.body.style.overflow = 'hidden'
       }
     }
 
@@ -50,9 +49,16 @@ export default function InfoModal() {
     }
   }, [])
 
+  useEffect(() => {
+    document.body.style.overflow = isOpen ? 'hidden' : 'unset'
+
+    return () => {
+      document.body.style.overflow = 'unset'
+    }
+  }, [isOpen])
+
   const closeModal = () => {
     setIsOpen(false)
-    document.body.style.overflow = 'unset'
   }
 
   const handleCtaClick = (messageText: string) => {

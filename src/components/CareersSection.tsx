@@ -1252,7 +1252,7 @@ function JobDetailPage({
   isRecruitmentPaused
 }: {
   job: JobOpening
-  content: any
+  content: (typeof contentDict)[Language]
   isRedBlack: boolean
   isRecruitmentPaused: boolean
 }) {
@@ -1568,7 +1568,7 @@ function JobDetailPage({
             {/* Watermark inside form */}
             <div className="absolute -right-12 -bottom-12 w-48 h-48 opacity-[0.025] pointer-events-none select-none">
               <img 
-                src={isRedBlack ? "/recursos/gsi-isomarca-white.png" : "/recursos/gsi-isomarca-black.png"} 
+                src={isRedBlack ? "/recursos/Logotipos 2023 colo blanco fondo transparente_GSI SEGURIDAD PRIVADA.png" : "/recursos/Logotipos 2023 Color Negro Fondo transparente_GSI SEGURIDAD PRIVADA.png"} 
                 alt="GSI Watermark" 
                 className="w-full h-full object-contain"
               />

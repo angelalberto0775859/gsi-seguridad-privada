@@ -11,6 +11,15 @@ const statesOfMexico = [
   "Tabasco", "Tamaulipas", "Tlaxcala", "Veracruz", "Yucatán", "Zacatecas"
 ]
 
+const createCaptchaCode = () => {
+  const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789'
+  let code = ''
+  for (let i = 0; i < 4; i++) {
+    code += chars.charAt(Math.floor(Math.random() * chars.length))
+  }
+  return code
+}
+
 export default function ContactSection() {
   const { isRedBlack, language, t } = useSitePreferences()
   const [formData, setFormData] = useState({
@@ -25,7 +34,7 @@ export default function ContactSection() {
   })
   
   // Captcha State
-  const [captchaCode, setCaptchaCode] = useState('')
+  const [captchaCode, setCaptchaCode] = useState(createCaptchaCode)
   const [captchaInput, setCaptchaInput] = useState('')
   const [captchaError, setCaptchaError] = useState(false)
   const [submitted, setSubmitted] = useState(false)
@@ -90,21 +99,11 @@ export default function ContactSection() {
     "Evaluación y Control de Confianza"
   ]
 
-  // Generate 4-character random alphanumeric CAPTCHA
   const generateCaptcha = () => {
-    const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789' // exclude confusing chars like I, O, 1, 0
-    let code = ''
-    for (let i = 0; i < 4; i++) {
-      code += chars.charAt(Math.floor(Math.random() * chars.length))
-    }
-    setCaptchaCode(code)
+    setCaptchaCode(createCaptchaCode())
     setCaptchaInput('')
     setCaptchaError(false)
   }
-
-  useEffect(() => {
-    generateCaptcha()
-  }, [])
 
   // Listen to map selections to auto-select state in form
   useEffect(() => {

@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { List, Palette, Translate, X } from '@phosphor-icons/react'
-import { languageLabels, supportedLanguages, useSitePreferences } from '../lib/sitePreferences'
+import { useSitePreferences } from '../lib/sitePreferences'
+import { languageLabels, supportedLanguages } from '../lib/languageOptions'
 
 interface NavbarProps {
   currentPage: 'home' | 'careers'

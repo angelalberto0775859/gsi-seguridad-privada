@@ -347,12 +347,6 @@ const translations: Record<Language, Record<TranslationKey, string>> = {
   },
 }
 
-const languageLabels: Record<Language, string> = {
-  es: 'ES',
-  en: 'EN',
-  zh: '中文',
-}
-
 const SitePreferencesContext = createContext<PreferencesContextValue | null>(null)
 
 export function SitePreferencesProvider({ children }: { children: ReactNode }) {
@@ -415,6 +409,7 @@ export function SitePreferencesProvider({ children }: { children: ReactNode }) {
   )
 }
 
+// eslint-disable-next-line react-refresh/only-export-components
 export function useSitePreferences() {
   const context = useContext(SitePreferencesContext)
   if (!context) {
@@ -422,6 +417,3 @@ export function useSitePreferences() {
   }
   return context
 }
-
-export const supportedLanguages: Language[] = ['es', 'en', 'zh']
-export { languageLabels }

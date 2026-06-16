@@ -1,9 +1,30 @@
+import { useEffect, useRef } from 'react'
 import { motion } from 'framer-motion'
 import { ShieldCheck, ArrowDown, MapPin } from '@phosphor-icons/react'
 import { useSitePreferences } from '../lib/sitePreferences'
 
 export default function Hero() {
   const { isRedBlack, t } = useSitePreferences()
+  const videoRef = useRef<HTMLVideoElement>(null)
+
+  useEffect(() => {
+    const video = videoRef.current
+    if (!video) return
+
+    video.muted = true
+    const playVideo = () => {
+      void video.play().catch(() => {
+        // Some browsers defer autoplay until the media is ready.
+      })
+    }
+
+    playVideo()
+    video.addEventListener('canplay', playVideo)
+
+    return () => {
+      video.removeEventListener('canplay', playVideo)
+    }
+  }, [])
 
   return (
     <section
@@ -12,24 +33,30 @@ export default function Hero() {
         isRedBlack ? 'bg-[#050608]' : 'bg-[#101820]'
       }`}
     >
-      {/* Background Image - Clean and natural colors */}
-      <img
-        src="/recursos/gsi-equipo-rostros-distintos.png"
-        alt="Equipo de seguridad privada GSI"
-        className="absolute inset-0 z-0 h-full w-full object-cover brightness-[0.88] contrast-[1.03]"
-        loading="eager"
-        fetchPriority="high"
-      />
+      {/* Background Video - keeps the security team in motion */}
+      <video
+        ref={videoRef}
+        className="absolute inset-0 z-0 h-full w-full object-cover brightness-[0.96] contrast-[1.01] saturate-[1.05]"
+        autoPlay
+        muted
+        loop
+        playsInline
+        preload="auto"
+        poster="/recursos/gsi-equipo-rostros-distintos.png"
+        aria-label="Equipo de seguridad privada GSI en movimiento"
+      >
+        <source src="/recursos/IDLE.mp4" type="video/mp4" />
+      </video>
 
       {/* Header Vignette - Keeps logo/navbar perfectly readable */}
-      <div className="absolute top-0 inset-x-0 h-48 bg-gradient-to-b from-black/80 via-black/35 to-transparent z-10 pointer-events-none"></div>
+      <div className="absolute top-0 inset-x-0 h-48 bg-gradient-to-b from-black/70 via-black/25 to-transparent z-10 pointer-events-none"></div>
 
       {/* Reddish overlay and left shadow gradients for maximum legibility & theme styling */}
       <div
         className={`absolute inset-0 z-0 pointer-events-none ${
           isRedBlack
-            ? 'bg-[radial-gradient(circle_at_75%_50%,rgba(239,59,67,0.20),transparent_60%),linear-gradient(90deg,#050608_0%,rgba(5,6,8,0.6)_50%,transparent_100%),linear-gradient(180deg,transparent_75%,#050608_100%)]'
-            : 'bg-[radial-gradient(circle_at_75%_50%,rgba(239,59,67,0.18),transparent_60%),linear-gradient(90deg,#101820_0%,rgba(16,24,32,0.6)_50%,transparent_100%),linear-gradient(180deg,transparent_75%,#fafafa_100%)]'
+            ? 'bg-[radial-gradient(circle_at_75%_50%,rgba(239,59,67,0.14),transparent_62%),linear-gradient(90deg,#050608_0%,rgba(5,6,8,0.42)_48%,transparent_100%),linear-gradient(180deg,transparent_76%,#050608_100%)]'
+            : 'bg-[radial-gradient(circle_at_75%_50%,rgba(239,59,67,0.12),transparent_62%),linear-gradient(90deg,#101820_0%,rgba(16,24,32,0.42)_48%,transparent_100%),linear-gradient(180deg,transparent_76%,#fafafa_100%)]'
         }`}
       ></div>
 

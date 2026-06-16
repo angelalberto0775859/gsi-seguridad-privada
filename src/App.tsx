@@ -23,7 +23,7 @@ function AppContent() {
       const hash = window.location.hash
       if (hash.startsWith('#careers')) {
         setCurrentPage('careers')
-        window.scrollTo({ top: 0, behavior: 'instant' as any })
+        window.scrollTo({ top: 0, behavior: 'instant' })
       } else {
         setCurrentPage('home')
         if (hash && hash !== '#' && hash !== '#home') {
